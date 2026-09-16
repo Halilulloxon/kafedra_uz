@@ -1415,9 +1415,6 @@ def search_video(request):
 ).order_by('-video_soni')[:5]
     return render(request, 'app/video.html', {'videolar': video, 'top_mualliflar':top_mualliflar,'query': query})
 def serve_video(request, video_id):
+    # Videoni /media/ orqali beramiz: serverda nginx uni oqim bilan (Range, ya'ni oldinga o'tkazish bilan) uzatadi
     video = get_object_or_404(videolar, id=video_id)
-    file_path = video.video.path
-    with open(file_path, 'rb') as f:
-        response = HttpResponse(f.read(), content_type='video/mp4')
-        response['Content-Disposition'] = f'inline; filename="{os.path.basename(file_path)}"'
-        return response
+    return redirect(video.video.url)

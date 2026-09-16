@@ -221,7 +221,7 @@ def _send_status_email(instance, subject, accent_color, accent_light,
     email = EmailMultiAlternatives(
         subject,
         text_content,
-        '"Kafedralar.uz" <halilullohayotullo0608@gmail.com>',
+        f'"Kafedralar.uz" <{settings.EMAIL_HOST_USER}>',
         [instance.gmail],
     )
     email.attach_alternative(html_content, "text/html")

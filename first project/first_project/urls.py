@@ -26,7 +26,7 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.profile, name='profile'),
     path('profile2/<int:user_id>/', views.profile2, name='profile2'),
     path('profile3/<int:user_id>/', views.profile3, name='profile3'),
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('oquv_ishlari/<int:user_id>/', views.oquv_ishlari, name='oquv_ishlari'),
     path('qoshish/<int:user_id>/',views.qoshish, name='qoshish'),
     path('qoshish_i/<int:user_id>/',views.qoshish_i, name='qoshish_i'),
