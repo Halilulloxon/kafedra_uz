@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kafedralar.uz — Universitet Bilim Markazi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'yangi/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'yangi/pages.css' %}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+</head>
+<body>
+
+<nav>
+  <div class="logo">Kafedralar<span>.uz</span></div>
+  <ul>
+      <li><a href="{% url 'index' %}" class="active">Bosh sahifa</a></li>
+      <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
+      <li><a href="{% url 'book' %}">Kitoblar</a></li>
+      <li><a href="{% url 'article' %}">Maqolalar</a></li>
+      <li><a href="{% url 'video' %}">Video darslar</a></li>
+      <li><a href="{% url 'login' %}">Kirish</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🎓 Universitet Bilim Markazi</div>
+    <h1>Bilim va <span>Ilm</span><br />Bir Joyda</h1>
+    <p>O'qituvchilarning kitoblari, video darslari va ilmiy maqolalarini bir platformada toping. Ta'limni yangi bosqichga olib chiqing.</p>
+    <div class="hero-btns">
+      <a href="{% url 'teachers' %}" class="btn-primary">O'qituvchilarni Ko'rish</a>
+      <!--<a href="" class="btn-outline">Video Darslar</a>-->
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+          <div class="stat-num">{{oqituvchilar_soni}}+</div>
+        <div class="stat-label">O'qituvchi</div>
+      </div>
+      <div class="stat">
+          <div class="stat-num">{{video_darslar_soni}}+</div>
+        <div class="stat-label">Video Dars</div>
+      </div>
+      <div class="stat">
+          <div class="stat-num">{{kitoblar_soni}}+</div>
+        <div class="stat-label">Kitob</div>
+      </div>
+      <div class="stat">
+          <div class="stat-num">{{maqolalar_soni}}+</div>
+        <div class="stat-label">Maqola</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-tag">Platforma imkoniyatlari</div>
+  <h2 class="section-title">Nima taklif qilamiz?</h2>
+  <p class="section-sub">Universitet o'qituvchilari tomonidan tayyorlangan sifatli ta'lim materiallari.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📹</div>
+      <h3>Video Darslar</h3>
+      <p>O'qituvchilar tomonidan yozilgan professional video darsliklarni tomosha qiling.</p>
+      <a href="{% url 'video' %}" class="feature-link">Ko'rish →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📚</div>
+      <h3>Kitoblar</h3>
+      <p>Darsliklar, qo'llanmalar va monografiyalarni yuklab oling va o'qing.</p>
+      <a href="{% url 'book' %}" class="feature-link">Ko'rish →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <h3>Ilmiy Maqolalar</h3>
+      <p>Tasdiqlangan ilmiy maqolalar va tadqiqot ishlarini o'qing.</p>
+      <a href="{% url 'article' %}" class="feature-link">Ko'rish →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👨‍🏫</div>
+      <h3>O'qituvchi Profillari</h3>
+      <p>Har bir o'qituvchining profili va ular yozgan barcha materiallar.</p>
+      <a href="{% url 'teachers' %}" class="feature-link">Ko'rish →</a>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+    <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
+</footer>
+
+<script src="{% static 'yangi/main.js' %}"></script>
+</body>
+</html>

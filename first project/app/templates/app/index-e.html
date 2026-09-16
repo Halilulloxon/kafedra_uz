@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bosh sahifa - Universitet</title>
+    <link rel="stylesheet" href="{% static 'public/styles.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <span class="nav-title">Kafedralar.uz</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'index' %}" class="nav-link active">Bosh sahifa</a></li>
+                <li><a href="{% url 'teachers' %}" class="nav-link">O'qituvchilar</a></li>
+                <li><a href="{% url 'login' %}" class="nav-link">Kirish</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Xush kelibsiz!</h1>
+                <p class="hero-subtitle">Zamonaviy ta'lim - Kelajak sari birinchi qadam</p>
+                <p class="hero-description">
+                    Universitetimiz eng yaxshi professor va o'qituvchilar bilan ta'lim beradi. 
+                    Biz talabalarimizga sifatli bilim va zamonaviy ko'nikmalarni o'rgatamiz.
+                </p>
+                <a href="{% url 'teachers' %}" class="hero-button">O'qituvchilar bilan tanishing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Nega bizni tanlaysiz?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Tajribali professor-o'qituvchilar</h3>
+                    <p class="feature-description">
+                        Bizning o'qituvchilarimiz o'z sohasida ko'p yillik tajribaga ega 
+                        va xalqaro miqyosda tan olingan mutaxassislardir.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="10 8 16 12 10 16 10 8"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Video darslar</h3>
+                    <p class="feature-description">
+                        Har bir o'qituvchining maxsus tayyorlangan video darslari mavjud. 
+                        Siz istalgan vaqtda o'rganishingiz mumkin.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Ilmiy maqolalar va kitoblar</h3>
+                    <p class="feature-description">
+                        O'qituvchilarimizning yozgan ilmiy maqolalari va kitoblaridan 
+                        foydalanishingiz mumkin.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Amaliy loyihalar</h3>
+                    <p class="feature-description">
+                        Nazariy bilimlarni amaliyotda qo'llash uchun turli xil 
+                        loyihalar ustida ishlash imkoniyati.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">{{oqituvchilar_soni}}</div>
+                    <div>Professor va o'qituvchilar</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{video_darslar_soni}}</div>
+                    <div>Video darslar</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{maqolalar_soni}}</div>
+                    <div>Ilmiy maqolalar</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{kitoblar_soni}}</div>
+                    <div>Nashr etilgan kitoblar</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">&copy; 2024 Universitet. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+</body>
+</html>

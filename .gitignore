@@ -1,0 +1,38 @@
+# Virtual environments
+venv/
+env/
+env*/
+env_new/
+.venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Django files
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# IDE / Visual Studio
+.vs/
+*.sln.docstates
+*.pyproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+obj/
+bin/
+.idea/
+.vscode/
+
+# Environment secrets
+.env

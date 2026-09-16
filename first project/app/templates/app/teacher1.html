@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ teacher.ism }} {{ teacher.familiya }} — Kafedralar.uz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0d0f14;
+            --surface: #161a23;
+            --surface2: #1e2330;
+            --border: #2a3045;
+            --accent: #4f8ef7;
+            --accent2: #a78bfa;
+            --text: #e8eaf0;
+            --muted: #7a839a;
+            --card-bg: #13161f;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 64px;
+            background: rgba(13,15,20,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+            .logo span {
+                color: var(--accent);
+            }
+
+        nav ul {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+            nav ul li a {
+                text-decoration: none;
+                color: var(--muted);
+                font-size: 0.88rem;
+                font-weight: 500;
+                padding: 6px 14px;
+                border-radius: 8px;
+                transition: all 0.2s;
+            }
+
+                nav ul li a:hover, nav ul li a.active {
+                    color: var(--text);
+                    background: var(--surface2);
+                }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            padding: 32px 40px 0;
+            transition: color 0.2s;
+        }
+
+            .back-link:hover {
+                color: var(--accent);
+            }
+
+        .profile-hero {
+            padding: 32px 40px 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .profile-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .profile-wrapper::before {
+                content: '';
+                position: absolute;
+                top: -60px;
+                right: -60px;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+        .avatar-big {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--border);
+            flex-shrink: 0;
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .avatar-big img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .avatar-big .emoji-fallback {
+                font-size: 4rem;
+            }
+
+        .profile-info {
+            flex: 1;
+        }
+
+            .profile-info h1 {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+
+        .profile-title {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .profile-dept {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .profile-email {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-bottom: 14px;
+        }
+
+            .profile-email a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+        .profile-bio {
+            color: #b0b8cc;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            max-width: 640px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+            .profile-stats > div {
+                text-align: center;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 14px 22px;
+            }
+
+        .p-stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .p-stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .tabs-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: -1px;
+        }
+
+            .tab:hover {
+                color: var(--text);
+            }
+
+            .tab.active {
+                color: var(--accent);
+                border-bottom-color: var(--accent);
+            }
+
+        .content-area {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 40px 60px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+            .content-header h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.4rem;
+            }
+
+        .count-badge {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.78rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+            .book-card:hover {
+                transform: translateY(-4px);
+                border-color: var(--accent);
+            }
+
+        .book-cover {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .book-cover-placeholder {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .c1 {
+            background: linear-gradient(135deg, #1e3a5f, #2d6a9f);
+        }
+
+        .c2 {
+            background: linear-gradient(135deg, #1a4a2e, #2d7a4f);
+        }
+
+        .c3 {
+            background: linear-gradient(135deg, #4a1a2e, #8a2d4f);
+        }
+
+        .c4 {
+            background: linear-gradient(135deg, #3a2d1a, #7a5c2d);
+        }
+
+        .book-info {
+            padding: 14px;
+        }
+
+            .book-info h4 {
+                font-size: 0.88rem;
+                font-weight: 600;
+                margin-bottom: 6px;
+                line-height: 1.4;
+            }
+
+        .book-type {
+            font-size: 0.75rem;
+            color: var(--accent2);
+            margin-bottom: 10px;
+        }
+
+        /* ── VIDEO CARDS ── */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+            .video-card:hover {
+                border-color: var(--accent);
+            }
+
+        .video-thumb-wrap {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(135deg, #0a1628, #1a3a6b);
+        }
+
+            /*
+         * MUHIM: video display:none bo'lsa browser seek qilmaydi!
+         * Shuning uchun visibility:hidden + position:absolute ishlatamiz —
+         * video DOM da mavjud, lekin ko'rinmaydi. Canvas ustida turadi.
+         */
+            .video-thumb-wrap video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                visibility: hidden; /* ko'rinmaydi, lekin yuklaydi */
+                z-index: 1;
+            }
+
+                /* Video o'ynayotganda ko'rsat */
+                .video-thumb-wrap video.active {
+                    visibility: visible;
+                    z-index: 5;
+                }
+
+            .video-thumb-wrap canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 2;
+            }
+
+                /* Canvas yashibdi — yashir */
+                .video-thumb-wrap canvas.ready {
+                    z-index: 2;
+                }
+
+            /* Video active bo'lganda canvas ni yashir */
+            .video-thumb-wrap video.active ~ canvas {
+                display: none;
+            }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.25);
+            transition: background 0.2s;
+        }
+
+        .video-thumb-wrap:hover .play-overlay {
+            background: rgba(0,0,0,0.5);
+        }
+
+        /* Video active bo'lganda overlay yashir */
+        .video-thumb-wrap video.active ~ canvas ~ .play-overlay,
+        .video-thumb-wrap video.active ~ .play-overlay {
+            display: none;
+        }
+
+        .play-overlay-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(79,142,247,0.92);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 20px rgba(79,142,247,0.4);
+            transition: transform 0.2s;
+        }
+
+        .video-thumb-wrap:hover .play-overlay-btn {
+            transform: scale(1.1);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            z-index: 4;
+            background: rgba(0,0,0,0.78);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .video-content {
+            padding: 14px;
+        }
+
+        .video-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .video-content p {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+            .article-card:hover {
+                border-color: var(--accent);
+            }
+
+            .article-card h3 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.05rem;
+                margin-bottom: 8px;
+            }
+
+            .article-card p {
+                font-size: 0.85rem;
+                color: var(--muted);
+                line-height: 1.6;
+                margin-bottom: 14px;
+            }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+            .download-btn:hover {
+                background: #3a7de8;
+            }
+
+        .read-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+            .read-btn:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 40px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+            }
+
+                nav ul {
+                    display: none;
+                }
+
+            .profile-hero, .tabs-wrap, .content-area {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .profile-wrapper {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 24px;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Kafedralar<span>.uz</span></div>
+        <ul>
+            <li><a href="{% url 'index' %}">Bosh sahifa</a></li>
+            <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
+            <li><a href="{% url 'teacher1' id=teacher.id %}" class="active">O'qituvchi profili</a></li>
+            <li><a href="{% url 'book' %}">Kitoblar</a></li>
+            <li><a href="{% url 'article' %}">Maqolalar</a></li>
+            <li><a href="{% url 'video' %}">Video darslar</a></li>
+            <li><a href="{% url 'login' %}">Kirish</a></li>
+        </ul>
+    </nav>
+
+    <a href="{% url 'teachers' %}" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 19-7-7 7-7" />
+            <path d="M19 12H5" />
+        </svg>
+        Barcha o'qituvchilar
+    </a>
+
+    <section class="profile-hero">
+        <div class="profile-wrapper">
+            <div class="avatar-big">
+                {% if teacher.image %}
+                <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }} {{ teacher.familiya }}">
+                {% else %}
+                <span class="emoji-fallback">👨‍🎓</span>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h1>{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</h1>
+                <div class="profile-title">{{ teacher.ilmiy_daraja }}</div>
+                <div class="profile-dept">📍 {{ teacher.kafedra }}</div>
+                <div class="profile-email">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    <a href="mailto:{{ teacher.gmail }}">{{ teacher.gmail }}</a>
+                </div>
+                <p class="profile-bio">{{ teacher.haqida }}</p>
+                <div class="profile-stats">
+                    <div>
+                        <div class="p-stat-num">{{ kitoblar.count }}</div>
+                        <div class="p-stat-label">Kitob</div>
+                    </div>
+                    <div>
+                        <div class="p-stat-num">{{ video.count }}</div>
+                        <div class="p-stat-label">Video Dars</div>
+                    </div>
+                    <div>
+                        <div class="p-stat-num">{{ maqolalar.count }}</div>
+                        <div class="p-stat-label">Maqola</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="tabs-wrap">
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('books', this)">📚 Kitoblar</button>
+            <button class="tab" onclick="showTab('videos', this)">📹 Video Darslar</button>
+            <button class="tab" onclick="showTab('articles', this)">📝 Maqolalar</button>
+        </div>
+    </div>
+
+    <div class="content-area">
+
+        <!-- BOOKS TAB -->
+        <div class="tab-content active" id="tab-books">
+            <div class="content-header">
+                <h2>Yozilgan Kitoblar</h2>
+                <span class="count-badge">{{ kitoblar.count }} ta kitob</span>
+            </div>
+            <div class="books-grid">
+                {% for kitob in kitoblar %}
+                <div class="book-card">
+                    {% if kitob.image %}
+                    <img src="{{ kitob.image.url }}" alt="{{ kitob.nomi }}" class="book-cover">
+                    {% else %}
+                    <div class="book-cover-placeholder c{{ forloop.counter|divisibleby:4|yesno:'4,1,2,3' }}">📖</div>
+                    {% endif %}
+                    <div class="book-info">
+                        <h4>{{ kitob.nomi }}</h4>
+                        <div class="book-type">{{ kitob.turi }}</div>
+                        <div class="btn-group">
+                            <a href="{{ kitob.fayl.url }}" target="_blank" class="read-btn">📄 O'qish</a>
+                            <a href="{{ kitob.fayl.url }}" download class="download-btn">⬇ Yuklab</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color:var(--muted)">Kitoblar mavjud emas.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- VIDEOS TAB -->
+        <div class="tab-content" id="tab-videos">
+            <div class="content-header">
+                <h2>Video Darslar</h2>
+                <span class="count-badge">{{ video.count }} ta video</span>
+            </div>
+            <div class="videos-grid">
+                {% for vid in video %}
+                <div class="video-card">
+                    <div class="video-thumb-wrap" onclick="openVideo(this)">
+                        <!-- visibility:hidden — ko'rinmaydi lekin browser yuklaydi va seek ishlaydi -->
+                        <video preload="auto" class="myVideo">
+                            <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
+                        </video>
+                        <canvas></canvas>
+                        <div class="play-overlay">
+                            <div class="play-overlay-btn">▶</div>
+                        </div>
+                        <span class="video-duration">00:00:00</span>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">{{ vid.nomi }}</div>
+                        <p>{{ vid.haqida }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color:var(--muted)">Video darslar mavjud emas.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ARTICLES TAB -->
+        <div class="tab-content" id="tab-articles">
+            <div class="content-header">
+                <h2>Ilmiy Maqolalar</h2>
+                <span class="count-badge">{{ maqolalar.count }} ta maqola</span>
+            </div>
+            <div class="articles-list">
+                {% for maqola in maqolalar %}
+                <div class="article-card">
+                    <h3>{{ maqola.nomi }}</h3>
+                    <p>{{ maqola.haqida }}</p>
+                    <div class="btn-group">
+                        <a href="{{ maqola.fayl.url }}" target="_blank" class="read-btn">📄 O'qish</a>
+                        <a href="{{ maqola.fayl.url }}" download class="download-btn">⬇ Yuklab olish</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color:var(--muted)">Maqolalar mavjud emas.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
+    </footer>
+
+    <script>
+        // ── Tab almashtirish ─────────────────────────────────────
+        function showTab(name, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            btn.classList.add('active');
+            if (name === 'videos') initThumbnails();
+        }
+
+        var thumbsDone = false;
+
+        function initThumbnails() {
+            if (thumbsDone) return;
+            thumbsDone = true;
+
+            document.querySelectorAll('.myVideo').forEach(function (video) {
+                var wrap = video.closest('.video-thumb-wrap');
+                var canvas = wrap.querySelector('canvas');
+                var span = wrap.querySelector('.video-duration');
+
+                function tryCapture() {
+                    // Davomiylik
+                    if (video.duration && isFinite(video.duration)) {
+                        var d = video.duration;
+                        span.textContent =
+                            String(Math.floor(d / 3600)).padStart(2, '0') + ':' +
+                            String(Math.floor((d % 3600) / 60)).padStart(2, '0') + ':' +
+                            String(Math.floor(d % 60)).padStart(2, '0');
+                    }
+
+                    // Seek — video tayyor bo'lganda
+                    if (video.readyState >= 1) {
+                        video.currentTime = Math.min(3, (video.duration || 10) * 0.1);
+                    } else {
+                        video.addEventListener('loadedmetadata', function () {
+                            var d = video.duration;
+                            span.textContent =
+                                String(Math.floor(d / 3600)).padStart(2, '0') + ':' +
+                                String(Math.floor((d % 3600) / 60)).padStart(2, '0') + ':' +
+                                String(Math.floor(d % 60)).padStart(2, '0');
+                            video.currentTime = Math.min(3, d * 0.1);
+                        }, { once: true });
+                    }
+                }
+
+                // Seeked — canvasga chiz
+                video.addEventListener('seeked', function () {
+                    if (video.videoWidth > 0) {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                    }
+                }, { once: true });
+
+                tryCapture();
+            });
+        }
+
+        // ── Video bosish ─────────────────────────────────────────
+        function openVideo(wrap) {
+            var video = wrap.querySelector('video');
+            var canvas = wrap.querySelector('canvas');
+            var overlay = wrap.querySelector('.play-overlay');
+            var span = wrap.querySelector('.video-duration');
+
+            // Canvasni yashir
+            canvas.style.display = 'none';
+            overlay.style.display = 'none';
+            span.style.display = 'none';
+
+            // Videoni ko'rsat
+            video.classList.add('active');
+            video.controls = true;
+            video.currentTime = 0;
+            video.play();
+        }
+
+        // ── Sahifa yuklanganda thumbnail boshlash ────────────────
+        // (video tab active bo'lsa darhol ishga tushsin)
+        document.addEventListener('DOMContentLoaded', function () {
+            var videoTab = document.getElementById('tab-videos');
+            if (videoTab && videoTab.classList.contains('active')) {
+                initThumbnails();
+            }
+        });
+    </script>
+
+</body>
+</html>

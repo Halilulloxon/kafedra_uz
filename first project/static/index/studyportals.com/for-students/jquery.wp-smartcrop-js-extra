@@ -1,0 +1,3 @@
+
+var wpsmartcrop_options = {"focus_mode":"relative-position"};
+//# sourceURL=jquery.wp-smartcrop-js-extra

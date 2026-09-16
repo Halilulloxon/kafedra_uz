@@ -1,0 +1,16 @@
+# Django Web Framework
+Django>=4.2,<6.0
+
+# Database (MySQL)
+mysqlclient>=2.2.0
+PyMySQL>=1.1.0
+cryptography>=41.0.0
+
+# Image processing (Foydalanuvchilar rasmlari va o'quv ishlari rasmlari uchun)
+Pillow>=10.0.0
+
+# Environment variables (Tavsiya etiladi: maxfiy kalitlar va parollar uchun)
+python-dotenv>=1.0.0
+
+# Production / Static files (Ixtiyoriy)
+whitenoise>=6.6.0

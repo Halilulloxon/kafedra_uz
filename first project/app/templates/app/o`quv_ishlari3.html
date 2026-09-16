@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
+    <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+    <meta name="author" content="PIXINVENT">
+    <title>Tables Sizing - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/icheck.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/toggle/switchery.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/selects/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <!-- END: Theme CSS-->
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.min.css' %}">
+    <!-- END: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/plugins/forms/switch.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-callout.min.css' %}">
+
+
+
+
+
+
+</head>
+<body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <!-- Mobile menu toggle -->
+                    <li class="nav-item mobile-menu d-lg-none mr-auto">
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                            <i class="la la-bars la-3x"></i>
+                        </a>
+                    </li>
+
+                    <!-- Brand -->
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="{% url 'index' %}">
+                            <img class="brand-logo" alt="modern admin logo" src="{% static 'app/app-assets/images/logo/logo.png' %}">
+                            <h3 class="brand-text">Kafedralar.uz</h3>
+                        </a>
+                    </li>
+
+                    <!-- Desktop nav toggle -->
+                    <li class="nav-item d-none d-lg-block nav-toggle">
+                        <a class="nav-link modern-nav-toggle pr-0" style="display:flex; justify-content:center; align-items:center;">
+                            <i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i>
+                        </a>
+                    </li>
+
+
+
+
+                    <!-- Mobile ellipsis / more -->
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile">
+                            <i class="la la-ellipsis-v la-2x text-primary"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+
+                    <ul class="nav navbar-nav ml-auto align-items-center">
+                        <li class="nav-item mr-1">
+                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="la la-user mr-50"></i>
+                                O‘qituvchi profili
+                            </a>
+                        </li>
+
+
+
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{foydalanuvchi.ism}} {{foydalanuvchi.familiya}} {{foydalanuvchi.sharifi}}</span><span class="avatar avatar-online"><img src="{{ foydalanuvchi.image.url }}" alt="avatar"><i></i></span></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'logout' %}"><i class="la la-lock"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END: Header-->
+    <!-- BEGIN: Main Menu-->
+
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+
+                <li class=" nav-item">
+                    <a href="{% url 'profile3' user_id=foydalanuvchi.id %}"><i class="la la-user"></i><span class="menu-title" data-i18n="Shop">profil</span></a>
+                </li>
+                <li class=" nav-item active">
+                    <a href="{% url 'oquv_ishlari3' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title" data-i18n="Product Detail">O`quv ishlari</span></a>
+                </li>
+                <li class=" nav-item">
+                    <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}"><i class="la la-pen"></i><span class="menu-title" data-i18n="Shopping Cart">Ilmiy ishlar</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">Ilmiy Ishlar</h3>
+                    <div class="row breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'profile3' user_id=foydalanuvchi.id %}">Modern</a>
+                                </li>
+
+                                <li class="breadcrumb-item active">
+                                    Ilmiy Ishlar
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row g-2 align-items-center">
+
+                        <!-- Faylni yuklab olish -->
+                        <div class="col-auto">
+                            <button class="btn btn-primary btn-sm" id="downloadZipBtn">
+                                Faylni yuklab olish
+                            </button>
+                        </div>
+
+                        
+
+                        <!-- Filtrlash formasi -->
+                        <div class="col">
+                            <form action="{% url 'filtrlash_oquv3' user_id=foydalanuvchi.id %}" method="get" class="row g-2 align-items-center m-0">
+                                <div class="col-sm-auto">
+                                    <input type="date" name="from" class="form-control form-control-sm" placeholder="Boshlanish sanasi">
+                                </div>
+                                <div class="col-sm-auto">
+                                    <input type="date" name="to" class="form-control form-control-sm" placeholder="Tugash sanasi">
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="input-group input-group-sm">
+                                        <label class="input-group-text" for="turi"> Kafedra: </label>
+                                        <select id="turi" name="kafedra" class="form-select">
+                                            <option value="">Tanlang...</option>
+                                            {% for tur in kafedralar %}
+                                            <option value="{{tur}}">{{tur}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="input-group input-group-sm">
+                                        <label class="input-group-text" for="turi"> Turi: </label>
+                                        <select id="turi" name="turi" class="form-select">
+                                            <option value="">Tanlang...</option>
+                                            {% for tur in turi %}
+                                            <option value="{{tur}}">{{tur}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-auto">
+                                    <div class="input-group input-group-sm">
+                                        <label class="input-group-text" for="ish_muallifi"> Muallifi: </label>
+                                        <select id="ish_muallifi" name="ish_muallifi" class="form-select">
+                                            <option value="">Tanlang...</option>
+                                            {% for tur in ish_muallifi %}
+                                            <option value="{{tur}}">{{tur}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Filtrlash</button>
+
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- Extra large table start -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+
+                            <div class="card-content collapse show">
+
+                                <div class="table-responsive">
+                                    <table class="table table-xl mb-0" id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>T/R</th>
+                                                <th>Ilmiy ish turi</th>
+                                                <th>Nomi</th>
+                                                <th>Haqida</th>
+                                                <th>Muallif</th>
+                                                <th>Sana</th>
+                                                <th>Betlar soni</th>
+                                                <th>Fayl</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for maqola in maqola %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{maqola.turi}}</td>
+                                                <td data-full="{{ maqola.nomi }}">{{ maqola.nomi|truncatechars:50 }}</td>
+                                                <td data-full="{{ maqola.haqida }}">{{ maqola.haqida|truncatechars:50 }}</td>
+                                                <td data-full="{{ maqola.ish_mualliflari }}">{{ maqola.ish_mualliflari|truncatechars:50 }}</td>
+                                                <td>{{maqola.sana}}</td>
+                                                <td>{{maqola.betlar_soni}}</td>
+                                                <td><a href="{{maqola.fayl.url}}" target="_blank">{{maqola.fayl}}</a></td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Extra large table end -->
+
+            </div>
+        </div>
+    </div>
+    <style>
+
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
+            .clickable-row:hover {
+                background-color: #f0f8ff;
+            }
+    </style>
+
+
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+        © 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.    </p>
+    </footer>
+    <!-- END: Footer-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="{% static 'app/scripts/row-click.js' %}"></script>
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <!-- BEGIN Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'app/app-assets/vendors/js/charts/chartist.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/raphael-min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/morris.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/timeline/horizontal-timeline.js' %}"></script>
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/customizer.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- END: Theme JS-->
+    <!-- BEGIN: Page JS-->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="{% static 'app/scripts/download.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/pages/dashboard-ecommerce.min.js' %}"></script>
+
+    <!-- BEGIN Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'app/app-assets/vendors/js/forms/icheck/icheck.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/jquery.sparkline.min.js' %}"></script>
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'app/app-assets/js/scripts/tables/components/table-components.min.js' %}"></script>
+    <!-- END: Page JS-->
+</body>
+</html>

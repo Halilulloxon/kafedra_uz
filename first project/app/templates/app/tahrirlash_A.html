@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="loading" lang="uz" data-textdirection="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
+    <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+    <meta name="author" content="PIXINVENT">
+    <title>Dashboard eCommerce - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.css">
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Free Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.7/css/flag-icon.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/weather-icons/climacons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/fonts/meteocons/style.min.css' %}">
+
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <!-- END: Theme CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/fonts/simple-line-icons/style.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/timeline.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.min.css' %}">
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+    <!-- END: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/morris.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist-plugin-tooltip.css' %}">
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- Header Navbar -->
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-lg-none mr-auto">
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="la la-bars la-3x"></i></a>
+                    </li>
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="#">
+                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}">
+                            <h3 class="brand-text">Kafedralar.uz</h3>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav ml-auto align-items-center">
+                        {% if foydalanuvchi.foydalanuvchi_rol %}
+                        <li class="nav-item mr-1">
+                            {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm">
+                                <i class="la la-user mr-50"></i> Kafedra mudiri profili
+                            </a>
+                            {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm">
+                                <i class="la la-user mr-50"></i> Dekan profili
+                            </a>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">{{foydalanuvchi.ism}} {{foydalanuvchi.familiya}}</span>
+                                <span class="avatar avatar-online"><img src="{{ foydalanuvchi.image.url }}" alt="avatar"><i></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'logout' %}"><i class="la la-lock"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Menu -->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                <li class="nav-item">
+                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="la la-user"></i><span class="menu-title">Profil</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title">O`quv ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="la la-pen"></i><span class="menu-title">Ilmiy ishlar</span></a>
+                </li>
+                <li class=" nav-item">
+                    <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="la la-video"></i><span class="menu-title" data-i18n="Shopping Cart">Video darslar</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+
+
+            <div class="content-body">
+                <!-- eCommerce statistic -->
+                <!-- BEGIN: Content-->
+
+                <div class="row mt-0 pt-0">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Tahrirlash</h4>
+                                <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="collapse"><i class="la la-minus"></i></a></li>
+                                        <li><a data-action="reload"><i class="la la-sync-alt"></i></a></li>
+                                        <li><a data-action="expand"><i class="la la-expand-arrows-alt"></i></a></li>
+                                        <li><a data-action="close"><i class="la la-times"></i></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form method="POST" enctype="multipart/form-data" action="{% url 'tahrirlash_ilmiy' i_id=ilmiy.id t_id=t_id user_id=foydalanuvchi.id %}" class="form form-horizontal striped-labels form-bordered">
+                                        {% csrf_token %}
+                                        <div class="form-body">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Turi</label>
+                                                <div class="col-md-9">
+                                                    {{ form.turi }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Nomi</label>
+                                                <div class="col-md-9">
+                                                    {{ form.nomi }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Haqida</label>
+                                                <div class="col-md-9">
+                                                    {{ form.haqida }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Muallif</label>
+                                                <div class="col-md-9">
+                                                    {{ form.muallif }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Ish mualliflari</label>
+                                                <div class="col-md-9">
+                                                    {{ form.ish_mualliflari }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Sana</label>
+                                                <div class="col-md-9">
+                                                    {{ form.sana }}
+                                                </div>
+                                            </div>
+                                            {% if t_id == 1 %}
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Kategoriya</label>
+                                                <div class="col-md-9">
+                                                    {{ form.kategoriya }}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% if t_id == 0 %}
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Betlar soni</label>
+                                                <div class="col-md-9">
+                                                    {{ form.betlar_soni }}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Fayl</label>
+                                                <div class="col-md-9">
+                                                    {{ form.fayl }}
+                                                    {% if ilmiy.fayl %}
+                                                    <div class="current-file">
+                                                        📎 Joriy fayl: <a href="{{ ilmiy.fayl.url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Hamma uchun</label>
+                                                <div class="col-md-9">
+                                                    {{ form.foreveryone }}
+                                                </div>
+                                            </div>
+                                            {% if t_id == 0 %}
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Rasm:</label>
+                                                <div class="col-md-9">
+                                                    <input type="file" name="image" class="form-control" accept="image/*">
+
+
+                                                    <p class="mt-1">
+                                                        Joriy rasm:
+                                                        <img src="{{ form.image.url }}" width="80" class="img-thumbnail">
+                                                    </p>
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary"><i class="la la-check"></i> Saqlash</button>
+                                            <a href="{% if t_id == 1 %}{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}{% else %}{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}{% endif %}" class="btn btn-warning"><i class="la la-close"></i> Bekor qilish</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END: Content-->
+                <!--/ Products sell and New Orders -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+        © 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.
+        </p>
+    </footer>
+
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <!-- BEGIN Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'app/app-assets/vendors/js/charts/chartist.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/raphael-min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/charts/morris.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/timeline/horizontal-timeline.js' %}"></script>
+
+
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/customizer.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
+    <!-- END: Theme JS-->
+    <!-- BEGIN: Page JS-->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script src="{% static 'app/app-assets/js/scripts/pages/dashboard-ecommerce.min.js' %}"></script>
+</body>
+</html>

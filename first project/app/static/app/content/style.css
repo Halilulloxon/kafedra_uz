@@ -1,0 +1,239 @@
+.content-table {
+    width: 80%;
+    margin: 100px auto 0 auto;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 600px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    table-layout: auto;
+    transition: all 0.3s ease;
+}
+
+    .content-table:hover {
+        table-layout: auto;
+    }
+
+    .content-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .content-table th,
+    .content-table td {
+        padding: 12px 15px;
+        white-space: nowrap;
+    }
+
+    .content-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+        .content-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .content-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .content-table tbody tr:hover {
+            cursor: pointer;
+            font-weight: bold;
+            color: #009879;
+        }
+
+.button {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    background-color: #9ecf0c;
+    font-weight: bold;
+    padding: 8px 14px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .button:hover {
+        background-color: #009879;
+    }
+
+.profil {
+    float: left;
+    font-weight: bold;
+    padding-left: 25px;
+    padding-top: 125px;
+}
+
+.img {
+    margin-top: 100px;
+    padding: 50px;
+    width: 300px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.filter-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 40px auto 0 auto;
+    background-color: #f8fafc;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+}
+
+    .filter-form input[type="date"] {
+        padding: 8px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        font-size: 15px;
+        color: #111827;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .filter-form input[type="date"]:focus {
+            border-color: #009879;
+            box-shadow: 0 0 0 3px rgba(0, 152, 121, 0.2);
+            outline: none;
+        }
+
+    .filter-form button {
+        background-color: #009879;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
+
+        .filter-form button:hover {
+            background-color: #00785f;
+        }
+
+        .filter-form button:active {
+            transform: scale(0.98);
+        }
+
+@media (max-width: 600px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+        width: 90%;
+    }
+
+        .filter-form input[type="date"],
+        .filter-form button {
+            width: 100%;
+        }
+
+    .content-table {
+        width: 95%;
+        font-size: 0.85em;
+    }
+}
+
+.edit-container {
+    width: 60%;
+    margin: 80px auto;
+    background: #fdfdfd;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+    .edit-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .edit-table td {
+        padding: 10px 8px;
+        font-size: 15px;
+    }
+
+    .edit-table input,
+    .edit-table select,
+    .edit-table textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+.buttons {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.save-btn,
+.cancel-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.cancel-btn {
+    background: #f44336;
+    margin-left: 15px;
+}
+
+.save-btn:hover {
+    background: #45a049;
+}
+
+.cancel-btn:hover {
+    background: #e53935;
+}
+
+.content-table tbody tr.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .content-table tbody tr.clickable-row:hover {
+        background-color: #e6f0ff;
+    }
+.logout-btn {
+    background: #8b0000;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+    .logout-btn:hover {
+        background: #700000; 
+    }
+

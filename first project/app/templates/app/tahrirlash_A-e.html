@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ilmiy ishni tahrirlash</title>
+    <link rel="stylesheet" href="{% static 'app/content/tahrirlash.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+        <a href="#" class="navbar-brand mb-0 h1">
+            <img class="d-inline-block align-middle"
+                 src="https://static.tuit.uz/crop/1/7/1200__95_1737924758.png" width="50" height="50">
+            TUIT
+        </a>
+    </nav>
+
+    <div class="edit-container">
+        <h2>🖋 Ilmiy ishni tahrirlash</h2>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'tahrirlash_ilmiy' i_id=ilmiy.id t_id=t_id user_id=foydalanuvchi.id %}">
+            {% csrf_token %}
+            <table class="edit-table">
+                <tr><td>Turi:</td><td>{{ form.turi }}</td></tr>
+                <tr><td>Nomi:</td><td>{{ form.nomi }}</td></tr>
+                <tr><td>Muallif:</td><td>{{ form.muallif }}</td></tr>
+                <tr><td>Muallif:</td><td>{{ form.ish_mualliflari }}</td></tr>
+                <tr><td>Sana:</td><td>{{ form.sana }}</td></tr>
+                {% if t_id == 1 %}
+                <tr><td>Kategoriya:</td><td>{{ form.kategoriya }}</td></tr>
+                {% endif %}
+                {% if t_id == 0 %}
+                <tr><td>Betlar_soni:</td><td>{{ form.betlar_soni }}</td></tr>
+                {% endif %}
+                <tr>
+                    <td>Fayl:</td>
+                    <td>
+                        {{ form.fayl }}
+                        {% if ilmiy.fayl %}
+                        <div class="current-file">
+                            📎 Joriy fayl: <a href="{{ ilmiy.fayl.url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+
+            <div class="buttons">
+                <button type="submit" class="save-btn">💾 Saqlash</button>
+                <a href="{% if t_id == 1 %}{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}{% else %}{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}{% endif %}" class="cancel-btn">
+                    Bekor qilish
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

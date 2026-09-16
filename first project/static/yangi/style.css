@@ -1,0 +1,280 @@
+/* ============================================================
+   EduPortal — Asosiy Stil Fayli
+   ============================================================ */
+
+:root {
+  --navy: #0a1628;
+  --deep: #0d1f3c;
+  --blue: #1a3a6b;
+  --accent: #e8a020;
+  --gold: #f5c842;
+  --light: #f4f1eb;
+  --white: #ffffff;
+  --text: #2c2c2c;
+  --muted: #7a7a8c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--light);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ---- NAV ---- */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10, 22, 40, 0.97);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 68px;
+  border-bottom: 1px solid rgba(232, 160, 32, 0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.logo span { color: var(--accent); }
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+}
+
+nav ul li a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background: rgba(232, 160, 32, 0.15);
+  color: var(--accent);
+}
+
+/* ---- PAGE HEADER ---- */
+.page-header {
+  background: linear-gradient(135deg, var(--navy), var(--deep));
+  padding: 110px 48px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(232, 160, 32, 0.07) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.section-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.page-header p {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+  position: relative;
+}
+
+/* ---- FILTERS ---- */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.filter-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  background: var(--white);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
+}
+
+/* ---- SEARCH BOX ---- */
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding: 10px 16px 10px 42px;
+  border-radius: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  background: var(--white);
+  font-size: 14px;
+  width: 240px;
+  outline: none;
+  transition: border 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.search-box input:focus { border-color: var(--accent); }
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+}
+
+/* ---- BUTTONS ---- */
+.btn-primary {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 14px 36px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 2px solid var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232, 160, 32, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  padding: 14px 36px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.read-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.35);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+    .read-btn:hover {
+        background: linear-gradient(135deg, #1557b0, #0a2f6b);
+        box-shadow: 0 6px 18px rgba(26, 115, 232, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .read-btn:active {
+        transform: translateY(0px);
+        box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+    }
+
+.read-btn-arrow {
+    transition: transform 0.25s ease;
+}
+
+.read-btn:hover .read-btn-arrow {
+    transform: translateX(4px);
+}
+/* ---- FOOTER ---- */
+footer {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 36px 48px;
+  font-size: 14px;
+  border-top: 1px solid rgba(232, 160, 32, 0.2);
+}
+
+footer a { color: var(--accent); text-decoration: none; }
+
+/* ---- ANIMATIONS ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  nav ul { display: none; }
+  .page-header { padding: 90px 20px 50px; }
+  .search-box { margin-left: 0; }
+  .search-box input { width: 100%; }
+}

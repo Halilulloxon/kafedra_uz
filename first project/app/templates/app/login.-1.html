@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kirish</title>
+    <link rel="stylesheet" href="{% static 'app/content/login.css' %}">
+</head>
+<body>
+    <main class="login-page">
+        <section class="card">
+            <h1 class="logo">TUIT</h1>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form method="post" novalidate class="login-form" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                <label class="field">
+                    <span>Login</span>
+                    <input name="login_f" type="text" required placeholder="Login" autocomplete="username">
+                </label>
+
+                <label class="field">
+                    <span>Parol</span>
+                    <input name="password" type="password" required placeholder="Parolingizni kiriting" autocomplete="current-password">
+                </label>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="remember"> Eslab qolish
+                </label>
+
+                <button type="submit" class="btn">Kirish</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

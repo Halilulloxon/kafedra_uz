@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>O`quv ishlari</title>
+    <link rel="stylesheet" href="{% static 'app/content/style_t.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="{% static 'app/content/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <header>
+            <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+                <a href="#" class="navbar-brand mb-0 h1">
+                    <img class="d-inline-block align-middle"
+                         src="https://static.tuit.uz/crop/1/7/1200__95_1737924758.png" width="50" height="50">
+                    TUIT
+                </a>
+                <button type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#profile"
+                        class="navbar-toggler"
+                        arie-controls="profile"
+                        arie-expanded="false"
+                        arie-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="profile">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="nav-link">
+                                Profil
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}" class="nav-link">
+                                O`quv ishlari
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}" class="nav-link">
+                                Ilmiy ishlar
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <form action="{% url 'logout' %}">
+                    <button class="logout-btn">
+                        Logout
+                    </button>
+                </form>
+            </nav>
+
+        </header>
+
+    </div>
+
+    <div class="forma">
+        <header>Tahrirlash</header>
+
+        <form id="deleteForm" action="{% url 'ochirish' i_id=0 j_id=j_id user_id=foydalanuvchi.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Ma'lumotlar</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label for="turi">Tanlang:</label>
+                            <select name="turi" id="turi">
+                                {% for item in ochir %}
+                                <option value="{{ item.id }}">{{ item.nomi }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">O‘chirish</button>
+                </div>
+            </div>
+        </form>
+
+        <script>
+            document.getElementById('deleteForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const select = document.getElementById('turi');
+                const tanlanganId = select.value;
+                const form = this;
+
+
+                form.action = form.action.replace('/0/', `/${tanlanganId}/`);
+
+
+                form.submit();
+            });
+        </script>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

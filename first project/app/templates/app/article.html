@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+{% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ilmiy Maqolalar — Kafedralar.uz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'yangi/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'yangi/pages.css' %}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+</head>
+<body>
+
+<nav>
+  <div class="logo">Kafedralar<span>.uz</span></div>
+  <ul>
+      <li><a href="{% url 'index' %}">Bosh sahifa</a></li>
+      <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
+      <!--
+    <li><a href="">Video darslar</a></li>-->
+      <li><a href="{% url 'book' %}">Kitoblar</a></li>
+      <li><a href="{% url 'article' %}" class="active">Maqolalar</a></li>
+      <li><a href="{% url 'video' %}">Video darslar</a></li>
+      <li><a href="{% url 'login' %}">Kirish</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Ilmiy izlanishlar</div>
+  <h1>Ilmiy Maqolalar</h1>
+  <p>O'qituvchilarimizning {{maqolalar.count}}+ tasdiqlangan ilmiy maqolalari va tadqiqot ishlari.</p>
+</div>
+
+<div class="main-layout">
+
+  <!-- MAIN CONTENT -->
+  <div>
+    
+
+    <form method="GET" action="{% url 'search_article' %}" style="margin-bottom:32px;">
+        <div class="search-box">
+            <input type="text"
+                   name="q"
+                   placeholder="Maqola sarlavhasi yoki kalit so'z..."
+                   value="{{ request.GET.q }}"
+                   style="width:100%; border-radius:12px;" />
+        </div>
+    </form>
+
+    <div class="articles-list">
+      {% for maqola in maqolalar %}
+        <div class="article-card">
+            <div class="article-top">
+                <div></div>
+                <div class="article-meta-top">
+                    <span class="year-chip">{{maqola.sana}}</span>
+                    <span class="indexed-chip">✓ {{maqola.turi}}</span>
+                </div>
+            </div>
+            <h3>{{maqola.nomi}}</h3>
+            <div class="article-author">
+
+                <span class="author-chip">👨‍🎓 {{maqola.ish_mualliflari}}</span>
+
+            </div>
+            <p class="article-abstract">Kafedra-{{maqola.muallif.kafedra}}</p>
+            <p class="article-abstract">{{maqola.haqida}}</p>
+
+            <div class="article-footer">
+                <div class="article-actions">
+                    <!-- HTML + CSS -->
+                    <a href="{{ maqola.fayl.url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
+                        <span>📄</span>
+                        <span>O'qish</span>
+                        <span>→</span>
+                    </a>
+
+                    <a href="{{ maqola.fayl.url }}" download class="download-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Yuklab olish
+                    </a>
+                </div>
+            </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    
+    <div class="side-card">
+        <h3>Top Mualliflar</h3>
+        {% for muallif in top_mualliflar %}
+        <div class="top-author">
+            <div class="author-ava">👨‍🎓</div>
+            <div class="author-info"><h5>{{muallif}}</h5><span>{{muallif.maqola_soni}}</span></div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+  </div>
+   
+
+<footer>
+  <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
+</footer>
+
+<script src="{% static 'yangi/main.js' %}"></script>
+</body>
+</html>

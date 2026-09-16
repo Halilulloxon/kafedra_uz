@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+<!--
+Template Name: Modern Admin - Clean Bootstrap 4 Dashboard HTML Template
+Author: PixInvent
+-->
+<html class="loading" lang="uz" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Modern Admin — moslashuvchan, kuchli va zamonaviy Bootstrap 4 admin panel shabloni.">
+    <meta name="keywords" content="admin shablon, boshqaruv paneli, bootstrap admin, web ilova">
+    <meta name="author" content="PIXINVENT">
+    <title>Fonli kirish sahifasi — Modern Admin</title>
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/icheck.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.min.css' %}">
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <!-- END: Theme CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/login-register.min.css' %}">
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+    <!-- END: Custom CSS-->
+
+    <style>
+        .alert {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            color: #fff;
+        }
+
+        .alert-error {
+            background: red;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #2ecc71;
+        }
+
+        .alert-warning {
+            background: #f1c40f;
+            color: #000;
+        }
+
+        .alert-info {
+            background: #3498db;
+        }
+
+        /* Ko'z tugmasi stillari */
+        .password-wrapper {
+            position: relative;
+        }
+
+            .password-wrapper .toggle-password {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #aaa;
+                z-index: 10;
+                transition: color 0.2s;
+            }
+
+                .password-wrapper .toggle-password:hover {
+                    color: #555;
+                }
+
+            /* O'ng ikonka uchun inputga padding */
+            .password-wrapper input {
+                padding-right: 40px;
+            }
+    </style>
+</head>
+<!-- END: Head-->
+
+<body class="vertical-layout vertical-menu-modern 1-column bg-full-screen-image blank-page"
+      data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
+
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row"></div>
+            <div class="content-body">
+                <section class="row flexbox-container">
+                    <div class="col-12 d-flex align-items-center justify-content-center">
+                        <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
+                            <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
+                                <div class="card-header border-0">
+                                    <div class="card-title text-center">
+                                        <a href="{% url 'index' %}">
+                                            <img src="{% static 'app/app-assets/images/logo/logo-dark.png' %}" alt="sayt logotipi" style="width: 200px; height: 200px; object-fit: contain;">
+                                        </a>
+                                    </div>
+
+                                    {% if messages %}
+                                    <div class="messages">
+                                        {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags }}">
+                                            {{ message|safe }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <form class="form-horizontal" action="{% url 'login' %}" method="POST">
+                                            {% csrf_token %}
+
+                                            <!-- Login field -->
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="login_f"
+                                                       id="user-name"
+                                                       placeholder="Foydalanuvchi nomi"
+                                                       required>
+                                                <div class="form-control-position">
+                                                    <i class="la la-user"></i>
+                                                </div>
+                                            </fieldset>
+
+                                            <!-- Parol field — ko'z tugmasi bilan -->
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <div class="password-wrapper">
+                                                    <input type="password"
+                                                           class="form-control"
+                                                           name="password"
+                                                           id="user-password"
+                                                           placeholder="Parolni kiriting"
+                                                           required>
+                                                    <div class="form-control-position">
+                                                        <i class="la la-key"></i>
+                                                    </div>
+                                                    <span class="toggle-password" id="toggle-password" title="Parolni ko'rsat/yashir">
+                                                        <i class="fa fa-eye" id="toggle-icon"></i>
+                                                    </span>
+                                                </div>
+                                            </fieldset>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 col-12 text-center text-sm-left pr-0">
+                                                    <fieldset>
+                                                        <input type="checkbox" id="remember-me" class="chk-remember">
+                                                        <label for="remember-me"> Meni eslab qol</label>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-outline-info btn-block">
+                                                <i class="la la-unlock"></i> Kirish
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
+                                        <span>
+                                            <a href="{% url 'registratsiya' %}">Yangi foydalanuvchimisiz?</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'app/app-assets/vendors/js/forms/icheck/icheck.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/scripts/forms/form-login-register.min.js' %}"></script>
+
+    <!-- Parol ko'rsatish / yashirish -->
+    <script>
+        document.getElementById('toggle-password').addEventListener('click', function () {
+            const input = document.getElementById('user-password');
+            const icon = document.getElementById('toggle-icon');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');  // inkor belgisi
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');  // ko'z belgisi
+            }
+        });
+    </script>
+
+</body>
+</html>

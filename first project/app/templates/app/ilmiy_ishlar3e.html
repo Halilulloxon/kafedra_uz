@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>O`quv ishlari</title>
+    <link rel="stylesheet" href="{% static 'app/content/style.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="{% static 'app/scripts/download.js' %}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+            <a href="#" class="navbar-brand mb-0 h1">
+                <img class="d-inline-block align-middle"
+                     src="https://static.tuit.uz/crop/1/7/1200__95_1737924758.png" width="50" height="50">
+                TUIT
+            </a>
+            <button type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#profile"
+                    class="navbar-toggler"
+                    arie-controls="profile"
+                    arie-expanded="false"
+                    arie-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="profile">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="nav-link">
+                            Profil
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{% url 'oquv_ishlari3' user_id=foydalanuvchi.id %}" class="nav-link">
+                            O`quv ishlari
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}" class="nav-link active">
+                            Ilmiy ishlar
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <form action="{% url 'logout' %}">
+                <button class="logout-btn">
+                    Logout
+                </button>
+            </form>
+        </nav>
+
+    </header>
+
+
+
+    <div>
+
+        <table class="content-table" id="myTable">
+            <thead>
+                <tr>
+                    <th>T/R</th>
+                    <th>Ilmiy ish turi</th>
+                    <th>Nomi</th>
+                    <th>Muallif</th>
+                    <th>Sana</th>
+                    <th>Kategoriya</th>
+                    <th>Fayl</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for maqola in maqola %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{maqola.turi}}</td>
+                    <td>{{maqola.nomi}}</td>
+                    <td>{{maqola.ish_mualliflari}}</td>
+                    <td>{{maqola.sana}}</td>
+                    <td>{{maqola.kategoriya}}</td>
+                    <td><a href="{{maqola.fayl.url}}" target="_blank">{{maqola.fayl}}</a></td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="filter-form">
+        <div class="box">
+            <button class="button" id="downloadZipBtn">
+                Faylni yuklab olish
+            </button>
+        </div>
+
+
+
+        <form action="{% url 'filtrlash_ilmiy3' user_id=foydalanuvchi.id %}" method="get">
+            <input type="date" name="from" placeholder="Boshlanish sanasi">
+            <input type="date" name="to" placeholder="Tugash sanasi">
+            {% csrf_token %}
+            <select name="kafedra">
+                <option value="">Kafedrani Tanlang...</option>
+                {% for kafedra in kafedralar %}
+                <option value="{{kafedra.nomi}}">{{kafedra.nomi}}</option>
+                {% endfor %}
+            </select>
+            <select name="turi">
+                <option value="">Turini Tanlang...</option>
+                {% for tur in turi %}
+                <option value="{{tur}}">{{tur}}</option>
+                {% endfor %}
+            </select>
+            <select name="ish_muallifi">
+                <option value="">Muallifini Tanlang...</option>
+                {% for tur in ish_muallifi %}
+                <option value="{{tur}}">{{tur}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filtrlash</button>
+        </form>
+    </div>
+    
+    <footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchilar - Universitet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'public/styles.css' %}">
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <span class="nav-title">Kafedralar.uz</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'index' %}" class="nav-link">Bosh sahifa</a></li>
+                <li><a href="{% url 'teachers' %}" class="nav-link active">O'qituvchilar</a></li>
+                <li><a href="{% url 'login' %}" class="nav-link">Kirish</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Bizning o'qituvchilar</h1>
+            <p class="page-subtitle">Tajribali professor va dosentlar bilan tanishing</p>
+        </div>
+        <div class="container my-4">
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    <form class="input-group" method="GET" action="{% url 'qidirish' %}">
+                        <input type="text"
+                               class="form-control"
+                               name="q"
+                               placeholder="Qidiruv..."
+                               value="{{ request.GET.q }}">
+                        <button class="btn btn-success" type="submit">
+                            <i class="la la-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+
+    <!-- Teachers Grid -->
+    <section class="teachers-section">
+        <div class="container">
+            <div class="teachers-grid">
+                {% for teacher in teachers %}
+                <!-- Teacher 1 -->
+                <a href="{% url 'teacher1' id=teacher.id %}" class="teacher-card">
+                    <div class="teacher-image-wrapper">
+                        <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}" class="teacher-image">
+                        <div class="teacher-overlay"></div>
+                        <div class="teacher-info-overlay">
+                            <h2 class="teacher-name">{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</h2>
+                            <p class="teacher-position">{{teacher.foydalanuvchi_rol}}</p>
+                        </div>
+                    </div>
+                    <div class="teacher-details">
+                        <div class="teacher-detail-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                            <span>{{teacher.kafedra}}</span>
+                        </div>
+                        <div class="teacher-detail-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                            <span>{{teacher.gmail}}</span>
+                        </div>
+                        <p class="teacher-bio">{{teacher.haqida}}</p>
+                        <div class="teacher-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">{{teacher.videolar_soni}}</div>
+                                <div class="stat-label">Video</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{teacher.maqolalar_soni}}</div>
+                                <div class="stat-label">Maqola</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{teacher.kitoblar_soni}}</div>
+                                <div class="stat-label">Kitob</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">&copy; 2024 Universitet. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+</body>
+</html>

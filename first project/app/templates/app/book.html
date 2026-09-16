@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uz">
+{% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kitoblar — Kafedralar.uz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'yangi/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'yangi/pages.css' %}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Kafedralar<span>.uz</span></div>
+        <ul>
+            <li><a href="{% url 'index' %}">Bosh sahifa</a></li>
+            <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
+            <li><a href="{% url 'book' %}" class="active">Kitoblar</a></li>
+            <li><a href="{% url 'article' %}">Maqolalar</a></li>
+            <li><a href="{% url 'video' %}">Video darslar</a></li>
+            <li><a href="{% url 'login' %}">Kirish</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <div class="section-tag">Bilim xazinasi</div>
+        <h1>Kitoblar</h1>
+        <p>O'qituvchilarimiz tomonidan yozilgan {{kitoblar.count}}+ darslik, qo'llanma va monografiyalar.</p>
+    </div>
+
+    <div style="max-width:1200px; margin:0 auto; padding:60px 48px;">
+
+        <div class="filters">
+            <form method="GET" action="{% url 'search_book' %}" style="margin-bottom:32px;">
+                <div class="search-box">
+                    <input type="text"
+                           name="q"
+                           placeholder="Kitob sarlavhasi yoki kalit so'z..."
+                           value="{{ request.GET.q }}"
+                           style="width:100%; border-radius:12px;" />
+                </div>
+            </form>
+        </div>
+
+        <div class="books-shelf">
+
+           
+            {% for kitob in kitoblar %}
+            <div class="book-card">
+                <div class="book-cover c2">
+                    <img src="{{ kitob.image.url }}" alt="{{ kitob.nomi }}" style="width:100%; height:100%; object-fit:cover;">
+                    <span class="book-badge badge-pop">POPULAR</span>
+                    <span class="book-year-tag">{{kitob.sana}}</span>
+                </div>
+                <div class="book-body">
+                    <h4>{{kitob.nomi}}</h4>
+                    <div class="book-author">{{kitob.ish_mualliflari}}</div>
+                    <div class="book-type-tag">{{kitob.turi}}</div>
+                    <div class="book-stats"><span>📄 {{kitob.betlar_soni}} bet</span><span></span></div>
+                    <div class="book-actions">
+                        <a href="{{ kitob.fayl.url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
+                            <span>📄</span>
+                            <span>O'qish</span>
+                            <span>→</span>
+                        </a>
+
+                        <a href="{{ kitob.fayl.url }}" download class="download-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Yuklab olish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
+    </footer>
+
+    <script src="{% static 'yangi/main.js' %}"></script>
+</body>
+</html>
