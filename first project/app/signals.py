@@ -239,114 +239,16 @@ def _send_status_email(instance, subject, accent_color, accent_light,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Asosiy signal
+# Asosiy signal (Email yuborish o'chirildi, shunchaki tasdiqlanadi)
 # ─────────────────────────────────────────────────────────────────────────────
 @receiver(post_save, sender=Foydalanuvchilar)
 def tasdiqlash_email(sender, instance, created, **kwargs):
-    full_name = f"{instance.familiya} {instance.ism} {instance.sharifi}"
-
-    # ══════════════════════════════════════════════════════════════════════
-    # 1) YANGI RO'YXATDAN O'TISH → sariq "kutish" xati
-    # ══════════════════════════════════════════════════════════════════════
     if created:
-        OLD_VALUES.pop(instance.pk, None)   # pre_save qoldig'ini tozalash
-        _send_status_email(
-            instance,
-            subject      = "⏳ Ro'yxatdan o'tdingiz — hisobingiz tasdiqlanishini kuting",
-            accent_color = "#d97706",
-            accent_light = "#fffbeb",
-            icon_char    = "⏳",
-            icon_bg      = "#f59e0b",
-            header_title = "Ro'yxatdan O'tdingiz",
-            status_intro = (
-                f"Hurmatli <strong>{full_name}</strong>,<br><br>"
-                "Siz <strong>Kafedralar.uz</strong> platformasida muvaffaqiyatli "
-                "ro'yxatdan o'tdingiz. Hisobingiz hozirda administrator tomonidan "
-                "ko'rib chiqilmoqda. Tasdiqlangandan so'ng siz bu haqda alohida "
-                "xabarnoma olasiz."
-            ),
-            features     = [
-                ("📋", "Ma'lumotlar tekshirilmoqda",
-                        "Administrator sizning ma'lumotlaringizni ko'rib chiqmoqda"),
-                ("📧", "Xabarnoma kutib turing",
-                        "Hisob tasdiqlangach, emailingizga xat yuboriladi"),
-                ("⏱️", "Ko'rib chiqish muddati",
-                        "Odatda 1–2 ish kuni ichida javob beriladi"),
-            ],
-            button_text  = "Kafedralar.uz saytiga o'tish",
-            button_link  = "https://kafedralar.uz",
-            footer_note  = "Savollaringiz bo'lsa, administrator bilan bog'laning.",
-            banner_text  = "⏳ HISOB KO'RIB CHIQILMOQDA",
-        )
-        # Xat yuborgandan keyin created ni False qilib saqlash
+        OLD_VALUES.pop(instance.pk, None)
+        # Yangi foydalanuvchi yaratilganda created ni False qilib yangilash
         Foydalanuvchilar.objects.filter(pk=instance.pk).update(created=False)
         return
 
-    # ══════════════════════════════════════════════════════════════════════
-    # 2) MAVJUD FOYDALANUVCHI → faqat accepted o'zgarganda xat yuboriladi
-    # ══════════════════════════════════════════════════════════════════════
-    old_accepted = OLD_VALUES.pop(instance.pk, None)
-    if old_accepted is None or old_accepted == instance.accepted:
-        return  # qiymat o'zgarmagan — email yuborilmaydi
-
-    if instance.accepted:
-        # ── Tasdiqlandi (yashil) ──
-        _send_status_email(
-            instance,
-            subject      = "✅ Sizning hisobingiz Kafedralar.uz platformasida tasdiqlandi",
-            accent_color = "#16a34a",
-            accent_light = "#f0fdf4",
-            icon_char    = "✓",
-            icon_bg      = "#22c55e",
-            header_title = "Hisob Tasdiqlandi",
-            status_intro = (
-                f"Hurmatli <strong>{full_name}</strong>,<br><br>"
-                "Sizning <strong>Kafedralar.uz</strong> platformasidagi foydalanuvchi "
-                "hisobingiz administrator tomonidan rasmiy ravishda "
-                "<strong>tasdiqlandi</strong>. Endilikda platformaning barcha "
-                "imkoniyatlaridan to'liq foydalanishingiz mumkin."
-            ),
-            features     = [
-                ("📚", "Kurslar va kafedralar",
-                        "To'liq ma'lumot olish va o'quv materiallariga kirish imkoniyati"),
-                ("👤", "Shaxsiy profil",
-                        "Profilingizni boshqaring va o'quv progressingizni kuzating"),
-                ("📖", "Kutubxona resurslari",
-                        "Platformadagi barcha resurslardan samarali foydalaning"),
-                ("🔔", "Bildirishnomalar",
-                        "Yangiliklar va e'lonlardan doimiy xabardor bo'ling"),
-            ],
-            button_text  = "Tizimga Kirish",
-            button_link  = "https://kafedralar.uz/login",
-            footer_note  = "Ushbu xabar avtomatik tarzda yuborildi. Savol yuzaga kelsa, administrator bilan bog'laning.",
-            banner_text  = "✅ HISOB FAOLLASHTIRILDI",
-        )
-    else:
-        # ── Bekor qilindi (qizil) ──
-        _send_status_email(
-            instance,
-            subject      = "❌ Sizning hisobingiz Kafedralar.uz platformasida bekor qilindi",
-            accent_color = "#dc2626",
-            accent_light = "#fef2f2",
-            icon_char    = "✕",
-            icon_bg      = "#ef4444",
-            header_title = "Hisob Bekor Qilindi",
-            status_intro = (
-                f"Hurmatli <strong>{full_name}</strong>,<br><br>"
-                "Sizning <strong>Kafedralar.uz</strong> platformasidagi foydalanuvchi "
-                "hisobingiz administrator tomonidan <strong>bekor qilindi</strong>. "
-                "Qo'shimcha ma'lumot va yordam olish uchun quyidagi amallarni bajaring."
-            ),
-            features     = [
-                ("📋", "Ma'lumotlarni tekshiring",
-                        "Hisob ma'lumotlaringiz to'liq va to'g'ri kiritilganligini tekshiring"),
-                ("📬", "Xabarlarni ko'ring",
-                        "Oldingi xabarlar, e'lonlar va bildirishnomalarni ko'rib chiqing"),
-                ("🛠️", "Yordam so'rang",
-                        "Administrator bilan bog'lanib qo'shimcha ma'lumot oling"),
-            ],
-            button_text  = "Administrator bilan Bog'lanish",
-            button_link  = "mailto:halilullohayotullo0608@gmail.com",
-            footer_note  = "Hisob bekor qilinishiga oid savollar bo'lsa, iltimos administrator bilan bog'laning.",
-            banner_text  = "❌ HISOB BLOKLANDI",
-        )
+    # Mavjud foydalanuvchi tasdiqlanganda / o'zgartirilganda hech qanday email yuborilmaydi
+    OLD_VALUES.pop(instance.pk, None)
+    return
