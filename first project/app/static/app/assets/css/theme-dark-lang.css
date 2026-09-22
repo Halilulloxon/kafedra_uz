@@ -1,10 +1,11 @@
 /* ==========================================================================
    Kafedralar.uz — Global Dark Mode, Icons & Mobile Responsive Styling
    ========================================================================== */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
 @import url("../../app-assets/fonts/font-awesome/css/all.min.css");
 
 /* ── Universal FontAwesome 6 Icon Enforcement ── */
-.fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands,
+.fa, .fas, .fa-solid, i.fa, i.fas, i.fa-solid,
 .stat-card i, .header-navbar i, .nav-item i, .btn i,
 i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
     font-family: "Font Awesome 6 Free", "FontAwesome" !important;
@@ -15,12 +16,19 @@ i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
 }
-.fa-regular, .far, i.far {
+
+.fa-regular, .far, i.far, i.fa-regular {
+    font-family: "Font Awesome 6 Free", "FontAwesome" !important;
     font-weight: 400 !important;
+    font-style: normal !important;
+    display: inline-block !important;
 }
-.fa-brands, .fab, i.fab {
+
+.fa-brands, .fab, i.fab, i.fa-brands {
     font-family: "Font Awesome 6 Brands" !important;
     font-weight: 400 !important;
+    font-style: normal !important;
+    display: inline-block !important;
 }
 
 /* Sidebar Menu Icon Styling */
