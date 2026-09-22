@@ -51,39 +51,25 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
 <body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+    <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
         <div class="navbar-wrapper">
             <div class="navbar-header">
                 <ul class="nav navbar-nav flex-row">
-                    <!-- Mobile menu toggle -->
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="la la-bars la-3x"></i>
+                            <i class="fa fa-bars font-medium-3"></i>
                         </a>
                     </li>
-
-                    <!-- Brand -->
                     <li class="nav-item mr-auto">
                         <a class="navbar-brand" href="{% url 'index' %}">
-                            <img class="brand-logo" alt="modern admin logo" src="{% static 'app/app-assets/images/logo/logo.png' %}">
-                            <h3 class="brand-text">Kafedralar.uz</h3>
+                            <img class="brand-logo" alt="logo" src="/static/app/app-assets/images/logo/logo.png" style="height:32px;">
+                            <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
                         </a>
                     </li>
-
-                    <!-- Desktop nav toggle -->
                     <li class="nav-item d-none d-lg-block nav-toggle">
-                        <a class="nav-link modern-nav-toggle pr-0" style="display:flex; justify-content:center; align-items:center;">
-                            <i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i>
-                        </a>
-                    </li>
-
-
-
-
-                    <!-- Mobile ellipsis / more -->
-                    <li class="nav-item d-lg-none">
-                        <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile">
-                            <i class="la la-ellipsis-v la-2x text-primary"></i>
+                        <a class="nav-link modern-nav-toggle pr-0">
+                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
                         </a>
                     </li>
                 </ul>
@@ -91,32 +77,62 @@
 
             <div class="navbar-container content">
                 <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav mr-auto float-left">
+                        <li class="nav-item d-none d-md-block">
+                            <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                                <i class="fa fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
+                            </span>
+                        </li>
+                    </ul>
 
                     <ul class="nav navbar-nav ml-auto align-items-center">
-                        {% if foydalanuvchi.foydalanuvchi_rol %}
+                        <li class="nav-item mr-1">
+                            <button id="themeToggleBtn" class="theme-toggle-btn text-bold-600" onclick="toggleDarkMode()">
+                                🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
+                            </button>
+                        </li>
+
+                        <li class="nav-item mr-2">
+                            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
+                                <option value="uz">🇺🇿 O'zbek</option>
+                                <option value="ru">🇷🇺 Русский</option>
+                                <option value="en">🇬🇧 English</option>
+                            </select>
+                        </li>
+
+                        {% if foydalanuvchi.foydalanuvchi_rol and foydalanuvchi.foydalanuvchi_rol != 'oqituvchi' %}
                         <li class="nav-item mr-1">
                             {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
-                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}"
-                               class="btn btn-outline-primary btn-sm">
-                                <i class="la la-user mr-50"></i>
-                                Kafedra mudiri profili
+                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
-                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}"
-                               class="btn btn-outline-primary btn-sm">
-                                <i class="la la-user mr-50"></i>
-                                Dekan profili
+                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fa fa-university mr-1"></i> Dekan paneli
+                            </a>
+                            {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                            <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
+                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
                             </a>
                             {% endif %}
                         </li>
                         {% endif %}
 
-
-
                         <li class="dropdown dropdown-user nav-item">
-                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{foydalanuvchi.ism}} {{foydalanuvchi.familiya}} {{foydalanuvchi.sharifi}}</span><span class="avatar avatar-online"><img src="{{ foydalanuvchi.get_image_url }}" alt="avatar"><i></i></span></a>
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
+                                <span class="avatar avatar-online">
+                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
+                                </span>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{% url 'logout' %}"><i class="la la-lock"></i> Logout</a>
+                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
+                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                                </a>
                             </div>
                         </li>
                     </ul>
@@ -125,32 +141,54 @@
         </div>
     </nav>
     <!-- END: Header-->
+    <!-- END: Header-->
     <!-- BEGIN: Main Menu-->
 
-    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+    <!-- BEGIN: Main Menu-->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-
-
-                <li class=" nav-item">
-                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="la la-user"></i><span class="menu-title" data-i18n="Shop">profil</span></a>
+            <ul class="navigation navigation-main" id="main-menu-navigation">
+                <li class="nav-item ">
+                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
+                    </a>
                 </li>
-                <li class=" nav-item">
-                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title" data-i18n="Product Detail">O`quv ishlari</span></a>
+                <li class="nav-item ">
+                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
+                    </a>
                 </li>
-                <li class=" nav-item">
-                    <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="la la-pen"></i><span class="menu-title" data-i18n="Shopping Cart">Ilmiy ishlar</span></a>
+                <li class="nav-item ">
+                    <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
+                    </a>
                 </li>
-                <li class=" nav-item active">
-                    <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="la la-video"></i><span class="menu-title" data-i18n="Shopping Cart">Video darslar</span></a>
+                <li class="nav-item active">
+                    <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
+                    </a>
                 </li>
-
+                <li class="nav-item ">
+                    <a href="{% url 'teachers' %}">
+                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">Barcha O'qituvchilar</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'book' %}">
+                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'article' %}">
+                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
+    <!-- END: Main Menu-->
 
-
-
+    <!-- Content -->
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">

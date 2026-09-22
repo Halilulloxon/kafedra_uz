@@ -43,21 +43,26 @@
 <body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
 
     <!-- Header -->
+    <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
         <div class="navbar-wrapper">
             <div class="navbar-header">
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
-                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="la la-bars la-3x"></i></a>
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                            <i class="fa fa-bars font-medium-3"></i>
+                        </a>
                     </li>
                     <li class="nav-item mr-auto">
-                        <a class="navbar-brand" href="{% url 'home2' %}">
-                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
+                        <a class="navbar-brand" href="{% url 'index' %}">
+                            <img class="brand-logo" alt="logo" src="/static/app/app-assets/images/logo/logo.png" style="height:32px;">
                             <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
                         </a>
                     </li>
                     <li class="nav-item d-none d-lg-block nav-toggle">
-                        <a class="nav-link modern-nav-toggle pr-0"><i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i></a>
+                        <a class="nav-link modern-nav-toggle pr-0">
+                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -66,8 +71,8 @@
                 <div class="collapse navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
-                            <span class="badge badge-pill badge-warning font-medium-1 px-2 py-1 mt-1 text-dark">
-                                <i class="la la-briefcase"></i> <span data-i18n="role_mudir">Kafedra Mudiri</span>: {{ foydalanuvchi.kafedra.nomi|default:"" }}
+                            <span class="badge badge-pill badge-info font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                                <i class="fa fa-user-tie mr-1"></i> <span data-i18n="role_badge">Kafedra Mudiri Paneli</span>
                             </span>
                         </li>
                     </ul>
@@ -78,6 +83,7 @@
                                 🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
                             </button>
                         </li>
+
                         <li class="nav-item mr-2">
                             <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
                                 <option value="uz">🇺🇿 O'zbek</option>
@@ -85,11 +91,25 @@
                                 <option value="en">🇬🇧 English</option>
                             </select>
                         </li>
+
+                        {% if foydalanuvchi.foydalanuvchi_rol and foydalanuvchi.foydalanuvchi_rol != 'kafedra mudiri' %}
                         <li class="nav-item mr-1">
-                            <a href="{% url 'home1' %}" class="btn btn-outline-info btn-sm">
-                                <i class="la la-user"></i> <span data-i18n="my_teacher_profile">O'qituvchi Profilim</span>
+                            {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
                             </a>
+                            {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fa fa-university mr-1"></i> Dekan paneli
+                            </a>
+                            {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                            <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
+                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
+                            </a>
+                            {% endif %}
                         </li>
+                        {% endif %}
+
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
@@ -98,9 +118,13 @@
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}"><i class="la la-edit"></i> <span data-i18n="edit_profile">Tahrirlash</span></a>
+                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
+                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                                </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="la la-lock"></i> <span data-i18n="logout">Chiqish</span></a>
+                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                                </a>
                             </div>
                         </li>
                     </ul>
@@ -108,19 +132,52 @@
             </div>
         </div>
     </nav>
+    <!-- END: Header-->
 
     <!-- Sidebar -->
+    <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
-            <ul class="navigation navigation-main">
-                <li class="nav-item active"><a href="{% url 'home2' %}"><i class="la la-home"></i><span class="menu-title" data-i18n="mudir_dashboard">Kafedra Boshqaruvi</span></a></li>
-                <li class="nav-item"><a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}"><i class="la la-tasks"></i><span class="menu-title" data-i18n="mudir_tasks">Talablar / Reja</span></a></li>
-                <li class="nav-item"><a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title" data-i18n="edu_works_menu">Kafedra O'quv ishlari</span></a></li>
-                <li class="nav-item"><a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}"><i class="la la-newspaper"></i><span class="menu-title" data-i18n="sci_works_menu">Kafedra Ilmiy ishlari</span></a></li>
-                <li class="nav-item"><a href="{% url 'teachers' %}"><i class="la la-users"></i><span class="menu-title" data-i18n="all_teachers_menu">Barcha O'qituvchilar</span></a></li>
+            <ul class="navigation navigation-main" id="main-menu-navigation">
+                <li class="nav-item active">
+                    <a href="{% url 'home2' %}">
+                        <i class="fa fa-home"></i><span class="menu-title" data-i18n="mudir_dashboard">Mudir Paneli</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-tasks"></i><span class="menu-title" data-i18n="dept_requirements">Kafedra Talablari & Rejasi</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Kafedra Ilmiy Ishlari</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}">
+                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Kafedra O'quv Ishlari</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'teachers' %}">
+                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">O'qituvchilar</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'book' %}">
+                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'article' %}">
+                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
+    <!-- END: Main Menu-->
 
     <!-- Content -->
     <div class="app-content content">
@@ -137,7 +194,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ maqolalar_soni }}</h2>
                                         <span data-i18n="stat_dept_articles">Kafedra Maqolalari</span>
                                     </div>
-                                    <div class="align-self-center"><i class="la la-newspaper font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fa fa-newspaper font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +208,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ scopuslar_soni }}</h2>
                                         <span data-i18n="stat_dept_scopus">Scopus / WoS</span>
                                     </div>
-                                    <div class="align-self-center"><i class="la la-trophy font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fa fa-trophy font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +222,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ oquv_soni }}</h2>
                                         <span data-i18n="stat_dept_books">O'quv ishlari</span>
                                     </div>
-                                    <div class="align-self-center"><i class="la la-book font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fa fa-book-open font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +236,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ jami }}</h2>
                                         <span data-i18n="stat_dept_total">Jami Nashrlar</span>
                                     </div>
-                                    <div class="align-self-center"><i class="la la-chart-bar font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fa fa-layer-group font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -206,15 +263,15 @@
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="la la-university"></i> Fakultet:</span>
+                                        <span class="text-muted"><i class="fa fa-university font-large-2 text-white"></i> Fakultet:</span>
                                         <strong>{{ foydalanuvchi.fakulteti.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="la la-sitemap"></i> Kafedra:</span>
+                                        <span class="text-muted"><i class="fa fa-sitemap font-large-2 text-white"></i> Kafedra:</span>
                                         <strong>{{ foydalanuvchi.kafedra.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="la la-users"></i> Kafedra o'qituvchilari:</span>
+                                        <span class="text-muted"><i class="fa fa-users font-large-2 text-white"></i> Kafedra o'qituvchilari:</span>
                                         <span class="badge badge-pill badge-primary">{{ oqituvchilar_soni }} nafar</span>
                                     </li>
                                 </ul>
