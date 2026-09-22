@@ -1180,10 +1180,9 @@ def oquv_ishlari3(request, user_id):
 
 def logout(request):
     assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/login.html'
-    )
+    request.session.flush()
+    return redirect('login')
+
 
 
 from django.http import HttpResponse, JsonResponse
@@ -1254,12 +1253,6 @@ def download_zip(request):
 
     return response 
 
-def logout(request):
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/login.html'
-    )
 def profillarni_tahrirlash(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     if request.method == "POST":
@@ -1341,6 +1334,7 @@ def profil_tahrir(request, user_id):
         })
 def index(request):
     assert isinstance(request, HttpRequest)
+    foydalanuvchi = get_current_user(request)
     oqituvchilar_soni=Foydalanuvchilar.objects.filter(foydalanuvchi_rol='oqituvchi').count()
     video_darslar_soni=videolar.objects.filter(foreveryone=True).count()
     maqolalar_soni=ilmiy.objects.filter(turi='maqola', foreveryone=True).count()+ilmiy.objects.filter(turi='scopus', foreveryone=True).count()
@@ -1352,6 +1346,7 @@ def index(request):
             'title':'Home Page',
             'message':'Your application description page.',
             'year':datetime.now().year,
+            'foydalanuvchi': foydalanuvchi,
             'oqituvchilar_soni':oqituvchilar_soni,
             'video_darslar_soni':video_darslar_soni,
             'maqolalar_soni':maqolalar_soni,
