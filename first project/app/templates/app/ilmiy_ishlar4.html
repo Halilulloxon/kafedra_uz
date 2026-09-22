@@ -143,14 +143,14 @@
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 breadcrumb-new">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <div class="content-header-left col-12 mb-2">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div>
-                            <h3 class="content-header-title mb-0 text-bold-600"><i class="fas fa-graduation-cap text-danger mr-1"></i> Universitet Ilmiy Ishlari</h3>
+                            <h3 class="content-header-title mb-0 text-bold-700"><i class="fas fa-graduation-cap text-danger mr-1"></i> Universitet Ilmiy Ishlari</h3>
                             <small class="text-muted">Universitet bo'yicha barcha ilmiy maqolalar, tezislar va nashrlar monitoringi</small>
                         </div>
                         <div>
-                            <a href="{% url 'home4' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                            <a href="{% url 'home4' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
                                 <i class="fas fa-arrow-left mr-1"></i> Prorektor paneliga qaytish
                             </a>
                         </div>
@@ -158,17 +158,17 @@
                 </div>
             </div>
 
-            <div class="card mb-3 shadow-sm border-0" style="border-radius: 12px;">
+            <div class="card mb-3 shadow-sm border-0" style="border-radius: 14px;">
                 <div class="card-body p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
                         <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
-                            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn">
+                            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn" style="font-weight:600;">
                                 <i class="fas fa-file-archive mr-1"></i> ZIP yuklab olish
                             </button>
                         </div>
                         <div>
-                            <span class="badge badge-light text-muted px-3 py-2 border rounded-pill font-small-3">
-                                <i class="fas fa-database mr-1"></i> Jami: <strong>{{ maqola|length }}</strong> ta ilmiy ish
+                            <span class="badge badge-pill badge-light px-3 py-2 border font-small-3 shadow-sm" style="background:#f8fafc; color:#334155; font-weight:600;">
+                                <i class="fas fa-database text-primary mr-1"></i> Jami: <strong class="text-primary">{{ maqola|length }}</strong> ta ilmiy ish
                             </span>
                         </div>
                     </div>
@@ -176,15 +176,15 @@
                     <form action="{% url 'ilmiy_ishlari4' user_id=foydalanuvchi.id %}" method="get" class="m-0">
                         <div class="form-row align-items-end">
                             <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar mr-1"></i>Dan</label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt text-muted mr-1"></i> Dan</label>
                                 <input type="date" name="from" class="form-control form-control-sm rounded" value="{{ request.GET.from }}">
                             </div>
                             <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar mr-1"></i>Gacha</label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt text-muted mr-1"></i> Gacha</label>
                                 <input type="date" name="to" class="form-control form-control-sm rounded" value="{{ request.GET.to }}">
                             </div>
                             <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-university mr-1"></i>Fakultet</label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-university text-muted mr-1"></i> Fakultet</label>
                                 <select name="fakultet" class="form-control form-control-sm rounded custom-select" onchange="this.form.submit()">
                                     <option value="">Barcha fakultetlar</option>
                                     {% for f in fakultetlar %}
@@ -193,7 +193,7 @@
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-building mr-1"></i>Kafedra</label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-building text-muted mr-1"></i> Kafedra</label>
                                 <select name="kafedra" class="form-control form-control-sm rounded custom-select">
                                     <option value="">Barchasi</option>
                                     {% for k in kafedralar %}
@@ -202,7 +202,7 @@
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-tag mr-1"></i>Turi</label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-tag text-muted mr-1"></i> Turi</label>
                                 <select name="turi" class="form-control form-control-sm rounded custom-select">
                                     <option value="">Barchasi</option>
                                     {% for tur in turi %}
@@ -211,7 +211,7 @@
                                 </select>
                             </div>
                             <div class="col-12 col-md-1">
-                                <button type="submit" class="btn btn-info btn-sm btn-block rounded shadow-sm">
+                                <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height:40px; font-weight:600;">
                                     <i class="fas fa-filter"></i>
                                 </button>
                             </div>
@@ -221,59 +221,57 @@
             </div>
 
             <div class="content-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content collapse show">
-                                <div class="table-responsive">
-                                    <table class="table table-xl mb-0" id="myTable">
-                                        <thead>
-                                            <tr>
-                                                <th>T/R</th>
-                                                <th>Fakultet</th>
-                                                <th>Kafedra</th>
-                                                <th>Ilmiy ish turi</th>
-                                                <th>Nomi</th>
-                                                <th>Haqida</th>
-                                                <th>Muallif</th>
-                                                <th>Sana</th>
-                                                <th>Fayl</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for m in maqola %}
-                                            <tr class="clickable-row">
-                                                <td>{{ forloop.counter }}</td>
-                                                <td><span class="badge badge-light">{{ m.muallif.fakulteti.nomi|default:"-" }}</span></td>
-                                                <td><span class="badge badge-light">{{ m.muallif.kafedra.nomi|default:"-" }}</span></td>
-                                                <td>{{ m.turi }}</td>
-                                                <td data-full="{{ m.nomi }}">{{ m.nomi|truncatechars:45 }}</td>
-                                                <td data-full="{{ m.haqida }}">{{ m.haqida|truncatechars:45 }}</td>
-                                                <td data-full="{{ m.ish_mualliflari }}">{{ m.ish_mualliflari|default:m.muallif|truncatechars:35 }}</td>
-                                                <td>{{ m.sana }}</td>
-                                                <td>
-                                                    {% if m.get_fayl_url %}
-                                                    <a href="{{ m.get_fayl_url }}" class="btn btn-sm btn-outline-primary rounded-pill px-2" download>
-                                                        <i class="fas fa-download mr-1"></i> Fayl
-                                                    </a>
-                                                    {% else %}
-                                                    <span class="badge badge-light text-muted">Yo'q</span>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                            {% empty %}
-                                            <tr>
-                                                <td colspan="9" class="text-center text-muted py-4">
-                                                    <i class="fas fa-folder-open font-large-1 mb-1 d-block"></i>
-                                                    Ilmiy ishlar topilmadi
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card shadow-sm border-0" style="border-radius: 14px; overflow:hidden;">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">T/R</th>
+                                    <th>Fakultet</th>
+                                    <th>Kafedra</th>
+                                    <th>Ilmiy ish turi</th>
+                                    <th>Nomi</th>
+                                    <th>Haqida</th>
+                                    <th>Muallif</th>
+                                    <th>Sana</th>
+                                    <th style="text-align:center; min-width:140px;">Fayl</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for m in maqola %}
+                                <tr>
+                                    <td class="text-bold-600 text-muted">{{ forloop.counter }}</td>
+                                    <td><span class="badge badge-light border text-dark font-small-2">{{ m.muallif.fakulteti.nomi|default:"-" }}</span></td>
+                                    <td><span class="badge badge-light border text-dark font-small-2">{{ m.muallif.kafedra.nomi|default:"-" }}</span></td>
+                                    <td><span class="badge badge-pill badge-primary font-small-2 px-2 py-1" style="font-weight:600;">{{ m.turi }}</span></td>
+                                    <td class="text-bold-600" data-full="{{ m.nomi }}">{{ m.nomi|truncatechars:45 }}</td>
+                                    <td class="text-muted font-small-3" data-full="{{ m.haqida }}">{{ m.haqida|truncatechars:45 }}</td>
+                                    <td data-full="{{ m.ish_mualliflari }}">
+                                        <i class="fas fa-user-graduate text-muted mr-1"></i> {{ m.ish_mualliflari|default:m.muallif|truncatechars:35 }}
+                                    </td>
+                                    <td><span class="badge badge-light border text-dark font-small-2">{{ m.sana }}</span></td>
+                                    <td style="text-align:center;">
+                                        {% if m.get_fayl_url %}
+                                        <a href="{{ m.get_fayl_url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;">
+                                            <i class="fas fa-file-download mr-1"></i> Yuklab olish
+                                        </a>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-light text-muted px-2 py-1 font-small-2">
+                                            <i class="fas fa-times-circle mr-1"></i> Fayl yo'q
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center py-4 text-muted">
+                                        <i class="fas fa-inbox fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                                        <span class="font-medium-1">Hech qanday ma'lumot topilmadi</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -229,14 +229,14 @@
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
-                <div class="content-header-left col-md-12 col-12 mb-2 breadcrumb-new">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <div class="content-header-left col-12 mb-2">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div>
-                            <h3 class="content-header-title mb-0 text-bold-600"><i class="fas fa-video text-danger mr-1"></i> <span data-i18n="video_lessons_menu">Video Darslar</span></h3>
-                            <small class="text-muted" data-i18n="video_lessons_sub">Barcha yuklangan video darslar ro'yxati</small>
+                            <h3 class="content-header-title mb-0 text-bold-700"><i class="fas fa-video text-danger mr-1"></i> <span data-i18n="video_lessons_menu">Video Darslar</span></h3>
+                            <small class="text-muted" data-i18n="video_lessons_sub">Barcha yuklangan video darslar monitoringi va boshqaruvi</small>
                         </div>
                         <div>
-                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 mt-1 mt-sm-0">
+                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
                                 <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="back_dashboard">Boshqaruv paneliga qaytish</span>
                             </a>
                         </div>
@@ -245,23 +245,23 @@
             </div>
 
             <!-- Action & Filter Card -->
-            <div class="card filter-card mb-3 shadow-sm border-0" style="border-radius: 12px;">
+            <div class="card filter-card mb-3 shadow-sm border-0" style="border-radius: 14px;">
                 <div class="card-body p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
                         <div class="action-btn-group d-flex flex-wrap align-items-center" style="gap: 8px;">
-                            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn">
+                            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn" style="font-weight:600;">
                                 <i class="fas fa-file-archive mr-1"></i> <span data-i18n="download_zip">ZIP yuklab olish</span>
                             </button>
-                            <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
+                            <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
                                 <i class="fas fa-plus mr-1"></i> <span data-i18n="add_new">Yangi qo'shish</span>
                             </a>
-                            <a href="{% url 'ochirish_video' user_id=foydalanuvchi.id %}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
+                            <a href="{% url 'ochirish_video' user_id=foydalanuvchi.id %}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
                                 <i class="fas fa-trash mr-1"></i> <span data-i18n="delete">O'chirish</span>
                             </a>
                         </div>
                         <div>
-                            <span class="badge badge-light text-muted px-3 py-2 border rounded-pill font-small-3 shadow-sm">
-                                <i class="fas fa-video text-danger mr-1"></i> <span data-i18n="total_videos">Jami</span>: <strong>{{ videolar|length }}</strong> <span data-i18n="video_count_unit">ta video dars</span>
+                            <span class="badge badge-pill badge-light px-3 py-2 border font-small-3 shadow-sm" style="background:#f8fafc; color:#334155; font-weight:600;">
+                                <i class="fas fa-video text-danger mr-1"></i> <span data-i18n="total_videos">Jami</span>: <strong class="text-danger">{{ videolar|length }}</strong> <span data-i18n="video_count_unit">ta video dars</span>
                             </span>
                         </div>
                     </div>
@@ -269,15 +269,15 @@
                     <form action="{% url 'video_filtrlash' user_id=foydalanuvchi.id %}" method="get" class="m-0">
                         <div class="form-row align-items-end">
                             <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt mr-1"></i><span data-i18n="from_date">Dan</span></label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt text-muted mr-1"></i><span data-i18n="from_date">Dan</span></label>
                                 <input type="date" name="from" class="form-control form-control-sm rounded" value="{{ request.GET.from }}">
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
-                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-check mr-1"></i><span data-i18n="to_date">Gacha</span></label>
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt text-muted mr-1"></i><span data-i18n="to_date">Gacha</span></label>
                                 <input type="date" name="to" class="form-control form-control-sm rounded" value="{{ request.GET.to }}">
                             </div>
                             <div class="col-12 col-md-4">
-                                <button type="submit" class="btn btn-info btn-sm btn-block rounded shadow-sm">
+                                <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height:40px; font-weight:600;">
                                     <i class="fas fa-filter mr-1"></i> <span data-i18n="filter_btn">Filtrlash</span>
                                 </button>
                             </div>
@@ -288,70 +288,64 @@
 
             <!-- Content Body -->
             <div class="content-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
-                            <div class="card-content collapse show">
-                                <div class="table-responsive">
-                                    <table class="table table-hover mb-0" id="myTable">
-                                        <thead class="bg-light">
-                                            <tr>
-                                                <th style="width:60px;">T/R</th>
-                                                <th>Nomi</th>
-                                                <th>Haqida</th>
-                                                <th>Muallif</th>
-                                                <th>Sana</th>
-                                                <th style="width:130px;">Fayl</th>
-                                                <th style="width:110px;">Amallar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for video in videolar %}
-                                            <tr class="clickable-row" data-id="{{ video.id }}" data-href="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}">
-                                                <td class="font-weight-bold text-muted">{{ forloop.counter }}</td>
-                                                <td>
-                                                    <span class="font-weight-bold text-dark d-block">{{ video.nomi }}</span>
-                                                    {% if video.foreveryone %}
-                                                    <span class="badge badge-success font-small-1"><i class="fas fa-globe mr-1"></i>Ommaviy</span>
-                                                    {% else %}
-                                                    <span class="badge badge-secondary font-small-1"><i class="fas fa-lock mr-1"></i>Shaxsiy</span>
-                                                    {% endif %}
-                                                </td>
-                                                <td class="text-muted" style="max-width: 250px;">{{ video.haqida|default:"-"|truncatechars:80 }}</td>
-                                                <td><span class="badge badge-light border"><i class="fas fa-user-tie mr-1 text-primary"></i>{{ video.muallif }}</span></td>
-                                                <td><small class="text-muted"><i class="far fa-calendar-alt mr-1"></i>{{ video.sana }}</small></td>
-                                                <td>
-                                                    {% if video.get_video_url %}
-                                                    <a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-2" onclick="event.stopPropagation();">
-                                                        <i class="fas fa-play mr-1"></i> Ko'rish
-                                                    </a>
-                                                    {% else %}
-                                                    <span class="badge badge-light text-muted">Video yo'q</span>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    <a href="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-2" onclick="event.stopPropagation();" title="Tahrirlash">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {% empty %}
-                                            <tr>
-                                                <td colspan="7" class="text-center py-5 text-muted">
-                                                    <i class="fas fa-video-slash fa-3x text-muted mb-2 d-block"></i>
-                                                    <h5 class="text-muted" data-i18n="no_videos_found">Hech qanday video dars topilmadi</h5>
-                                                    <p class="small mb-3" data-i18n="add_video_prompt">Yangi video dars qo'shish uchun yuqoridagi "Yangi qo'shish" tugmasini bosing.</p>
-                                                    <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
-                                                        <i class="fas fa-plus mr-1"></i> <span data-i18n="add_new">Yangi qo'shish</span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card shadow-sm border-0" style="border-radius: 14px; overflow: hidden;">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">T/R</th>
+                                    <th>Nomi</th>
+                                    <th>Haqida</th>
+                                    <th>Muallif</th>
+                                    <th>Sana</th>
+                                    <th style="text-align:center; width:130px;">Fayl / Video</th>
+                                    <th style="text-align:center; width:100px;">Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for video in videolar %}
+                                <tr class="clickable-row" data-id="{{ video.id }}" data-href="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}">
+                                    <td class="text-bold-600 text-muted">{{ forloop.counter }}</td>
+                                    <td>
+                                        <span class="font-weight-bold text-dark d-block">{{ video.nomi }}</span>
+                                        {% if video.foreveryone %}
+                                        <span class="badge badge-pill badge-success font-small-1"><i class="fas fa-globe mr-1"></i>Ommaviy</span>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-secondary font-small-1"><i class="fas fa-lock mr-1"></i>Shaxsiy</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-muted font-small-3" style="max-width: 250px;" data-full="{{ video.haqida }}">{{ video.haqida|default:"-"|truncatechars:80 }}</td>
+                                    <td><span class="badge badge-light border text-dark font-small-2"><i class="fas fa-user-tie mr-1 text-primary"></i>{{ video.muallif }}</span></td>
+                                    <td><span class="badge badge-light border text-dark font-small-2"><i class="far fa-calendar-alt mr-1 text-muted"></i>{{ video.sana }}</span></td>
+                                    <td style="text-align:center;">
+                                        {% if video.get_video_url %}
+                                        <a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;" onclick="event.stopPropagation();">
+                                            <i class="fas fa-play mr-1"></i> Ko'rish
+                                        </a>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-light text-muted px-2 py-1 font-small-2">Video yo'q</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <a href="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-2 shadow-sm" onclick="event.stopPropagation();" title="Tahrirlash">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-5 text-muted">
+                                        <i class="fas fa-video-slash fa-3x text-muted mb-2 d-block" style="opacity:0.4;"></i>
+                                        <h5 class="text-muted" data-i18n="no_videos_found">Hech qanday video dars topilmadi</h5>
+                                        <p class="small mb-3" data-i18n="add_video_prompt">Yangi video dars qo'shish uchun yuqoridagi "Yangi qo'shish" tugmasini bosing.</p>
+                                        <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                                            <i class="fas fa-plus mr-1"></i> <span data-i18n="add_new">Yangi qo'shish</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -158,15 +158,22 @@
     <!-- Content -->
     <div class="app-content content">
         <div class="content-wrapper">
-            <div class="content-header row mb-2">
-                <div class="col-md-6 col-12">
-                    <h3 class="content-header-title text-bold-700">Kafedra Talablari va Vazifalar Rejasi</h3>
-                    <p class="text-muted">{{ foydalanuvchi.kafedra.nomi }} kafedrasi o'qituvchilari uchun belgilangan me'yoriy talablar</p>
-                </div>
-                <div class="col-md-6 col-12 text-md-right">
-                    <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success font-medium-1 shadow">
-                        <i class="fas fa-plus"></i> Yangi Talab / Reja Qo'shish
-                    </a>
+            <div class="content-header row">
+                <div class="content-header-left col-12 mb-2">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div>
+                            <h3 class="content-header-title mb-0 text-bold-700"><i class="fas fa-tasks text-primary mr-1"></i> Kafedra Talablari va Vazifalar Rejasi</h3>
+                            <small class="text-muted">{{ foydalanuvchi.kafedra.nomi }} kafedrasi o'qituvchilari uchun belgilangan me'yoriy talablar</small>
+                        </div>
+                        <div class="mt-1 mt-sm-0">
+                            <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm mr-1" style="font-weight:600;">
+                                <i class="fas fa-plus mr-1"></i> Yangi Talab Qo'shish
+                            </a>
+                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
+                                <i class="fas fa-arrow-left mr-1"></i> Mudir paneliga qaytish
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -186,95 +193,90 @@
             {% endif %}
 
             <div class="content-body">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-bottom">
-                        <h4 class="card-title text-bold-700">Yuklangan Talablar Ro'yxati</h4>
+                <div class="card shadow-sm border-0" style="border-radius: 14px; overflow:hidden;">
+                    <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center p-3">
+                        <h4 class="card-title text-bold-700 mb-0"><i class="fas fa-clipboard-list text-primary mr-1"></i> Yuklangan Talablar Ro'yxati</h4>
+                        <span class="badge badge-pill badge-light px-3 py-1 border font-small-3" style="background:#f8fafc; color:#334155; font-weight:600;">
+                            Jami: <strong class="text-primary">{{ talablar|length }}</strong> ta talab
+                        </span>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Sarlavha / Reja nomi</th>
-                                        <th>Ish turi</th>
-                                        <th>Har bir o'qituvchiga soni</th>
-                                        <th>Muddati</th>
-                                        <th>Holati</th>
-                                        <th>Amallar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for t in talablar %}
-                                    <tr>
-                                        <td><strong>{{ forloop.counter }}</strong></td>
-                                        <td>
-                                            <span class="text-bold-700 font-medium-1">{{ t.sarlavha }}</span>
-                                            {% if t.tavsif %}
-                                            <p class="text-muted small mb-0">{{ t.tavsif }}</p>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-primary">{{ t.ish_turi }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-info font-medium-1">{{ t.talab_miqdori }} ta</span>
-                                        </td>
-                                        <td>
-                                            {% if t.muddati %}
-                                            <span class="text-muted"><i class="fas fa-calendar-alt"></i> {{ t.muddati|date:"d.m.Y" }}</span>
-                                            {% else %}
-                                            <span class="text-muted">-</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if t.faol %}
-                                            <span class="badge badge-success">Faol</span>
-                                            {% else %}
-                                            <span class="badge badge-secondary">Nofaol</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning mr-1">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {% empty %}
-                                    <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">
-                                            Hozircha hech qanday talab yoki reja kiritilmagan. Yuqoridagi tugma orqali yangi talab qo'shishingiz mumkin.
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Sarlavha / Reja nomi</th>
+                                    <th>Ish turi</th>
+                                    <th>Har bir o'qituvchiga soni</th>
+                                    <th>Muddati</th>
+                                    <th>Holati</th>
+                                    <th style="text-align:center; width:120px;">Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t in talablar %}
+                                <tr>
+                                    <td class="text-bold-600 text-muted">{{ forloop.counter }}</td>
+                                    <td>
+                                        <span class="text-bold-700 font-medium-1 d-block">{{ t.sarlavha }}</span>
+                                        {% if t.tavsif %}
+                                        <small class="text-muted">{{ t.tavsif }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-pill badge-primary font-small-2 px-2 py-1" style="font-weight:600;">{{ t.ish_turi }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-pill badge-info font-small-2 px-2 py-1 font-weight-bold">{{ t.talab_miqdori }} ta</span>
+                                    </td>
+                                    <td>
+                                        {% if t.muddati %}
+                                        <span class="badge badge-light border text-dark font-small-2"><i class="fas fa-calendar-alt mr-1 text-muted"></i> {{ t.muddati|date:"d.m.Y" }}</span>
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if t.faol %}
+                                        <span class="badge badge-pill badge-success font-small-2 px-2 py-1"><i class="fas fa-check-circle mr-1"></i> Faol</span>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-secondary font-small-2 px-2 py-1"><i class="fas fa-pause-circle mr-1"></i> Nofaol</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-2 mr-1" title="Tahrirlash">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');" title="O'chirish">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="fas fa-inbox fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                                        <span class="font-medium-1">Hozircha hech qanday talab yoki reja kiritilmagan</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+        © 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.        </p>
+    </footer>
+
     <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
     <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
     <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
-    <script>
-        function toggleDarkMode() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeToggleBtn').innerText = isDark ? '☀️ Kunduzgi rejim' : '🌙 Tungi rejim';
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('site_theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeToggleBtn').innerText = '☀️ Kunduzgi rejim';
-            }
-        });
-    </script>
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
+    <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
+    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_4"></script>
 </body>
 </html>
