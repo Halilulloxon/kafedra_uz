@@ -89,10 +89,13 @@ WSGI_APPLICATION = 'first_project.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 _db_engine = os.getenv('DB_ENGINE', '')
 if not _db_engine:
-    try:
-        import MySQLdb  # noqa
-        _db_engine = 'django.db.backends.mysql'
-    except ImportError:
+    if os.getenv('DB_NAME'):
+        try:
+            import MySQLdb  # noqa
+            _db_engine = 'django.db.backends.mysql'
+        except ImportError:
+            _db_engine = 'django.db.backends.sqlite3'
+    else:
         _db_engine = 'django.db.backends.sqlite3'
 
 if _db_engine == 'django.db.backends.mysql':
