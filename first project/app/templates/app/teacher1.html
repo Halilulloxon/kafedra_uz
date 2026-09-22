@@ -608,6 +608,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
@@ -616,13 +617,26 @@
     <nav>
         <div class="logo">Kafedralar<span>.uz</span></div>
         <ul>
-            <li><a href="{% url 'index' %}">Bosh sahifa</a></li>
-            <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
-            <li><a href="{% url 'teacher1' id=teacher.id %}" class="active">O'qituvchi profili</a></li>
-            <li><a href="{% url 'book' %}">Kitoblar</a></li>
-            <li><a href="{% url 'article' %}">Maqolalar</a></li>
-            <li><a href="{% url 'video' %}">Video darslar</a></li>
-            <li><a href="{% url 'login' %}">Kirish</a></li>
+            <li><a href="{% url 'index' %}" data-i18n="nav_home">Bosh sahifa</a></li>
+            <li><a href="{% url 'teachers' %}" data-i18n="nav_teachers">O'qituvchilar</a></li>
+            <li><a href="{% url 'teacher1' id=teacher.id %}" class="active" data-i18n="nav_teacher_profile">O'qituvchi profili</a></li>
+            <li><a href="{% url 'book' %}" data-i18n="nav_books">Kitoblar</a></li>
+            <li><a href="{% url 'article' %}" data-i18n="nav_articles">Maqolalar</a></li>
+            <li><a href="{% url 'video' %}" data-i18n="nav_videos">Video darslar</a></li>
+            {% if foydalanuvchi %}
+                {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                <li><a href="{% url 'home4' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt mr-1"></i> Dashboard</a></li>
+                {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                <li><a href="{% url 'home3' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-university mr-1"></i> Dashboard</a></li>
+                {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                <li><a href="{% url 'home2' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
+                {% else %}
+                <li><a href="{% url 'profile' user_id=foydalanuvchi.id %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-user mr-1"></i> Profil</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}" style="color:#ef4444;"><i class="fas fa-sign-out-alt mr-1"></i> Chiqish</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
+            {% endif %}
         </ul>
         <div class="nav-controls">
             <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">

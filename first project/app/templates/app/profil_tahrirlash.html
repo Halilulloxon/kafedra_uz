@@ -128,26 +128,83 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation">
+                {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                <li class="nav-item">
+                    <a href="{% url 'home4' %}"><i class="fas fa-tachometer-alt"></i><span class="menu-title" data-i18n="prorektor_dashboard">Universitet Dashboard</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ilmiy_ishlari4' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="univ_articles">Ilmiy ishlar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'oquv_ishlari4' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="univ_books">O'quv ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'video' %}"><i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons">Video Darslar</span></a>
+                </li>
+                {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                <li class="nav-item">
+                    <a href="{% url 'home3' %}"><i class="fas fa-university"></i><span class="menu-title" data-i18n="dekan_dashboard">Dekan Paneli</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Fakultet Ilmiy Ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'oquv_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Fakultet O'quv Ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
+                </li>
+                {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                <li class="nav-item">
+                    <a href="{% url 'home2' %}"><i class="fas fa-home"></i><span class="menu-title" data-i18n="mudir_dashboard">Mudir Paneli</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}"><i class="fas fa-tasks"></i><span class="menu-title" data-i18n="dept_requirements">Kafedra Talablari & Rejasi</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Kafedra Ilmiy Ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Kafedra O'quv Ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
+                </li>
+                {% else %}
                 <li class="nav-item active">
-                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
-                        <i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
-                    </a>
+                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
-                    </a>
+                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
-                    </a>
+                    <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}">
-                        <i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
-                    </a>
+                    <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span></a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -1360,6 +1360,7 @@ def index(request):
     )
 def teachers(request):
     assert isinstance(request, HttpRequest)
+    foydalanuvchi = get_current_user(request)
     total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
     total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
     total_videolar = videolar.objects.filter(foreveryone=True).count()
@@ -1378,6 +1379,7 @@ def teachers(request):
             'total_kitoblar': total_kitoblar,
             'total_maqolalar': total_maqolalar,
             'total_videolar': total_videolar,
+            'foydalanuvchi': foydalanuvchi,
             'title': 'Teachers',
             'message': 'Your application description page.',
             'year': datetime.now().year,
@@ -1386,6 +1388,7 @@ def teachers(request):
 
 def teacher1(request, id):
     assert isinstance(request, HttpRequest)
+    foydalanuvchi = get_current_user(request)
     teacher = get_object_or_404(Foydalanuvchilar, id=id)
     maqolalar = ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True)
     kitoblar = oquvIshlari.objects.filter(muallif_id=teacher.id, foreveryone=True)
@@ -1406,6 +1409,7 @@ def teacher1(request, id):
             'maqolalar_soni': maqolalar_soni,
             'kitoblar_soni': kitoblar_soni,
             'videolar_soni': videolar_soni,
+            'foydalanuvchi': foydalanuvchi,
             'title': f"{teacher.ism} {teacher.familiya}",
             'message': 'Your application description page.',
             'year': datetime.now().year,
@@ -1600,104 +1604,121 @@ def registratsiya(request):
         'foydalanuvchi_rollari': ROLES
     })
 def article(request):
+    foydalanuvchi = get_current_user(request)
     maqolalar=ilmiy.objects.filter(turi='maqola', foreveryone=True).union(ilmiy.objects.filter(turi='scopus', foreveryone=True))
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    maqola_soni=Count(
-        'ilmiy_ishlari',
-        filter=Q(
-            ilmiy_ishlari__turi__in=['maqola', 'scopus'],
-            ilmiy_ishlari__foreveryone=True
+        maqola_soni=Count(
+            'ilmiy_ishlari',
+            filter=Q(
+                ilmiy_ishlari__turi__in=['maqola', 'scopus'],
+                ilmiy_ishlari__foreveryone=True
+            )
         )
-    )
-).order_by('-maqola_soni')[:5]
+    ).order_by('-maqola_soni')[:5]
     return render(request, 'app/article.html', {
         'maqolalar': maqolalar,
         'top_mualliflar': top_mualliflar,
+        'foydalanuvchi': foydalanuvchi,
         'title':'Maqolalar',
         'message':'Your article page.',
         'year':datetime.now().year,
     })
+
 def search_article(request):
+    foydalanuvchi = get_current_user(request)
     query = request.GET.get('q', '')
     maqolalar = ilmiy.objects.filter(
         Q(turi='maqola', foreveryone=True) | Q(turi='scopus', foreveryone=True),
         Q(nomi__icontains=query) | Q(muallif__ism__icontains=query) | Q(muallif__familiya__icontains=query) | Q(muallif__sharifi__icontains=query) | Q(ish_mualliflari__icontains=query) | Q(haqida__icontains=query) | Q(muallif__kafedra__nomi__icontains=query)
     ).distinct()
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    maqola_soni=Count(
-        'ilmiy_ishlari',
-        filter=Q(
-            ilmiy_ishlari__turi__in=['maqola', 'scopus'],
-            ilmiy_ishlari__foreveryone=True
+        maqola_soni=Count(
+            'ilmiy_ishlari',
+            filter=Q(
+                ilmiy_ishlari__turi__in=['maqola', 'scopus'],
+                ilmiy_ishlari__foreveryone=True
+            )
         )
-    )
     ).order_by('-maqola_soni')[:5]
-    return render(request, 'app/article.html', {'maqolalar': maqolalar, 'top_mualliflar':top_mualliflar,'query': query})
+    return render(request, 'app/article.html', {'maqolalar': maqolalar, 'top_mualliflar':top_mualliflar, 'foydalanuvchi': foydalanuvchi, 'query': query})
+
 def book(request):
+    foydalanuvchi = get_current_user(request)
     kitoblar=oquvIshlari.objects.filter(foreveryone=True)
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    kitob_soni=Count(
-        'oquvishlari',
-        filter=Q(
-            oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
-            oquvishlari__foreveryone=True
-        ))
-).order_by('-kitob_soni')[:5]
+        kitob_soni=Count(
+            'oquvishlari',
+            filter=Q(
+                oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
+                oquvishlari__foreveryone=True
+            ))
+    ).order_by('-kitob_soni')[:5]
     return render(request, 'app/book.html', {
         'kitoblar': kitoblar,
         'top_mualliflar': top_mualliflar,
+        'foydalanuvchi': foydalanuvchi,
         'title':'Kitoblar',
         'message':'Your book page.',
         'year':datetime.now().year,
     })
+
 def search_book(request):
+    foydalanuvchi = get_current_user(request)
     query = request.GET.get('q','')
     kitoblar = oquvIshlari.objects.filter(
         Q(turi='darslik', foreveryone=True) | Q(turi='O`quv qo`llanma', foreveryone=True),
         Q(nomi__icontains=query) | Q(muallif__ism__icontains=query) | Q(muallif__familiya__icontains=query) | Q(muallif__sharifi__icontains=query) | Q(ish_mualliflari__icontains=query) | Q(haqida__icontains=query) | Q(muallif__kafedra__nomi__icontains=query)
     ).distinct()
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    kitob_soni=Count(
-        'oquvishlari',
-        filter=Q(
-            oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
-            oquvishlari__foreveryone=True
+        kitob_soni=Count(
+            'oquvishlari',
+            filter=Q(
+                oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
+                oquvishlari__foreveryone=True
+            )
         )
-    )
- ).order_by('-kitob_soni')[:5]
-    return render(request, 'app/book.html', {'kitoblar':kitoblar, 'top_mualliflar':top_mualliflar,'query': query})
+    ).order_by('-kitob_soni')[:5]
+    return render(request, 'app/book.html', {'kitoblar':kitoblar, 'top_mualliflar':top_mualliflar, 'foydalanuvchi': foydalanuvchi, 'query': query})
+
 def video(request):
+    foydalanuvchi = get_current_user(request)
     video=videolar.objects.filter(foreveryone=True).order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    video_soni=Count(
-        'video_darslar',
-        filter=Q(
-            video_darslar__foreveryone=True
+        video_soni=Count(
+            'video_darslar',
+            filter=Q(
+                video_darslar__foreveryone=True
+            )
         )
-    )
-).order_by('-video_soni')[:5]
+    ).order_by('-video_soni')[:5]
+    teachers = Foydalanuvchilar.objects.filter(video_darslar__foreveryone=True).distinct()
     return render(request, 'app/video.html', {
         'videolar': video,
         'top_mualliflar': top_mualliflar,
+        'teachers': teachers,
+        'foydalanuvchi': foydalanuvchi,
         'title':'Video Darslar',
         'message':'Your video page.',
         'year':datetime.now().year,
     })
+
 def search_video(request):
+    foydalanuvchi = get_current_user(request)
     query = request.GET.get('q', '')
     video = videolar.objects.filter(
         Q(foreveryone=True),
         Q(nomi__icontains=query) | Q(muallif__ism__icontains=query) | Q(muallif__familiya__icontains=query) | Q(muallif__sharifi__icontains=query) | Q(haqida__icontains=query) | Q(muallif__kafedra__nomi__icontains=query)
     ).distinct().order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
-    video_soni=Count(
-        'video_darslar',
-        filter=Q(
-            video_darslar__foreveryone=True
+        video_soni=Count(
+            'video_darslar',
+            filter=Q(
+                video_darslar__foreveryone=True
+            )
         )
-    )
-).order_by('-video_soni')[:5]
-    return render(request, 'app/video.html', {'videolar': video, 'top_mualliflar':top_mualliflar,'query': query})
+    ).order_by('-video_soni')[:5]
+    teachers = Foydalanuvchilar.objects.filter(video_darslar__foreveryone=True).distinct()
+    return render(request, 'app/video.html', {'videolar': video, 'top_mualliflar':top_mualliflar, 'teachers': teachers, 'foydalanuvchi': foydalanuvchi, 'query': query})
 def serve_video(request, video_id):
     # Videoni /media/ orqali beramiz: serverda nginx uni oqim bilan (Range, ya'ni oldinga o'tkazish bilan) uzatadi
     video = get_object_or_404(videolar, id=video_id)
