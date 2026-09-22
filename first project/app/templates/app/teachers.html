@@ -584,7 +584,7 @@
 
                     <div class="t-avatar">
                         {% if teacher.image %}
-                        <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }}">
+                        <img src="{{ teacher.get_image_url }}" alt="{{ teacher.ism }}">
                         {% else %}
                         👨‍🎓
                         {% endif %}

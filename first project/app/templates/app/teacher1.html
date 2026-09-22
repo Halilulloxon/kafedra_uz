@@ -637,7 +637,7 @@
         <div class="profile-wrapper">
             <div class="avatar-big">
                 {% if teacher.image %}
-                <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }} {{ teacher.familiya }}">
+                <img src="{{ teacher.get_image_url }}" alt="{{ teacher.ism }} {{ teacher.familiya }}">
                 {% else %}
                 <span class="emoji-fallback">👨‍🎓</span>
                 {% endif %}

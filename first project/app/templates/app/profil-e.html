@@ -69,7 +69,7 @@
             <!-- O‘ng qism -->
             <div class="profil-right">
                 {% if foydalanuvchi.image %}
-                <img src="{{ foydalanuvchi.image.url }}" alt="Rasm">
+                <img src="{{ foydalanuvchi.get_image_url }}" alt="Rasm">
                 {% else %}
                 <img src="{% static 'default_user.png' %}" alt="Default rasm">
                 {% endif %}

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="loading" lang="uz" data-textdirection="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Prorektor Paneli - Kafedralar.uz</title>
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CQuicksand:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.css">
+
+    <style>
+        body.dark-mode {
+            background-color: #121927 !important;
+            color: #cbd5e1 !important;
+        }
+        body.dark-mode .card,
+        body.dark-mode .navbar-header,
+        body.dark-mode .main-menu {
+            background-color: #1e293b !important;
+            color: #e2e8f0 !important;
+            border-color: #334155 !important;
+        }
+        body.dark-mode .card-body, body.dark-mode .table {
+            color: #e2e8f0 !important;
+        }
+        body.dark-mode .table th, body.dark-mode .table td {
+            border-color: #334155 !important;
+        }
+        body.dark-mode .header-navbar {
+            background-color: #0f172a !important;
+        }
+        .stat-card {
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .theme-toggle-btn {
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+            background: transparent;
+            font-size: 14px;
+        }
+        .lang-select {
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 13px;
+            border: 1px solid #cbd5e1;
+            background: transparent;
+        }
+        @media (max-width: 768px) {
+            .app-content { padding: 10px !important; }
+            .card-body { padding: 12px !important; }
+        }
+    </style>
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-lg-none mr-auto">
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                            <i class="la la-bars la-3x"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="{% url 'home4' %}">
+                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
+                            <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block nav-toggle">
+                        <a class="nav-link modern-nav-toggle pr-0">
+                            <i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav mr-auto float-left">
+                        <li class="nav-item d-none d-md-block">
+                            <span class="badge badge-pill badge-danger font-medium-1 px-2 py-1 mt-1">
+                                <i class="la la-shield"></i> <span data-i18n="prorektor_badge">Prorektor boshqaruvi</span>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav ml-auto align-items-center">
+                        <li class="nav-item mr-1">
+                            <button id="themeToggleBtn" class="theme-toggle-btn text-bold-600" onclick="toggleDarkMode()">
+                                🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
+                            </button>
+                        </li>
+
+                        <li class="nav-item mr-2">
+                            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
+                                <option value="uz">🇺🇿 O'zbek</option>
+                                <option value="ru">🇷🇺 Русский</option>
+                                <option value="en">🇬🇧 English</option>
+                            </select>
+                        </li>
+
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
+                                <span class="avatar avatar-online">
+                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
+                                    <i class="la la-edit"></i> <span data-i18n="edit_profile">Tahrirlash</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                    <i class="la la-lock"></i> <span data-i18n="logout">Chiqish</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation">
+                <li class="nav-item active">
+                    <a href="{% url 'home4' %}"><i class="la la-dashboard"></i><span class="menu-title" data-i18n="prorektor_dashboard">Universitet Dashboard</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ilmiy_ishlari4' user_id=foydalanuvchi.id %}"><i class="la la-newspaper"></i><span class="menu-title" data-i18n="univ_articles">Ilmiy ishlar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'oquv_ishlari4' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title" data-i18n="univ_books">O'quv ishlari</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'teachers' %}"><i class="la la-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'article' %}"><i class="la la-globe"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'book' %}"><i class="la la-file-text"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'video' %}"><i class="la la-play-circle"></i><span class="menu-title" data-i18n="video_lessons">Video Darslar</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END: Main Menu-->
+
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row mb-2">
+                <div class="col-12">
+                    <h3 class="content-header-title text-bold-700" data-i18n="univ_stat_title">Universitet Ilmiy va O'quv Faoliyati Monitoringi</h3>
+                    <p class="text-muted" data-i18n="univ_stat_desc">Barcha fakultetlar, kafedralar va professor-o'qituvchilar ko'rsatkichlari tahlili</p>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- KPI CARDS -->
+                <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-12">
+                        <div class="card stat-card bg-gradient-x-primary text-white">
+                            <div class="card-body">
+                                <div class="media d-flex">
+                                    <div class="media-body text-left">
+                                        <h2 class="text-white text-bold-700 mb-0">{{ fakultetlar_soni }}</h2>
+                                        <span data-i18n="faculties_count">Fakultetlar (Dekanatlar)</span>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="la la-university font-large-2 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12">
+                        <div class="card stat-card bg-gradient-x-info text-white">
+                            <div class="card-body">
+                                <div class="media d-flex">
+                                    <div class="media-body text-left">
+                                        <h2 class="text-white text-bold-700 mb-0">{{ kafedralar_soni }}</h2>
+                                        <span data-i18n="departments_count">Kafedralar soni</span>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="la la-sitemap font-large-2 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12">
+                        <div class="card stat-card bg-gradient-x-success text-white">
+                            <div class="card-body">
+                                <div class="media d-flex">
+                                    <div class="media-body text-left">
+                                        <h2 class="text-white text-bold-700 mb-0">{{ oqituvchilar_soni }}</h2>
+                                        <span data-i18n="teachers_count">Professor-o'qituvchilar</span>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="la la-user-graduate font-large-2 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12">
+                        <div class="card stat-card bg-gradient-x-warning text-white">
+                            <div class="card-body">
+                                <div class="media d-flex">
+                                    <div class="media-body text-left">
+                                        <h2 class="text-white text-bold-700 mb-0">{{ jami }}</h2>
+                                        <span data-i18n="total_works">Jami Ishlar (Ilmiy & O'quv)</span>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="la la-trophy font-large-2 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DETAILED NUMBERS -->
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="card text-center stat-card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="text-bold-700 text-primary mb-1">{{ scopuslar_soni }}</h3>
+                                <p class="text-muted mb-0">🏆 <span data-i18n="scopus_articles">Scopus / Web of Science</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="card text-center stat-card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="text-bold-700 text-info mb-1">{{ maqolalar_soni }}</h3>
+                                <p class="text-muted mb-0">📄 <span data-i18n="oak_articles">OAK & Xalqaro Maqolalar</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="card text-center stat-card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="text-bold-700 text-success mb-1">{{ oquv_soni }}</h3>
+                                <p class="text-muted mb-0">📚 <span data-i18n="textbooks_count">Darslik & O'quv qo'llanmalar</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="card text-center stat-card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="text-bold-700 text-danger mb-1">{{ video_soni }}</h3>
+                                <p class="text-muted mb-0">🎥 <span data-i18n="videos_count">Video Darslar</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHARTS ROW -->
+                <div class="row">
+                    <div class="col-lg-8 col-12">
+                        <div class="card shadow-sm stat-card">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h4 class="card-title text-bold-700" data-i18n="faculty_comparison">Fakultetlar kesimida Ilmiy va O'quv ishlari</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="facultyComparisonChart" style="min-height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                        <div class="card shadow-sm stat-card">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h4 class="card-title text-bold-700" data-i18n="work_distribution">Ishlar taqsimoti</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="worksDonutChart" style="min-height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MONTHLY DYNAMICS CHART -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm stat-card">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h4 class="card-title text-bold-700" data-i18n="monthly_dynamics">Universitet bo'yicha oylik nashr dinamikasi (2026)</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="monthlyDynamicsChart" style="min-height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FACULTIES DETAILED TABLE -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm stat-card">
+                            <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center">
+                                <h4 class="card-title text-bold-700" data-i18n="faculties_table_title">Fakultetlar va Dekanatlar Bo'yicha Tahliliy Jadval</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th data-i18n="faculty_name">Fakultet nomi</th>
+                                                <th data-i18n="dekan_name">Dekan</th>
+                                                <th data-i18n="teachers_count">O'qituvchilar</th>
+                                                <th data-i18n="articles_col">Ilmiy maqolalar</th>
+                                                <th data-i18n="books_col">O'quv ishlari</th>
+                                                <th data-i18n="total_col">Jami</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for f in fakultetlar_stat %}
+                                            <tr>
+                                                <td><strong>{{ forloop.counter }}</strong></td>
+                                                <td><span class="text-bold-600">{{ f.nomi }}</span></td>
+                                                <td>{{ f.dekan.ism|default:"-" }} {{ f.dekan.familiya|default:"" }}</td>
+                                                <td><span class="badge badge-pill badge-primary">{{ f.oqituvchilar }}</span></td>
+                                                <td><span class="badge badge-pill badge-info">{{ f.maqolalar }}</span></td>
+                                                <td><span class="badge badge-pill badge-success">{{ f.kitoblar }}</span></td>
+                                                <td><span class="badge badge-pill badge-warning font-medium-1">{{ f.jami }}</span></td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="7" class="text-center py-3 text-muted" data-i18n="no_data">Ma'lumotlar mavjud emas</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
+
+    <script>
+        const translations = {
+            uz: {
+                prorektor_badge: "Prorektor boshqaruvi",
+                dark_mode: "Tungi rejim",
+                light_mode: "Kunduzgi rejim",
+                edit_profile: "Tahrirlash",
+                logout: "Chiqish",
+                prorektor_dashboard: "Universitet Dashboard",
+                univ_articles: "Ilmiy ishlar",
+                univ_books: "O'quv ishlari",
+                professors_list: "O'qituvchilar",
+                public_articles: "Ommaviy Maqolalar",
+                public_books: "Kutubxona",
+                video_lessons: "Video Darslar",
+                univ_stat_title: "Universitet Ilmiy va O'quv Faoliyati Monitoringi",
+                univ_stat_desc: "Barcha fakultetlar, kafedralar va professor-o'qituvchilar ko'rsatkichlari tahlili",
+                faculties_count: "Fakultetlar (Dekanatlar)",
+                departments_count: "Kafedralar soni",
+                teachers_count: "Professor-o'qituvchilar",
+                total_works: "Jami Ishlar (Ilmiy & O'quv)",
+                scopus_articles: "Scopus / Web of Science",
+                oak_articles: "OAK & Xalqaro Maqolalar",
+                textbooks_count: "Darslik & O'quv qo'llanmalar",
+                videos_count: "Video Darslar",
+                faculty_comparison: "Fakultetlar kesimida Ilmiy va O'quv ishlari",
+                work_distribution: "Ishlar taqsimoti",
+                monthly_dynamics: "Universitet bo'yicha oylik nashr dinamikasi (2026)",
+                faculties_table_title: "Fakultetlar va Dekanatlar Bo'yicha Tahliliy Jadval",
+                faculty_name: "Fakultet nomi",
+                dekan_name: "Dekan",
+                articles_col: "Ilmiy maqolalar",
+                books_col: "O'quv ishlari",
+                total_col: "Jami",
+                no_data: "Ma'lumotlar mavjud emas"
+            },
+            ru: {
+                prorektor_badge: "Управление Проректора",
+                dark_mode: "Темный режим",
+                light_mode: "Светлый режим",
+                edit_profile: "Редактировать",
+                logout: "Выход",
+                prorektor_dashboard: "Дашборд Университета",
+                univ_articles: "Научные работы",
+                univ_books: "Учебные работы",
+                professors_list: "Преподаватели",
+                public_articles: "Публичные статьи",
+                public_books: "Библиотека",
+                video_lessons: "Видеоуроки",
+                univ_stat_title: "Мониторинг научной и учебной деятельности университета",
+                univ_stat_desc: "Анализ показателей всех факультетов, кафедр и преподавателей",
+                faculties_count: "Факультеты (Деканаты)",
+                departments_count: "Количество кафедр",
+                teachers_count: "Профессорско-преподавательский состав",
+                total_works: "Всего работ (Научные и учебные)",
+                scopus_articles: "Scopus / Web of Science",
+                oak_articles: "ВАК и Международные статьи",
+                textbooks_count: "Учебники и пособия",
+                videos_count: "Видеоуроки",
+                faculty_comparison: "Научные и учебные работы по факультетам",
+                work_distribution: "Распределение работ",
+                monthly_dynamics: "Ежемесячная динамика публикаций (2026)",
+                faculties_table_title: "Аналитическая таблица по факультетам и деканатам",
+                faculty_name: "Название факультета",
+                dekan_name: "Декан",
+                articles_col: "Научные статьи",
+                books_col: "Учебные работы",
+                total_col: "Итого",
+                no_data: "Нет данных"
+            },
+            en: {
+                prorektor_badge: "Vice-Rector Administration",
+                dark_mode: "Dark Mode",
+                light_mode: "Light Mode",
+                edit_profile: "Edit Profile",
+                logout: "Logout",
+                prorektor_dashboard: "University Dashboard",
+                univ_articles: "Scientific Works",
+                univ_books: "Educational Works",
+                professors_list: "Faculty Members",
+                public_articles: "Public Articles",
+                public_books: "Library",
+                video_lessons: "Video Lessons",
+                univ_stat_title: "University Academic & Research Activity Monitoring",
+                univ_stat_desc: "Analysis of performance across all faculties, departments, and professors",
+                faculties_count: "Faculties (Dean's Offices)",
+                departments_count: "Departments",
+                teachers_count: "Professors & Lecturers",
+                total_works: "Total Works (Research & Academic)",
+                scopus_articles: "Scopus / Web of Science",
+                oak_articles: "Peer-Reviewed & International",
+                textbooks_count: "Textbooks & Manuals",
+                videos_count: "Video Lectures",
+                faculty_comparison: "Research & Academic Works by Faculty",
+                work_distribution: "Work Distribution",
+                monthly_dynamics: "Monthly Publication Trend (2026)",
+                faculties_table_title: "Analytical Summary by Faculty",
+                faculty_name: "Faculty Name",
+                dekan_name: "Dean",
+                articles_col: "Research Articles",
+                books_col: "Academic Works",
+                total_col: "Total",
+                no_data: "No data available"
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('site_lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            const switcher = document.getElementById('langSwitcher');
+            if (switcher) switcher.value = lang;
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
+            updateThemeButton(isDark);
+        }
+
+        function updateThemeButton(isDark) {
+            const btn = document.getElementById('themeToggleBtn');
+            const currentLang = localStorage.getItem('site_lang') || 'uz';
+            if (btn) {
+                if (isDark) {
+                    btn.innerHTML = `☀️ <span class="d-none d-sm-inline">${translations[currentLang].light_mode}</span>`;
+                } else {
+                    btn.innerHTML = `🌙 <span class="d-none d-sm-inline">${translations[currentLang].dark_mode}</span>`;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('site_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                updateThemeButton(true);
+            }
+            const savedLang = localStorage.getItem('site_lang') || 'uz';
+            changeLanguage(savedLang);
+
+            const facultyLabels = {{ fakultet_labels|safe }};
+            const facultyArticles = {{ fakultet_maqolalar|safe }};
+            const facultyBooks = {{ fakultet_kitoblar|safe }};
+
+            const facultyChartOptions = {
+                chart: { type: 'bar', height: 350, toolbar: { show: true } },
+                series: [
+                    { name: "Ilmiy maqolalar", data: facultyArticles },
+                    { name: "O'quv ishlari", data: facultyBooks }
+                ],
+                xaxis: {
+                    categories: facultyLabels.length > 0 ? facultyLabels : ["Fakultetlar"],
+                    labels: { rotate: -25 }
+                },
+                colors: ['#007bff', '#28a745'],
+                plotOptions: { bar: { horizontal: false, columnWidth: '50%', borderRadius: 6 } },
+                dataLabels: { enabled: false },
+                legend: { position: 'top' }
+            };
+            new ApexCharts(document.querySelector("#facultyComparisonChart"), facultyChartOptions).render();
+
+            const donutOptions = {
+                chart: { type: 'donut', height: 350 },
+                series: [{{ scopuslar_soni }}, {{ maqolalar_soni }}, {{ tezislar_soni }}, {{ oquv_soni }}, {{ video_soni }}],
+                labels: ['Scopus', 'Maqolalar', 'Tezislar', "O'quv ishlari", 'Videolar'],
+                colors: ['#6f42c1', '#007bff', '#17a2b8', '#28a745', '#dc3545'],
+                legend: { position: 'bottom' },
+                responsive: [{ breakpoint: 480, options: { chart: { width: 300 }, legend: { position: 'bottom' } } }]
+            };
+            new ApexCharts(document.querySelector("#worksDonutChart"), donutOptions).render();
+
+            const monthlyO = {{ oy_o|safe }};
+            const monthlyI = {{ oy_i|safe }};
+            const monthlyOptions = {
+                chart: { type: 'area', height: 300, toolbar: { show: false } },
+                series: [
+                    { name: "Ilmiy ishlar", data: monthlyI },
+                    { name: "O'quv ishlari", data: monthlyO }
+                ],
+                xaxis: { categories: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"] },
+                colors: ['#007bff', '#28a745'],
+                fill: { type: 'gradient', gradient: { opacityFrom: 0.5, opacityTo: 0.05 } },
+                stroke: { curve: 'smooth', width: 2 }
+            };
+            new ApexCharts(document.querySelector("#monthlyDynamicsChart"), monthlyOptions).render();
+        });
+    </script>
+</body>
+</html>

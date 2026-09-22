@@ -40,7 +40,7 @@
 
             <div class="teacher-profile">
                 <div class="profile-header">
-                    <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}" class="profile-image">
+                    <img src="{{ teacher.get_image_url }}" alt="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}" class="profile-image">
                     <div class="profile-info">
                         <h1 class="profile-name">{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</h1>
                         <span class="profile-badge">{{ teacher.ilmiy_daraja }}</span>

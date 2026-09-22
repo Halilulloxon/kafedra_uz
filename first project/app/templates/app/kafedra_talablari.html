@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="loading" lang="uz">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Kafedra Talablari va Rejasi - Kafedralar.uz</title>
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+
+    <style>
+        body.dark-mode { background-color: #121927 !important; color: #cbd5e1 !important; }
+        body.dark-mode .card, body.dark-mode .navbar-header, body.dark-mode .main-menu {
+            background-color: #1e293b !important; color: #e2e8f0 !important; border-color: #334155 !important;
+        }
+        body.dark-mode .table { color: #e2e8f0 !important; }
+        body.dark-mode .table th, body.dark-mode .table td { border-color: #334155 !important; }
+        .theme-toggle-btn { cursor: pointer; padding: 6px 12px; border-radius: 20px; border: 1px solid #cbd5e1; background: transparent; }
+    </style>
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
+
+    <!-- Header -->
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-lg-none mr-auto">
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="la la-bars la-3x"></i></a>
+                    </li>
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="{% url 'home2' %}">
+                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
+                            <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block nav-toggle">
+                        <a class="nav-link modern-nav-toggle pr-0"><i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav ml-auto align-items-center">
+                        <li class="nav-item mr-1">
+                            <button id="themeToggleBtn" class="theme-toggle-btn text-bold-600" onclick="toggleDarkMode()">🌙 Tungi rejim</button>
+                        </li>
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
+                                <span class="avatar avatar-online">
+                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}"><i class="la la-edit"></i> Tahrirlash</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="la la-lock"></i> Chiqish</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main">
+                <li class="nav-item"><a href="{% url 'home2' %}"><i class="la la-home"></i><span class="menu-title">Bosh sahifa</span></a></li>
+                <li class="nav-item active"><a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}"><i class="la la-tasks"></i><span class="menu-title">Kafedra Talablari / Reja</span></a></li>
+                <li class="nav-item"><a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}"><i class="la la-book"></i><span class="menu-title">Kafedra O'quv ishlari</span></a></li>
+                <li class="nav-item"><a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}"><i class="la la-newspaper"></i><span class="menu-title">Kafedra Ilmiy ishlari</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row mb-2">
+                <div class="col-md-6 col-12">
+                    <h3 class="content-header-title text-bold-700">Kafedra Talablari va Vazifalar Rejasi</h3>
+                    <p class="text-muted">{{ foydalanuvchi.kafedra.nomi }} kafedrasi o'qituvchilari uchun belgilangan me'yoriy talablar</p>
+                </div>
+                <div class="col-md-6 col-12 text-md-right">
+                    <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success font-medium-1 shadow">
+                        <i class="la la-plus"></i> Yangi Talab / Reja Qo'shish
+                    </a>
+                </div>
+            </div>
+
+            {% if messages %}
+            <div class="row">
+                <div class="col-12">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible mb-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="content-body">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent border-bottom">
+                        <h4 class="card-title text-bold-700">Yuklangan Talablar Ro'yxati</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Sarlavha / Reja nomi</th>
+                                        <th>Ish turi</th>
+                                        <th>Har bir o'qituvchiga soni</th>
+                                        <th>Muddati</th>
+                                        <th>Holati</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for t in talablar %}
+                                    <tr>
+                                        <td><strong>{{ forloop.counter }}</strong></td>
+                                        <td>
+                                            <span class="text-bold-700 font-medium-1">{{ t.sarlavha }}</span>
+                                            {% if t.tavsif %}
+                                            <p class="text-muted small mb-0">{{ t.tavsif }}</p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-pill badge-primary">{{ t.ish_turi }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-pill badge-info font-medium-1">{{ t.talab_miqdori }} ta</span>
+                                        </td>
+                                        <td>
+                                            {% if t.muddati %}
+                                            <span class="text-muted"><i class="la la-calendar"></i> {{ t.muddati|date:"d.m.Y" }}</span>
+                                            {% else %}
+                                            <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if t.faol %}
+                                            <span class="badge badge-success">Faol</span>
+                                            {% else %}
+                                            <span class="badge badge-secondary">Nofaol</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning mr-1">
+                                                <i class="la la-edit"></i>
+                                            </a>
+                                            <a href="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4 text-muted">
+                                            Hozircha hech qanday talab yoki reja kiritilmagan. Yuqoridagi tugma orqali yangi talab qo'shishingiz mumkin.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+    <script>
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeToggleBtn').innerText = isDark ? '☀️ Kunduzgi rejim' : '🌙 Tungi rejim';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('site_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggleBtn').innerText = '☀️ Kunduzgi rejim';
+            }
+        });
+    </script>
+</body>
+</html>

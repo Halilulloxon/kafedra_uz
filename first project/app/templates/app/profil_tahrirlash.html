@@ -74,7 +74,7 @@
                                 <span class="mr-1 user-name text-bold-700">{{foydalanuvchi.ism}} {{foydalanuvchi.familiya}}</span>
                                 <span class="avatar avatar-online">
                                     {% if foydalanuvchi.image %}
-                                    <img src="{{ foydalanuvchi.image.url }}" alt="avatar">
+                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar">
                                     {% else %}
                                     <img src="{% static 'app/app-assets/images/portrait/small/avatar.png' %}" alt="avatar">
                                     {% endif %}
@@ -331,7 +331,7 @@
                                                     {% if foydalanuvchi.image %}
                                                     <p class="mt-1">
                                                         Joriy rasm:
-                                                        <img src="{{ foydalanuvchi.image.url }}" width="80" class="img-thumbnail">
+                                                        <img src="{{ foydalanuvchi.get_image_url }}" width="80" class="img-thumbnail">
                                                     </p>
                                                     {% endif %}
                                                 </div>

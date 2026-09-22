@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="loading" lang="uz">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{{ title }} - Kafedralar.uz</title>
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
+
+    <style>
+        body.dark-mode { background-color: #121927 !important; color: #cbd5e1 !important; }
+        body.dark-mode .card, body.dark-mode .navbar-header, body.dark-mode .main-menu {
+            background-color: #1e293b !important; color: #e2e8f0 !important; border-color: #334155 !important;
+        }
+    </style>
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
+
+    <!-- Header -->
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="{% url 'home2' %}">
+                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
+                            <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav ml-auto align-items-center">
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
+                                <span class="avatar avatar-online">
+                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'logout' %}"><i class="la la-lock"></i> Chiqish</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main">
+                <li class="nav-item"><a href="{% url 'home2' %}"><i class="la la-home"></i><span class="menu-title">Bosh sahifa</span></a></li>
+                <li class="nav-item active"><a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}"><i class="la la-tasks"></i><span class="menu-title">Kafedra Talablari</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row mb-2">
+                <div class="col-12">
+                    <h3 class="content-header-title text-bold-700">{{ title }}</h3>
+                    <p class="text-muted">{{ foydalanuvchi.kafedra.nomi }} kafedrasi o'qituvchilari uchun maqola yoki ish talabini kiritish</p>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <div class="row">
+                    <div class="col-md-8 col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group mb-2">
+                                        <label class="text-bold-700">Talab / Reja sarlavhasi <span class="text-danger">*</span></label>
+                                        {{ form.sarlavha }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-group mb-2">
+                                            <label class="text-bold-700">Ish turi <span class="text-danger">*</span></label>
+                                            {{ form.ish_turi }}
+                                        </div>
+                                        <div class="col-md-6 col-12 form-group mb-2">
+                                            <label class="text-bold-700">Har bir o'qituvchidan talab miqdori (soni) <span class="text-danger">*</span></label>
+                                            {{ form.talab_miqdori }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-group mb-2">
+                                            <label class="text-bold-700">Bajarish muddati</label>
+                                            {{ form.muddati }}
+                                        </div>
+                                        <div class="col-md-6 col-12 form-group mb-2">
+                                            <label class="text-bold-700">Holati</label>
+                                            <div class="pt-1">
+                                                {{ form.faol }} <span class="ml-1">Faol talab (o'qituvchilar profilida ko'rinadi)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="text-bold-700">Qo'shimcha tavsif yoki izoh</label>
+                                        {{ form.tavsif }}
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary">
+                                            <i class="la la-arrow-left"></i> Orqaga
+                                        </a>
+                                        <button type="submit" class="btn btn-primary px-3">
+                                            <i class="la la-save"></i> Saqlash
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
+</body>
+</html>

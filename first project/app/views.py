@@ -7,9 +7,9 @@ from math import e
 from webbrowser import get
 from django.shortcuts import render, get_object_or_404,redirect
 from django.http import HttpRequest
-from .forms import IlmiyForm, Oquv, OquvForm , VideoForm
-from .models import Foydalanuvchilar, oquvIshlari, ilmiy_ishlari as ilmiy , ilmiy_ishlari as ilmiy_a, Kafedralar, video_darslar as videolar, Dekanatlar
-from django.shortcuts import render, redirect
+from .forms import IlmiyForm, Oquv, OquvForm , VideoForm, KafedraTalablariForm
+from .models import Foydalanuvchilar, oquvIshlari, ilmiy_ishlari as ilmiy , ilmiy_ishlari as ilmiy_a, Kafedralar, video_darslar as videolar, Dekanatlar, KafedraTalablari
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -17,10 +17,20 @@ from datetime import datetime
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q, Count
 import os
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, JsonResponse
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from .models import video_darslar as VideoModel  
+
+def get_current_user(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return None
+    try:
+        return Foydalanuvchilar.objects.get(id=user_id)
+    except Foydalanuvchilar.DoesNotExist:
+        return None
+
+from django.contrib.auth.hashers import make_password, check_password
 
 def login_view(request):
     if request.method == 'POST':
@@ -32,14 +42,29 @@ def login_view(request):
         except Foydalanuvchilar.DoesNotExist:
             user = None
 
-        if user is None:
+        is_password_valid = False
+        if user is not None and password:
+            if user.parol == password:
+                is_password_valid = True
+                # Parolni avtomatik xavfsiz xeshga o'tkazish (bazani buzmasdan)
+                try:
+                    user.parol = make_password(password)
+                    user.save(update_fields=['parol'])
+                except Exception:
+                    pass
+            elif check_password(password, user.parol):
+                is_password_valid = True
+
+        if user is None or not is_password_valid:
             messages.error(request, 'Login yoki parol xato!')
 
-        elif user.parol == password and user.accepted == True:
+        elif user.accepted == True:
             request.session['user_id'] = user.id
             request.session['username'] = user.login_f
 
-            if user.foydalanuvchi_rol == 'kafedra mudiri':
+            if user.foydalanuvchi_rol == 'prorektor':
+                return redirect('home4')
+            elif user.foydalanuvchi_rol == 'kafedra mudiri':
                 return redirect('home2')
             elif user.foydalanuvchi_rol == 'dekan':
                 return redirect('home3')
@@ -49,9 +74,7 @@ def login_view(request):
         elif not user.accepted:
             messages.warning(
                 request,
-                'Sizning hisobingiz hali tasdiqlanmagan. Iltimos, administrator tasdiqlashini kuting. '
-                '<a href="mailto:halilullohayotullo0608@gmail.com">halilullohayotullo0608@gmail.com</a> '
-                'Admin tasdiqlagandan keyin email orqali xabar yuboriladi.'
+                'Sizning hisobingiz hali tasdiqlanmagan. Iltimos, administrator tasdiqlashini kuting.'
             )
 
         else:
@@ -70,8 +93,9 @@ def login(request):
         }
     )
 def home1(request):
-    user_id = request.session.get('user_id')
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi = get_current_user(request)
+    if not foydalanuvchi:
+        return redirect('login')
     maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='maqola').count()
     scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='scopus').count()
     oquv_soni= oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
@@ -101,13 +125,38 @@ def home1(request):
     oktabr_i=ilmiy.objects.filter(sana__month=10, muallif_id=foydalanuvchi.id).count()
     noyabr_i=ilmiy.objects.filter(sana__month=11, muallif_id=foydalanuvchi.id).count()
     dekabr_i=ilmiy.objects.filter(sana__month=12, muallif_id=foydalanuvchi.id).count()
+
+    # Kafedra talablari va o'qituvchining bajarish foizi
+    talablar = []
+    if foydalanuvchi.kafedra:
+        raw_talablar = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra, faol=True)
+        for t in raw_talablar:
+            if t.ish_turi == 'Scopus':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='scopus').count()
+            elif t.ish_turi == 'Maqola':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='maqola').count()
+            elif t.ish_turi == 'Tezis':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='tezis').count()
+            elif t.ish_turi in ['Darslik', "O`quv qo`llanma", 'Monografiya', 'Uslubiy ko`rsatma']:
+                bajarilgan = oquvIshlari.objects.filter(muallif=foydalanuvchi, turi__iexact=t.ish_turi).count()
+            else:
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi).count() + oquvIshlari.objects.filter(muallif=foydalanuvchi).count()
+            
+            foiz = min(100, int((bajarilgan / t.talab_miqdori) * 100)) if t.talab_miqdori > 0 else 100
+            talablar.append({
+                'obj': t,
+                'bajarilgan': bajarilgan,
+                'foiz': foiz,
+                'holat': 'Bajarildi' if foiz >= 100 else 'Jarayonda'
+            })
+
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
         'app/profil.html',
         {
-            'title':'Home Page',
+            'title':'O\'qituvchi Paneli',
             'foydalanuvchi':foydalanuvchi,
             'year':datetime.now().year,
             'maqolalar_soni':maqolalar_soni,
@@ -116,58 +165,64 @@ def home1(request):
             'jami':jami,
             'oy_o':[yanvar_o, fevral_o, mart_o, aprel_o, may_o, iyun_o, iyul_o, avgust_o, sentabr_o, oktabr_o, noyabr_o, dekabr_o],
             'oy_i':[yanvar_i, fevral_i, mart_i, aprel_i, may_i, iyun_i, iyul_i, avgust_i, sentabr_i, oktabr_i, noyabr_i, dekabr_i],
-
+            'talablar': talablar,
         }
     )
 def home2(request):
-    user_id = request.session.get('user_id')
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=0
-    scopuslar_soni=0
-    oquv_soni=0
-    ilmiy_soni=0
-    for muallif in Foydalanuvchilar.objects.filter(kafedra = foydalanuvchi.kafedra):
-        maqolalar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='maqola').count()
-        scopuslar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='scopus').count()
-        oquv_soni+= oquvIshlari.objects.filter(muallif_id=muallif.id).count()
-        ilmiy_soni+= ilmiy.objects.filter(muallif_id=muallif.id).count()
-    jami= oquv_soni+ilmiy_soni
+    foydalanuvchi = get_current_user(request)
+    if not foydalanuvchi:
+        return redirect('login')
+    
+    if foydalanuvchi.kafedra:
+        maqolalar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi='scopus').count()
+        oquv_soni = oquvIshlari.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
+        ilmiy_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
+        talablar_soni = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra).count()
+        oqituvchilar_soni = Foydalanuvchilar.objects.filter(kafedra=foydalanuvchi.kafedra).count()
+    else:
+        maqolalar_soni = scopuslar_soni = oquv_soni = ilmiy_soni = talablar_soni = oqituvchilar_soni = 0
+    
+    jami = oquv_soni + ilmiy_soni
+
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
         'app/profil2.html',
         {
-            'title':'Home Page',
+            'title':'Kafedra Mudiri Paneli',
             'foydalanuvchi':foydalanuvchi,
             'year':datetime.now().year,
             'maqolalar_soni':maqolalar_soni,
             'scopuslar_soni':scopuslar_soni,
             'oquv_soni':oquv_soni,
-            'jami':jami,    
+            'jami':jami,
+            'talablar_soni': talablar_soni,
+            'oqituvchilar_soni': oqituvchilar_soni,
         }
     )
 def home3(request):
-    user_id = request.session.get('user_id')
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=0
-    scopuslar_soni=0
-    oquv_soni=0
-    ilmiy_soni=0
-    for kafedra_f in Kafedralar.objects.filter(fakultet=foydalanuvchi.fakulteti):
-        for muallif in Foydalanuvchilar.objects.filter(kafedra=kafedra_f):
-            maqolalar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='maqola').count()
-            scopuslar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='scopus').count()
-            oquv_soni+= oquvIshlari.objects.filter(muallif_id=muallif.id).count()
-            ilmiy_soni+= ilmiy.objects.filter(muallif_id=muallif.id).count()
-    jami=oquv_soni+ilmiy_soni
+    foydalanuvchi = get_current_user(request)
+    if not foydalanuvchi:
+        return redirect('login')
+    
+    if foydalanuvchi.fakulteti:
+        maqolalar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi='scopus').count()
+        oquv_soni = oquvIshlari.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
+        ilmiy_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
+    else:
+        maqolalar_soni = scopuslar_soni = oquv_soni = ilmiy_soni = 0
+    
+    jami = oquv_soni + ilmiy_soni
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
         'app/profil3.html',
         {
-            'title':'Home Page',
+            'title':'Dekan Paneli',
             'foydalanuvchi':foydalanuvchi,
             'year':datetime.now().year,
             'maqolalar_soni':maqolalar_soni,
@@ -176,6 +231,192 @@ def home3(request):
             'jami':jami,
         }
     )
+
+def home4(request):
+    foydalanuvchi = get_current_user(request)
+    if not foydalanuvchi:
+        return redirect('login')
+    
+    fakultetlar_soni = Dekanatlar.objects.count()
+    kafedralar_soni = Kafedralar.objects.count()
+    oqituvchilar_soni = Foydalanuvchilar.objects.count()
+    
+    maqolalar_soni = ilmiy.objects.filter(turi='maqola').count()
+    scopuslar_soni = ilmiy.objects.filter(turi='scopus').count()
+    tezislar_soni = ilmiy.objects.filter(turi='Tezis').count()
+    
+    oquv_soni = oquvIshlari.objects.count()
+    ilmiy_soni = ilmiy.objects.count()
+    video_soni = videolar.objects.count()
+    jami = oquv_soni + ilmiy_soni + video_soni
+
+    oy_o = [oquvIshlari.objects.filter(sana__month=m).count() for m in range(1, 13)]
+    oy_i = [ilmiy.objects.filter(sana__month=m).count() for m in range(1, 13)]
+    
+    fakultetlar_stat = []
+    fakultet_labels = []
+    fakultet_maqolalar = []
+    fakultet_kitoblar = []
+    
+    for f in Dekanatlar.objects.all():
+        m_count = ilmiy.objects.filter(muallif__fakulteti=f).count()
+        k_count = oquvIshlari.objects.filter(muallif__fakulteti=f).count()
+        t_count = Foydalanuvchilar.objects.filter(fakulteti=f).count()
+        fakultetlar_stat.append({
+            'nomi': f.nomi,
+            'dekan': f.dekan,
+            'oqituvchilar': t_count,
+            'maqolalar': m_count,
+            'kitoblar': k_count,
+            'jami': m_count + k_count
+        })
+        fakultet_labels.append(f.nomi)
+        fakultet_maqolalar.append(m_count)
+        fakultet_kitoblar.append(k_count)
+
+    return render(
+        request,
+        'app/profil4.html',
+        {
+            'title': 'Prorektor Paneli',
+            'foydalanuvchi': foydalanuvchi,
+            'year': datetime.now().year,
+            'fakultetlar_soni': fakultetlar_soni,
+            'kafedralar_soni': kafedralar_soni,
+            'oqituvchilar_soni': oqituvchilar_soni,
+            'maqolalar_soni': maqolalar_soni,
+            'scopuslar_soni': scopuslar_soni,
+            'tezislar_soni': tezislar_soni,
+            'oquv_soni': oquv_soni,
+            'ilmiy_soni': ilmiy_soni,
+            'video_soni': video_soni,
+            'jami': jami,
+            'oy_o': oy_o,
+            'oy_i': oy_i,
+            'fakultetlar_stat': fakultetlar_stat,
+            'fakultet_labels': fakultet_labels,
+            'fakultet_maqolalar': fakultet_maqolalar,
+            'fakultet_kitoblar': fakultet_kitoblar,
+        }
+    )
+
+def profile4(request, user_id):
+    return home4(request)
+
+def kafedra_talablari(request, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    talablar = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra) if foydalanuvchi.kafedra else []
+    return render(request, 'app/kafedra_talablari.html', {
+        'title': 'Kafedra Talablari va Rejasi',
+        'foydalanuvchi': foydalanuvchi,
+        'talablar': talablar,
+        'year': datetime.now().year,
+    })
+
+def qoshish_talab(request, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    if request.method == 'POST':
+        form = KafedraTalablariForm(request.POST)
+        if form.is_valid():
+            talab = form.save(commit=False)
+            talab.kafedra = foydalanuvchi.kafedra
+            talab.mudir = foydalanuvchi
+            talab.save()
+            messages.success(request, "Yangi talab muvaffaqiyatli qo'shildi!")
+            return redirect('kafedra_talablari', user_id=user_id)
+    else:
+        form = KafedraTalablariForm()
+    return render(request, 'app/qoshish_talab.html', {
+        'title': "Yangi Talab Qo'shish",
+        'form': form,
+        'foydalanuvchi': foydalanuvchi,
+        'year': datetime.now().year,
+    })
+
+def tahrirlash_talab(request, t_id, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    talab = get_object_or_404(KafedraTalablari, id=t_id, kafedra=foydalanuvchi.kafedra)
+    if request.method == 'POST':
+        form = KafedraTalablariForm(request.POST, instance=talab)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Talab muvaffaqiyatli tahrirlandi!")
+            return redirect('kafedra_talablari', user_id=user_id)
+    else:
+        form = KafedraTalablariForm(instance=talab)
+    return render(request, 'app/qoshish_talab.html', {
+        'title': "Talabni Tahrirlash",
+        'form': form,
+        'foydalanuvchi': foydalanuvchi,
+        'talab': talab,
+        'year': datetime.now().year,
+    })
+
+def ochir_talab(request, t_id, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    talab = get_object_or_404(KafedraTalablari, id=t_id, kafedra=foydalanuvchi.kafedra)
+    talab.delete()
+    messages.success(request, "Talab muvaffaqiyatli o'chirildi!")
+    return redirect('kafedra_talablari', user_id=user_id)
+
+def ilmiy_ishlari4(request, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    fakultet_id = request.GET.get('fakultet')
+    kafedra_id = request.GET.get('kafedra')
+    turi_filter = request.GET.get('turi')
+    
+    qs = ilmiy.objects.all()
+    if fakultet_id:
+        qs = qs.filter(muallif__fakulteti_id=fakultet_id)
+    if kafedra_id:
+        qs = qs.filter(muallif__kafedra_id=kafedra_id)
+    if turi_filter:
+        qs = qs.filter(turi=turi_filter)
+        
+    fakultetlar = Dekanatlar.objects.all()
+    kafedralar = Kafedralar.objects.all()
+    turlar = ilmiy.objects.values_list('turi', flat=True).distinct()
+    
+    return render(request, 'app/ilmiy_ishlar3.html', {
+        'title': 'Universitet Ilmiy Ishlari',
+        'year': datetime.now().year,
+        'maqola': qs.order_by('-sana')[:150],
+        'foydalanuvchi': foydalanuvchi,
+        'kafedralar': kafedralar,
+        'fakultetlar': fakultetlar,
+        'turi': turlar,
+        'ish_muallifi': []
+    })
+
+def oquv_ishlari4(request, user_id):
+    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    fakultet_id = request.GET.get('fakultet')
+    kafedra_id = request.GET.get('kafedra')
+    turi_filter = request.GET.get('turi')
+    
+    qs = oquvIshlari.objects.all()
+    if fakultet_id:
+        qs = qs.filter(muallif__fakulteti_id=fakultet_id)
+    if kafedra_id:
+        qs = qs.filter(muallif__kafedra_id=kafedra_id)
+    if turi_filter:
+        qs = qs.filter(turi=turi_filter)
+        
+    fakultetlar = Dekanatlar.objects.all()
+    kafedralar = Kafedralar.objects.all()
+    turlar = oquvIshlari.objects.values_list('turi', flat=True).distinct()
+    
+    return render(request, 'app/o`quv_ishlari3.html', {
+        'title': 'Universitet O`quv Ishlari',
+        'year': datetime.now().year,
+        'maqola': qs.order_by('-sana')[:150],
+        'foydalanuvchi': foydalanuvchi,
+        'kafedralar': kafedralar,
+        'fakultetlar': fakultetlar,
+        'turi': turlar,
+        'ish_muallifi': []
+    })
+
 def oquv_ishlari(request, user_id):
     """Renders the oquv_ishlari page."""
     assert isinstance(request, HttpRequest)
@@ -1105,27 +1346,28 @@ def index(request):
     )
 def teachers(request):
     assert isinstance(request, HttpRequest)
-    teachers=Foydalanuvchilar.objects.all()
-    total_maqolalar=ilmiy.objects.filter(foreveryone=True).count()
-    total_kitoblar=oquvIshlari.objects.filter(foreveryone=True).count()
-    total_videolar=videolar.objects.filter(foreveryone=True).count()
-    for teacher in teachers:
-        teacher.videolar_soni=videolar.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
-        teacher.maqolalar_soni=ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
-        teacher.kitoblar_soni=oquvIshlari.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
+    total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
+    total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
+    total_videolar = videolar.objects.filter(foreveryone=True).count()
+    teachers = Foydalanuvchilar.objects.annotate(
+        videolar_soni=Count('video_darslar', filter=Q(video_darslar__foreveryone=True), distinct=True),
+        maqolalar_soni=Count('ilmiy_ishlari', filter=Q(ilmiy_ishlari__foreveryone=True), distinct=True),
+        kitoblar_soni=Count('oquvishlari', filter=Q(oquvishlari__foreveryone=True), distinct=True),
+    )
     return render(
         request,
         'app/teachers.html',
         {
-            'teachers':teachers,
-            'total_kitoblar':total_kitoblar,
-            'total_maqolalar':total_maqolalar,
-            'total_videolar':total_videolar,
-            'title':'Teachers',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
+            'teachers': teachers,
+            'total_kitoblar': total_kitoblar,
+            'total_maqolalar': total_maqolalar,
+            'total_videolar': total_videolar,
+            'title': 'Teachers',
+            'message': 'Your application description page.',
+            'year': datetime.now().year,
         }
     )
+
 def teacher1(request, id):
     assert isinstance(request, HttpRequest)
     teacher=Foydalanuvchilar.objects.get(id=id)
@@ -1237,16 +1479,27 @@ def video_filtrlash(request, user_id):
         data = data.filter(sana__range=[start, end], muallif_id=user_id)
     return render(request, 'app/video_darslar.html', {'videolar': data, 'foydalanuvchi':foydalanuvchi})
 def qidirish(request):
-    teachers=Foydalanuvchilar.objects.all()
     query = request.GET.get('q', '')
-    teachers = teachers.filter(
+    total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
+    total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
+    total_videolar = videolar.objects.filter(foreveryone=True).count()
+    teachers = Foydalanuvchilar.objects.filter(
         Q(ism__icontains=query) | Q(familiya__icontains=query) | Q(sharifi__icontains=query)
+    ).annotate(
+        videolar_soni=Count('video_darslar', filter=Q(video_darslar__foreveryone=True), distinct=True),
+        maqolalar_soni=Count('ilmiy_ishlari', filter=Q(ilmiy_ishlari__foreveryone=True), distinct=True),
+        kitoblar_soni=Count('oquvishlari', filter=Q(oquvishlari__foreveryone=True), distinct=True),
     )
-    for teacher in teachers:
-        teacher.videolar_soni=videolar.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
-        teacher.maqolalar_soni=ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
-        teacher.kitoblar_soni=oquvIshlari.objects.filter(muallif_id=teacher.id, foreveryone=True).count()
-    return render(request, 'app/teachers.html', {'teachers': teachers, 'query': query})
+    return render(request, 'app/teachers.html', {
+        'teachers': teachers,
+        'query': query,
+        'total_kitoblar': total_kitoblar,
+        'total_maqolalar': total_maqolalar,
+        'total_videolar': total_videolar,
+        'title': 'Teachers',
+        'year': datetime.now().year,
+    })
+
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Foydalanuvchilar, Kafedralar, Dekanatlar
@@ -1289,26 +1542,31 @@ def registratsiya(request):
                 'foydalanuvchi_rollari': ROLES
             })
 
+        kafedra_id_val = int(kafedra) if kafedra and str(kafedra).isdigit() else None
+        fakulteti_id_val = int(fakultet) if fakultet and str(fakultet).isdigit() else None
+
         foydalanuvchi = Foydalanuvchilar(
-            ism=ism,
-            familiya=familiya,
-            sharifi=otasining_ismi,
-            tugulgan_sana=tugulgan_sana,
-            ilmiy_daraja=ilmiy_daraja,
-            foydalanuvchi_rol=foydalanuvchi_rol,
-            kafedra_id=kafedra,
-            fakulteti_id=fakultet,
-            gmail=gmail,
-            haqida=haqida,
-            image=image,
+            ism=ism or '',
+            familiya=familiya or '',
+            sharifi=otasining_ismi or '',
+            tugulgan_sana=tugulgan_sana or '2000-01-01',
+            ilmiy_daraja=ilmiy_daraja or 'Bakalavr',
+            foydalanuvchi_rol=foydalanuvchi_rol or 'oqituvchi',
+            kafedra_id=kafedra_id_val,
+            fakulteti_id=fakulteti_id_val,
+            gmail=gmail or None,
+            haqida=haqida or '',
+            image=image if image else None,
             login_f=login_f,
-            parol=parol
+            parol=make_password(parol) if parol else ''
         )
         foydalanuvchi.save()
+
 
         return render(request, 'app/login.html', {
             'success': 'Ro\'yxatdan muvaffaqiyatli o\'tildi! Iltimos, tizimga kiring.'
         })
+
 
     # GET request
     return render(request, 'app/registratsiya.html', {

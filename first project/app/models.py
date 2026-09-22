@@ -37,6 +37,16 @@ class Foydalanuvchilar(models.Model):
     image=models.ImageField(upload_to='foydalanuvchilar/', null=True, blank=True)
     accepted=models.BooleanField(default=False)
     created=models.BooleanField(default=True,editable=False)
+
+    @property
+    def get_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            try:
+                return self.image.url
+            except Exception:
+                pass
+        return '/static/app/app-assets/images/portrait/small/avatar-s-11.png'
+
     def __str__(self):
         return f"{self.ism} {self.familiya} {self.sharifi}"
 
@@ -167,3 +177,33 @@ def reorder_oid_after_delete(sender, instance, **kwargs):
         if obj.o_id != index:
             obj.o_id = index
             obj.save()
+
+
+class KafedraTalablari(models.Model):
+    ISH_TURLARI = (
+        ('Scopus', 'Scopus maqola'),
+        ('Maqola', 'OAK / Xalqaro maqola'),
+        ('Tezis', 'Tezis / Konferensiya'),
+        ('Darslik', 'Darslik'),
+        ('O`quv qo`llanma', 'O`quv qo`llanma'),
+        ('Monografiya', 'Monografiya'),
+        ('Uslubiy ko`rsatma', 'Uslubiy ko`rsatma'),
+        ('EHM guvohnomalar', 'EHM / Patent'),
+        ('Boshqa', 'Boshqa vazifa'),
+    )
+    kafedra = models.ForeignKey(Kafedralar, on_delete=models.CASCADE, related_name='talablar')
+    mudir = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, related_name='yuklagan_talablari')
+    sarlavha = models.CharField(max_length=300)
+    ish_turi = models.CharField(max_length=100, choices=ISH_TURLARI, default='Maqola')
+    talab_miqdori = models.PositiveIntegerField(default=1, help_text="Har bir o'qituvchidan talab qilinadigan soni")
+    muddati = models.DateField(null=True, blank=True)
+    tavsif = models.TextField(blank=True, null=True)
+    faol = models.BooleanField(default=True)
+    yaratilgan_sana = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        ordering = ['-yaratilgan_sana']
+
+    def __str__(self):
+        return f"{self.kafedra.nomi} - {self.sarlavha}"
+

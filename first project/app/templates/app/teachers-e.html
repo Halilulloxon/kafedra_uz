@@ -65,7 +65,7 @@
                 <!-- Teacher 1 -->
                 <a href="{% url 'teacher1' id=teacher.id %}" class="teacher-card">
                     <div class="teacher-image-wrapper">
-                        <img src="{{ teacher.image.url }}" alt="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}" class="teacher-image">
+                        <img src="{{ teacher.get_image_url }}" alt="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}" class="teacher-image">
                         <div class="teacher-overlay"></div>
                         <div class="teacher-info-overlay">
                             <h2 class="teacher-name">{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</h2>
