@@ -1349,6 +1349,7 @@ def teachers(request):
     total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
     total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
     total_videolar = videolar.objects.filter(foreveryone=True).count()
+    kafedralar = Kafedralar.objects.all().values_list('nomi', flat=True).distinct()
     teachers = Foydalanuvchilar.objects.annotate(
         videolar_soni=Count('video_darslar', filter=Q(video_darslar__foreveryone=True), distinct=True),
         maqolalar_soni=Count('ilmiy_ishlari', filter=Q(ilmiy_ishlari__foreveryone=True), distinct=True),
@@ -1359,6 +1360,7 @@ def teachers(request):
         'app/teachers.html',
         {
             'teachers': teachers,
+            'kafedralar': kafedralar,
             'total_kitoblar': total_kitoblar,
             'total_maqolalar': total_maqolalar,
             'total_videolar': total_videolar,
@@ -1370,21 +1372,29 @@ def teachers(request):
 
 def teacher1(request, id):
     assert isinstance(request, HttpRequest)
-    teacher=Foydalanuvchilar.objects.get(id=id)
-    maqolalar=ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True, turi='maqola').union(ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True, turi='scopus'))[:5]
-    kitoblar=oquvIshlari.objects.filter(muallif_id=teacher.id, foreveryone=True)[:5]
-    video=videolar.objects.filter(muallif_id=teacher.id, foreveryone=True)[:5]
+    teacher = get_object_or_404(Foydalanuvchilar, id=id)
+    maqolalar = ilmiy.objects.filter(muallif_id=teacher.id, foreveryone=True)
+    kitoblar = oquvIshlari.objects.filter(muallif_id=teacher.id, foreveryone=True)
+    video = videolar.objects.filter(muallif_id=teacher.id, foreveryone=True)
+    
+    maqolalar_soni = maqolalar.count()
+    kitoblar_soni = kitoblar.count()
+    videolar_soni = video.count()
+
     return render(
         request,
         'app/teacher1.html',
         {
-            'video':video,
-            'teacher':teacher,
-            'maqolalar':maqolalar,
-            'kitoblar':kitoblar,
-            'title':'Teacher1',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
+            'video': video,
+            'teacher': teacher,
+            'maqolalar': maqolalar,
+            'kitoblar': kitoblar,
+            'maqolalar_soni': maqolalar_soni,
+            'kitoblar_soni': kitoblar_soni,
+            'videolar_soni': videolar_soni,
+            'title': f"{teacher.ism} {teacher.familiya}",
+            'message': 'Your application description page.',
+            'year': datetime.now().year,
         }
     )
 def video_darslar(request, user_id):
@@ -1483,6 +1493,7 @@ def qidirish(request):
     total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
     total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
     total_videolar = videolar.objects.filter(foreveryone=True).count()
+    kafedralar = Kafedralar.objects.all().values_list('nomi', flat=True).distinct()
     teachers = Foydalanuvchilar.objects.filter(
         Q(ism__icontains=query) | Q(familiya__icontains=query) | Q(sharifi__icontains=query)
     ).annotate(
@@ -1493,6 +1504,7 @@ def qidirish(request):
     return render(request, 'app/teachers.html', {
         'teachers': teachers,
         'query': query,
+        'kafedralar': kafedralar,
         'total_kitoblar': total_kitoblar,
         'total_maqolalar': total_maqolalar,
         'total_videolar': total_videolar,

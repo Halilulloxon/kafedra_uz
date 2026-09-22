@@ -127,7 +127,7 @@ class ilmiy_ishlari(models.Model):
                 return self.fayl.url
             except Exception:
                 pass
-        return None
+        return ''
 
     def save(self, *args, **kwargs):
         if self.i_id is None:
@@ -160,7 +160,7 @@ class oquvIshlari(models.Model):
                 return self.fayl.url
             except Exception:
                 pass
-        return None
+        return ''
 
     @property
     def get_image_url(self):
@@ -195,7 +195,7 @@ class video_darslar(models.Model):
                 return self.video.url
             except Exception:
                 pass
-        return None
+        return ''
 
     def __str__(self):
         return self.nomi

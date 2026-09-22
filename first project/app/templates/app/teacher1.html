@@ -649,9 +649,14 @@
                 {% endif %}
             </div>
             <div class="profile-info">
-                <h1>{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</h1>
+                <h1>{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi|default:"" }}</h1>
+                {% if teacher.ilmiy_daraja %}
                 <div class="profile-title">{{ teacher.ilmiy_daraja }}</div>
+                {% endif %}
+                {% if teacher.kafedra %}
                 <div class="profile-dept">📍 {{ teacher.kafedra }}</div>
+                {% endif %}
+                {% if teacher.gmail %}
                 <div class="profile-email">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px">
                         <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -659,18 +664,21 @@
                     </svg>
                     <a href="mailto:{{ teacher.gmail }}">{{ teacher.gmail }}</a>
                 </div>
+                {% endif %}
+                {% if teacher.haqida %}
                 <p class="profile-bio">{{ teacher.haqida }}</p>
+                {% endif %}
                 <div class="profile-stats">
                     <div>
-                        <div class="p-stat-num">{{ kitoblar.count }}</div>
+                        <div class="p-stat-num">{{ kitoblar_soni|default:0 }}</div>
                         <div class="p-stat-label">Kitob</div>
                     </div>
                     <div>
-                        <div class="p-stat-num">{{ video.count }}</div>
+                        <div class="p-stat-num">{{ videolar_soni|default:0 }}</div>
                         <div class="p-stat-label">Video Dars</div>
                     </div>
                     <div>
-                        <div class="p-stat-num">{{ maqolalar.count }}</div>
+                        <div class="p-stat-num">{{ maqolalar_soni|default:0 }}</div>
                         <div class="p-stat-label">Maqola</div>
                     </div>
                 </div>
@@ -692,7 +700,7 @@
         <div class="tab-content active" id="tab-books">
             <div class="content-header">
                 <h2>Yozilgan Kitoblar</h2>
-                <span class="count-badge">{{ kitoblar.count }} ta kitob</span>
+                <span class="count-badge">{{ kitoblar_soni|default:0 }} ta kitob</span>
             </div>
             <div class="books-grid">
                 {% for kitob in kitoblar %}
@@ -721,7 +729,7 @@
         <div class="tab-content" id="tab-videos">
             <div class="content-header">
                 <h2>Video Darslar</h2>
-                <span class="count-badge">{{ video.count }} ta video</span>
+                <span class="count-badge">{{ videolar_soni|default:0 }} ta video</span>
             </div>
             <div class="videos-grid">
                 {% for vid in video %}
@@ -739,7 +747,7 @@
                     </div>
                     <div class="video-content">
                         <div class="video-title">{{ vid.nomi }}</div>
-                        <p>{{ vid.haqida }}</p>
+                        <p>{{ vid.haqida|default:"" }}</p>
                     </div>
                 </div>
                 {% empty %}
@@ -752,13 +760,15 @@
         <div class="tab-content" id="tab-articles">
             <div class="content-header">
                 <h2>Ilmiy Maqolalar</h2>
-                <span class="count-badge">{{ maqolalar.count }} ta maqola</span>
+                <span class="count-badge">{{ maqolalar_soni|default:0 }} ta maqola</span>
             </div>
             <div class="articles-list">
                 {% for maqola in maqolalar %}
                 <div class="article-card">
                     <h3>{{ maqola.nomi }}</h3>
+                    {% if maqola.haqida %}
                     <p>{{ maqola.haqida }}</p>
+                    {% endif %}
                     <div class="btn-group">
                         <a href="{{ maqola.get_fayl_url }}" target="_blank" class="read-btn">📄 O'qish</a>
                         <a href="{{ maqola.get_fayl_url }}" download class="download-btn">⬇ Yuklab olish</a>

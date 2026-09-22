@@ -189,25 +189,25 @@ body.dark-mode .search-box input {
 /* Global Floating Controls (Theme & Lang) for pages without top navbar */
 .global-floating-controls {
     position: fixed;
-    top: 14px;
-    right: 18px;
-    z-index: 1050;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(10px);
-    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 8px 16px;
     border-radius: 30px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 body.dark-mode .global-floating-controls {
-    background: rgba(30, 41, 59, 0.92);
+    background: rgba(30, 41, 59, 0.95);
     border-color: #334155;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
 }
 
 .global-theme-btn {
@@ -278,9 +278,9 @@ body.dark-mode .global-lang-select {
         font-size: 0.85rem !important;
     }
     .global-floating-controls {
-        top: 8px;
-        right: 10px;
-        padding: 4px 8px;
+        bottom: 14px;
+        right: 14px;
+        padding: 5px 10px;
         font-size: 12px;
     }
     .global-theme-btn span {

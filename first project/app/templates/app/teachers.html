@@ -586,7 +586,9 @@
                data-name="{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}">
 
                 <div class="t-card-top dept-{{ teacher.kafedra|slugify|truncatewords:1|cut:' ' }}">
+                    {% if teacher.ilmiy_daraja %}
                     <span class="t-rank">{{ teacher.ilmiy_daraja }}</span>
+                    {% endif %}
 
                     <div class="t-avatar">
                         {% if teacher.image %}
@@ -596,26 +598,34 @@
                         {% endif %}
                     </div>
 
-                    <div class="t-name">{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi }}</div>
+                    <div class="t-name">{{ teacher.ism }} {{ teacher.familiya }} {{ teacher.sharifi|default:"" }}</div>
+                    {% if teacher.foydalanuvchi_rol %}
                     <div class="t-title">{{ teacher.foydalanuvchi_rol }}</div>
+                    {% endif %}
+                    {% if teacher.kafedra %}
                     <span class="t-dept-badge">{{ teacher.kafedra }}</span>
+                    {% endif %}
                 </div>
 
                 <div class="t-card-body">
+                    {% if teacher.gmail %}
                     <div class="t-email">✉ <span>{{ teacher.gmail }}</span></div>
+                    {% endif %}
+                    {% if teacher.haqida %}
                     <p class="t-bio">{{ teacher.haqida }}</p>
+                    {% endif %}
 
                     <div class="t-stats">
                         <div class="t-stat-item">
-                            <strong>{{ teacher.videolar_soni }}</strong>
+                            <strong>{{ teacher.videolar_soni|default:0 }}</strong>
                             <span>Video</span>
                         </div>
                         <div class="t-stat-item">
-                            <strong>{{ teacher.maqolalar_soni }}</strong>
+                            <strong>{{ teacher.maqolalar_soni|default:0 }}</strong>
                             <span>Maqola</span>
                         </div>
                         <div class="t-stat-item">
-                            <strong>{{ teacher.kitoblar_soni }}</strong>
+                            <strong>{{ teacher.kitoblar_soni|default:0 }}</strong>
                             <span>Kitob</span>
                         </div>
                     </div>
