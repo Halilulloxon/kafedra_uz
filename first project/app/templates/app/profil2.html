@@ -69,7 +69,7 @@
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <span class="badge badge-pill badge-info font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fa fa-user-tie mr-1"></i> <span data-i18n="role_badge">Kafedra Mudiri Paneli</span>
+                                <i class="fas fa-user-tie mr-1"></i> <span data-i18n="role_mudir">Kafedra Mudiri Paneli</span>
                             </span>
                         </li>
                     </ul>
@@ -89,23 +89,11 @@
                             </select>
                         </li>
 
-                        {% if foydalanuvchi.foydalanuvchi_rol and foydalanuvchi.foydalanuvchi_rol != 'kafedra mudiri' %}
                         <li class="nav-item mr-1">
-                            {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
-                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
+                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-info btn-sm rounded-pill px-2" title="Shaxsiy o'qituvchi kabinetiga o'tish">
+                                <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="switch_teacher_profile">O'qituvchi Profilim</span>
                             </a>
-                            {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
-                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-university mr-1"></i> Dekan paneli
-                            </a>
-                            {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
-                            <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
-                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
-                            </a>
-                            {% endif %}
                         </li>
-                        {% endif %}
 
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
@@ -169,6 +157,12 @@
                 <li class="nav-item ">
                     <a href="{% url 'article' %}">
                         <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item" style="border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; padding-top: 4px;">
+                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
+                        <i class="fas fa-chalkboard-teacher text-info"></i><span class="menu-title text-info" data-i18n="my_teacher_profile">O'qituvchi Profilim</span>
                     </a>
                 </li>
             </ul>
