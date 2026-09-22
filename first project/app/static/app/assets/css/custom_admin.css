@@ -1,0 +1,520 @@
+/* ==========================================================================
+   Kafedralar.uz — Ultra-Modern Django Admin Dashboard Stylesheet
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --accent: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --dark-bg: #0f172a;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --header-bg: #1e293b;
+    --header-color: #ffffff;
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    font-family: var(--font-family) !important;
+    background-color: #f8fafc !important;
+    color: var(--text-primary) !important;
+    font-size: 14px !important;
+}
+
+/* ── Top Header & Branding ── */
+#header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    color: #ffffff !important;
+    padding: 14px 24px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#branding h1 {
+    font-family: var(--font-family) !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    letter-spacing: -0.2px;
+}
+
+#branding h1 a:link, #branding h1 a:visited {
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+}
+
+#branding h1 a::before {
+    content: "🏛️";
+    font-size: 20px;
+}
+
+#user-tools {
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#user-tools a {
+    color: #93c5fd !important;
+    text-decoration: none !important;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+#user-tools a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff !important;
+}
+
+#user-tools a[href*="logout"] {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #fca5a5 !important;
+}
+
+#user-tools a[href*="logout"]:hover {
+    background: rgba(239, 68, 68, 0.35) !important;
+    color: #ffffff !important;
+}
+
+/* ── Breadcrumbs ── */
+div.breadcrumbs {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 12px 24px !important;
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+div.breadcrumbs a {
+    color: var(--primary) !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+div.breadcrumbs a:hover {
+    text-decoration: underline !important;
+}
+
+/* ── Main Content Container ── */
+#content {
+    padding: 24px !important;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+#content h1 {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 20px !important;
+}
+
+/* ── Dashboard App Modules (Index View) ── */
+.dashboard .module {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+    margin-bottom: 20px !important;
+    overflow: hidden !important;
+}
+
+.dashboard .module table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.dashboard .module caption {
+    background: #f8fafc !important;
+    padding: 14px 18px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    text-align: left !important;
+}
+
+.dashboard .module caption a {
+    color: var(--primary) !important;
+    text-decoration: none !important;
+}
+
+.dashboard .module tr {
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background-color 0.15s ease;
+}
+
+.dashboard .module tr:hover {
+    background-color: #f8fafc !important;
+}
+
+.dashboard .module th, .dashboard .module td {
+    padding: 12px 18px !important;
+    font-size: 13.5px !important;
+}
+
+.dashboard .module th a {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.dashboard .module th a:hover {
+    color: var(--primary) !important;
+}
+
+.dashboard .module td a.addlink,
+.dashboard .module td a.changelink,
+.dashboard .module td a.viewlink {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dashboard .module td a.addlink {
+    background: #ecfdf5 !important;
+    color: #059669 !important;
+}
+
+.dashboard .module td a.changelink {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+}
+
+/* ── Change List (Table View) ── */
+#changelist {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden !important;
+}
+
+#changelist-form {
+    border-radius: 12px !important;
+}
+
+#changelist table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+#changelist thead th {
+    background: #f8fafc !important;
+    color: #475569 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+#changelist thead th a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+#changelist tbody tr {
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background-color 0.15s ease;
+}
+
+#changelist tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+#changelist tbody td, #changelist tbody th {
+    padding: 12px 16px !important;
+    font-size: 13.5px !important;
+    vertical-align: middle !important;
+}
+
+/* Search Bar in Admin */
+#toolbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 14px 20px !important;
+}
+
+#changelist-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#changelist-search input[type="text"] {
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color) !important;
+    font-size: 13.5px !important;
+    min-width: 260px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+#changelist-search input[type="text"]:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+#changelist-search input[type="submit"] {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 8px 18px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease;
+}
+
+#changelist-search input[type="submit"]:hover {
+    background: var(--primary-hover) !important;
+}
+
+/* Filter Sidebar */
+#changelist-filter {
+    background: #f8fafc !important;
+    border-left: 1px solid var(--border-color) !important;
+    padding: 16px !important;
+    border-radius: 0 12px 12px 0 !important;
+}
+
+#changelist-filter h2 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 12px !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+#changelist-filter h3 {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    color: var(--text-muted) !important;
+    margin-top: 14px !important;
+    margin-bottom: 6px !important;
+}
+
+#changelist-filter ul {
+    margin-bottom: 14px !important;
+    padding-left: 0 !important;
+}
+
+#changelist-filter li {
+    margin-bottom: 4px !important;
+}
+
+#changelist-filter li.selected a {
+    font-weight: 700 !important;
+    color: var(--primary) !important;
+}
+
+#changelist-filter a {
+    color: #475569 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease;
+}
+
+#changelist-filter a:hover {
+    color: var(--primary) !important;
+}
+
+/* ── Buttons & Actions ── */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 9px 18px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:hover, input[type=submit]:hover, .submit-row input:hover {
+    background: var(--primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: #1e88e5 !important;
+}
+
+.deletelink {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    padding: 9px 18px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.deletelink:hover {
+    background: #dc2626 !important;
+}
+
+.object-tools {
+    margin-bottom: 16px !important;
+}
+
+.object-tools a {
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    background: var(--primary) !important;
+}
+
+/* ── Form View (Add / Change View) ── */
+.form-row {
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="url"],
+input[type="number"], input[type="tel"], textarea, select {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    font-family: var(--font-family) !important;
+    outline: none !important;
+    transition: border-color 0.2s ease;
+    background-color: #ffffff !important;
+    color: var(--text-primary) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+.submit-row {
+    background: #f8fafc !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px !important;
+    padding: 14px 20px !important;
+    margin-top: 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ── Badges in ModelAdmin ── */
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.admin-badge-success {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.admin-badge-danger {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.admin-badge-warning {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.admin-badge-info {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.admin-badge-purple {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+/* ── Mobile Responsive for Django Admin ── */
+@media (max-width: 768px) {
+    #header {
+        padding: 12px 14px !important;
+    }
+    #branding h1 {
+        font-size: 16px !important;
+    }
+    #content {
+        padding: 14px 10px !important;
+    }
+    #changelist {
+        flex-direction: column !important;
+    }
+    #changelist-filter {
+        border-left: none !important;
+        border-top: 1px solid var(--border-color) !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+    .submit-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    .submit-row input, .submit-row a {
+        width: 100% !important;
+        text-align: center !important;
+        margin-bottom: 6px !important;
+    }
+}

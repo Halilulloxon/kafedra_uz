@@ -1,45 +1,144 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from .models import Foydalanuvchilar, Kafedralar, oquvIshlari, ilmiy_ishlari, Dekanatlar, video_darslar, KafedraTalablari
 
-# --- Inlines ---
+# --- Site Header & Title Configuration ---
+admin.site.site_header = "Kafedralar.uz — Boshqaruv Markazi"
+admin.site.site_title = "Kafedralar.uz Admin"
+admin.site.index_title = "Tizim ma'lumotlarini boshqarish paneli"
+
+
+class FoydalanuvchilarAdmin(admin.ModelAdmin):
+    list_display = ('id', 'full_name_display', 'login_f', 'gmail', 'role_badge', 'kafedra', 'fakulteti', 'accepted_status')
+    search_fields = ('ism', 'familiya', 'sharifi', 'login_f', 'gmail')
+    list_filter = ('foydalanuvchi_rol', 'accepted', 'kafedra', 'fakulteti')
+    list_per_page = 25
+    actions = ['tasdiqlash', 'bekor_qilish']
+
+    @admin.display(description="F.I.SH")
+    def full_name_display(self, obj):
+        return f"{obj.familiya} {obj.ism} {obj.sharifi or ''}"
+
+    @admin.display(description="Rol")
+    def role_badge(self, obj):
+        colors = {
+            'oqituvchi': ('#dbeafe', '#1d4ed8'),
+            'kafedra mudiri': ('#fef3c7', '#b45309'),
+            'dekan': ('#f3e8ff', '#7e22ce'),
+            'prorektor': ('#fee2e2', '#b91c1c'),
+        }
+        bg, fg = colors.get(obj.foydalanuvchi_rol, ('#f1f5f9', '#475569'))
+        label = obj.get_foydalanuvchi_rol_display() if hasattr(obj, 'get_foydalanuvchi_rol_display') else (obj.foydalanuvchi_rol or "Belgilanmagan")
+        return format_html(
+            '<span style="background:{}; color:{}; padding:3px 8px; border-radius:12px; font-weight:600; font-size:11.5px;">{}</span>',
+            bg, fg, label
+        )
+
+    @admin.display(description="Status")
+    def accepted_status(self, obj):
+        if obj.accepted:
+            return mark_safe('<span style="color:#16a34a; font-weight:700;"><i class="fas fa-check-circle"></i> Tasdiqlangan</span>')
+        return mark_safe('<span style="color:#dc2626; font-weight:700;"><i class="fas fa-clock"></i> Kutilmoqda</span>')
+
+    @admin.action(description="Tanlangan foydalanuvchilarni tasdiqlash")
+    def tasdiqlash(self, request, queryset):
+        queryset.update(accepted=True)
+        self.message_user(request, f"{queryset.count()} ta foydalanuvchi tasdiqlandi.")
+
+    @admin.action(description="Tanlangan foydalanuvchilarni tasdiqdan chiqarish")
+    def bekor_qilish(self, request, queryset):
+        queryset.update(accepted=False)
+        self.message_user(request, f"{queryset.count()} ta foydalanuvchi tasdig'i bekor qilindi.")
+
+
 class oquvIshlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'foreveryone')
-    search_fields = ('nomi', 'turi', 'muallif')
-    list_filter = ('nomi', 'turi', 'muallif', 'sana', 'foreveryone')
-   
+    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'betlar_soni', 'file_preview', 'public_badge')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
+    list_filter = ('turi', 'sana', 'foreveryone')
+    date_hierarchy = 'sana'
+    list_per_page = 25
+
+    @admin.display(description="Fayl")
+    def file_preview(self, obj):
+        if obj.fayl:
+            return format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-file-pdf"></i> Ochish</a>', obj.get_fayl_url)
+        return mark_safe('<span style="color:#94a3b8;">Fayl yo\'q</span>')
+
+    @admin.display(description="Ommaviylik")
+    def public_badge(self, obj):
+        if obj.foreveryone:
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
+
 
 class ilmiy_ishlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'foreveryone')
-    search_fields = ('nomi', 'turi', 'muallif')
-    list_filter = ('nomi', 'turi', 'muallif', 'sana', 'foreveryone')
+    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'kategoriya', 'file_preview', 'public_badge')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
+    list_filter = ('turi', 'kategoriya', 'sana', 'foreveryone')
+    date_hierarchy = 'sana'
+    list_per_page = 25
+
+    @admin.display(description="Fayl")
+    def file_preview(self, obj):
+        if obj.fayl:
+            return format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-file-alt"></i> Ochish</a>', obj.get_fayl_url)
+        return mark_safe('<span style="color:#94a3b8;">Fayl yo\'q</span>')
+
+    @admin.display(description="Ommaviylik")
+    def public_badge(self, obj):
+        if obj.foreveryone:
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
 
 
 class video_darslarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'muallif')
-    search_fields = ('nomi', 'muallif')
-    list_filter = ('nomi', 'muallif')
+    list_display = ('id', 'nomi', 'muallif', 'sana', 'video_preview', 'public_badge')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
+    list_filter = ('sana', 'foreveryone')
+    date_hierarchy = 'sana'
+    list_per_page = 25
+
+    @admin.display(description="Video")
+    def video_preview(self, obj):
+        if obj.video:
+            return format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-play-circle"></i> Ko\'rish</a>', obj.get_video_url)
+        return mark_safe('<span style="color:#94a3b8;">Video yo\'q</span>')
+
+    @admin.display(description="Ommaviylik")
+    def public_badge(self, obj):
+        if obj.foreveryone:
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
 
 
 class KafedraTalablariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'kafedra', 'mudir', 'sarlavha', 'ish_turi', 'talab_miqdori', 'muddati', 'faol')
+    list_display = ('id', 'sarlavha', 'kafedra', 'mudir', 'ish_turi', 'talab_miqdori', 'muddati', 'status_badge')
     search_fields = ('sarlavha', 'kafedra__nomi', 'mudir__ism', 'mudir__familiya')
     list_filter = ('ish_turi', 'faol', 'kafedra')
+    date_hierarchy = 'muddati'
+    list_per_page = 25
 
-# --- Admin Classes ---
-class FoydalanuvchilarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ism', 'familiya', 'sharifi', 'tugulgan_sana', 'kafedra','accepted','created')
-    search_fields = ('ism', 'familiya', 'sharifi')
-    list_filter = ('tugulgan_sana', 'kafedra','accepted')
+    @admin.display(description="Faollik")
+    def status_badge(self, obj):
+        if obj.faol:
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Faol</span>')
+        return mark_safe('<span style="background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Nofaol</span>')
+
 
 class KafedralarAdmin(admin.ModelAdmin):
-    list_display = ('nomi', 'mudir')
-    search_fields = ('nomi', 'mudir__ism', 'mudir__familiya')
-    list_filter = ('nomi',)
+    list_display = ('nomi', 'mudir', 'fakultet')
+    search_fields = ('nomi', 'mudir__ism', 'mudir__familiya', 'fakultet__nomi')
+    list_filter = ('fakultet',)
+    list_per_page = 25
+
 
 class DekanatlarAdmin(admin.ModelAdmin):
     list_display = ('nomi', 'dekan')
     search_fields = ('nomi', 'dekan__ism', 'dekan__familiya')
     list_filter = ('nomi',)
+    list_per_page = 25
+
 
 # --- Register ---
 admin.site.register(Foydalanuvchilar, FoydalanuvchilarAdmin)
