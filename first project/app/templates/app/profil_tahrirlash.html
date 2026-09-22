@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
     <link rel="shortcut icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Quicksand:300,400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}">
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
@@ -221,7 +221,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Tahrirlash</h4>
-                                <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
+                                <a class="heading-elements-toggle"><i class="fas fa-ellipsis-h font-medium-3"></i></a>
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body">
@@ -444,10 +444,10 @@
                                         <!-- Buttons -->
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="la la-check"></i> Saqlash
+                                                <i class="fas fa-check"></i> Saqlash
                                             </button>
                                             <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-warning">
-                                                <i class="la la-close"></i> Bekor qilish
+                                                <i class="fas fa-times"></i> Bekor qilish
                                             </a>
                                         </div>
                                     </form>

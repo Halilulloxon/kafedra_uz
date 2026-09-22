@@ -10,7 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
@@ -171,7 +171,7 @@
                 </div>
                 <div class="col-md-6 col-12 text-md-right">
                     <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success font-medium-1 shadow">
-                        <i class="la la-plus"></i> Yangi Talab / Reja Qo'shish
+                        <i class="fas fa-plus"></i> Yangi Talab / Reja Qo'shish
                     </a>
                 </div>
             </div>
@@ -228,7 +228,7 @@
                                         </td>
                                         <td>
                                             {% if t.muddati %}
-                                            <span class="text-muted"><i class="la la-calendar"></i> {{ t.muddati|date:"d.m.Y" }}</span>
+                                            <span class="text-muted"><i class="fas fa-calendar-alt"></i> {{ t.muddati|date:"d.m.Y" }}</span>
                                             {% else %}
                                             <span class="text-muted">-</span>
                                             {% endif %}
@@ -242,10 +242,10 @@
                                         </td>
                                         <td>
                                             <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning mr-1">
-                                                <i class="la la-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');">
-                                                <i class="la la-trash"></i>
+                                                <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
                                     </tr>

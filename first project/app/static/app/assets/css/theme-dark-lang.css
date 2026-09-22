@@ -1,11 +1,11 @@
 /* ==========================================================================
    Kafedralar.uz — Global Dark Mode, Icons & Mobile Responsive Styling
    ========================================================================== */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+@import url("../../app-assets/fonts/font-awesome/css/all.min.css");
 
 /* ── Universal FontAwesome 6 Icon Enforcement ── */
 .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands,
-.main-menu i, .stat-card i, .header-navbar i, .nav-item i, .btn i,
+.stat-card i, .header-navbar i, .nav-item i, .btn i,
 i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
     font-family: "Font Awesome 6 Free", "FontAwesome" !important;
     font-weight: 900 !important;
@@ -21,6 +21,17 @@ i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
 .fa-brands, .fab, i.fab {
     font-family: "Font Awesome 6 Brands" !important;
     font-weight: 400 !important;
+}
+
+/* Sidebar Menu Icon Styling */
+.main-menu .navigation > li > a > i {
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    width: 26px !important;
+    text-align: center !important;
+    margin-right: 10px !important;
 }
 
 :root {

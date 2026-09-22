@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/plugins/forms/switch.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-callout.min.css' %}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
@@ -181,12 +181,12 @@
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
                     <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
             <div>
-                <h3 class="content-header-title mb-0 text-bold-600"><i class="la la-book text-success mr-1"></i> Fakultet / Universitet O'quv Ishlari</h3>
+                <h3 class="content-header-title mb-0 text-bold-600"><i class="fas fa-book text-success mr-1"></i> Fakultet / Universitet O'quv Ishlari</h3>
                 <small class="text-muted">Umumiy o'quv-uslubiy ishlar, darslik va qo'llanmalar</small>
             </div>
             <div>
                 <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                    <i class="la la-arrow-left mr-1"></i> Orqaga qaytish
+                    <i class="fas fa-arrow-left mr-1"></i> Orqaga qaytish
                 </a>
             </div>
         </div>
@@ -197,12 +197,12 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
                     <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
                         <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn">
-                            <i class="la la-file-archive-o mr-1"></i> ZIP yuklab olish
+                            <i class="fas fa-file-archive mr-1"></i> ZIP yuklab olish
                         </button>
                     </div>
                     <div>
                         <span class="badge badge-light text-muted px-3 py-2 border rounded-pill font-small-3">
-                            <i class="la la-book mr-1"></i> Jami: <strong>{{ maqola|length }}</strong> ta o'quv ishi
+                            <i class="fas fa-book mr-1"></i> Jami: <strong>{{ maqola|length }}</strong> ta o'quv ishi
                         </span>
                     </div>
                 </div>
@@ -210,15 +210,15 @@
                 <form action="{% url 'filtrlash_oquv3' user_id=foydalanuvchi.id %}" method="get" class="m-0">
                     <div class="form-row align-items-end">
                         <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                            <label class="small text-muted font-weight-bold mb-1"><i class="la la-calendar mr-1"></i>Dan</label>
+                            <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt mr-1"></i>Dan</label>
                             <input type="date" name="from" class="form-control form-control-sm rounded" value="{{ request.GET.from }}">
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                            <label class="small text-muted font-weight-bold mb-1"><i class="la la-calendar mr-1"></i>Gacha</label>
+                            <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt mr-1"></i>Gacha</label>
                             <input type="date" name="to" class="form-control form-control-sm rounded" value="{{ request.GET.to }}">
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
-                            <label class="small text-muted font-weight-bold mb-1"><i class="la la-building mr-1"></i>Kafedra</label>
+                            <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-building mr-1"></i>Kafedra</label>
                             <select name="kafedra" class="form-control form-control-sm rounded custom-select">
                                 <option value="">Barcha kafedralar</option>
                                 {% for k in kafedralar %}
@@ -227,7 +227,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                            <label class="small text-muted font-weight-bold mb-1"><i class="la la-tag mr-1"></i>Turi</label>
+                            <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-tag mr-1"></i>Turi</label>
                             <select id="turi" name="turi" class="form-control form-control-sm rounded custom-select">
                                 <option value="">Barchasi</option>
                                 {% for tur in turi %}
@@ -236,7 +236,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
-                            <label class="small text-muted font-weight-bold mb-1"><i class="la la-user mr-1"></i>Muallif</label>
+                            <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-user mr-1"></i>Muallif</label>
                             <select id="ish_muallifi" name="ish_muallifi" class="form-control form-control-sm rounded custom-select">
                                 <option value="">Barchasi</option>
                                 {% for tur in ish_muallifi %}
@@ -246,7 +246,7 @@
                         </div>
                         <div class="col-12 col-md-1">
                             <button type="submit" class="btn btn-info btn-sm btn-block rounded shadow-sm">
-                                <i class="la la-filter"></i>
+                                <i class="fas fa-filter"></i>
                             </button>
                         </div>
                     </div>
@@ -285,7 +285,7 @@
                                                 <td data-full="{{ maqola.ish_mualliflari }}">{{ maqola.ish_mualliflari|truncatechars:50 }}</td>
                                                 <td>{{maqola.sana}}</td>
                                                 <td>{{maqola.betlar_soni}}</td>
-                                                <td>{% if maqola.get_fayl_url %}<a href="{{ maqola.get_fayl_url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="la la-download"></i> Yuklab olish</a>{% else %}<span class="badge badge-light text-muted">Fayl yo'q</span>{% endif %}</td>
+                                                <td>{% if maqola.get_fayl_url %}<a href="{{ maqola.get_fayl_url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i> Yuklab olish</a>{% else %}<span class="badge badge-light text-muted">Fayl yo'q</span>{% endif %}</td>
                                             </tr>
                                             {% endfor %}
 

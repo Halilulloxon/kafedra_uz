@@ -10,7 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
@@ -258,11 +258,11 @@
                                         <strong>{{ foydalanuvchi.fakulteti.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="la la-calendar"></i> Tug'ilgan sana:</span>
+                                        <span class="text-muted"><i class="fas fa-calendar-alt"></i> Tug'ilgan sana:</span>
                                         <strong>{{ foydalanuvchi.tugulgan_sana|date:"d.m.Y"|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="la la-envelope"></i> Email:</span>
+                                        <span class="text-muted"><i class="fas fa-envelope"></i> Email:</span>
                                         <strong>{{ foydalanuvchi.gmail|default:"-" }}</strong>
                                     </li>
                                 </ul>
