@@ -563,6 +563,7 @@
                 padding: 24px;
             }
         }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
@@ -571,16 +572,16 @@
     <nav>
         <div class="logo">Kafedralar<span>.uz</span></div>
         <ul>
-            <li><a href="{% url 'index' %}">Bosh sahifa</a></li>
-            <li><a href="{% url 'teachers' %}">O'qituvchilar</a></li>
-            <li><a href="{% url 'book' %}">Kitoblar</a></li>
-            <li><a href="{% url 'article' %}">Maqolalar</a></li>
-            <li><a href="{% url 'video' %}" class="active">Video darslar</a></li>
-            <li><a href="{% url 'login' %}">Kirish</a></li>
+            <li><a href="{% url 'index' %}" data-i18n="nav_home">Bosh sahifa</a></li>
+            <li><a href="{% url 'teachers' %}" data-i18n="nav_teachers">O'qituvchilar</a></li>
+            <li><a href="{% url 'book' %}" data-i18n="nav_books">Kitoblar</a></li>
+            <li><a href="{% url 'article' %}" data-i18n="nav_articles">Maqolalar</a></li>
+            <li><a href="{% url 'video' %}" class="active" data-i18n="nav_videos">Video darslar</a></li>
+            <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
         </ul>
-        <div class="nav-controls">
+        <div class="nav-controls d-flex align-items-center" style="gap:10px;">
             <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
-                🌙 <span class="d-none d-md-inline">Tungi rejim</span>
+                🌙 <span class="d-none d-md-inline" data-i18n="dark_mode">Tungi rejim</span>
             </button>
             <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
                 <option value="uz">🇺🇿 UZ</option>
@@ -591,29 +592,28 @@
     </nav>
 
     <div class="page-header">
-        <div class="section-tag">Ta'lim videolari</div>
-        <h1>Video Darslar</h1>
-        <p>O'qituvchilarimiz tomonidan tayyorlangan {{ videolar|length }}+ sifatli video darsliklar.</p>
+        <div class="section-tag" data-i18n="edu_videos_tag">Ta'lim videolari</div>
+        <h1 data-i18n="video_lessons_title">Video Darslar</h1>
+        <p data-i18n="video_lessons_desc">O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.</p>
     </div>
 
     <div class="main">
 
         <!-- FILTERS -->
         <div class="filters">
-            <span class="filter-label">O'qituvchi:</span>
-            <button class="filter-btn active" data-teacher="all">Barchasi</button>
+            <span class="filter-label" data-i18n="teacher_filter">O'qituvchi:</span>
+            <button class="filter-btn active" data-teacher="all" data-i18n="all">Barchasi</button>
             {% for teacher in teachers %}
             <button class="filter-btn" data-teacher="{{ teacher.id }}">{{ teacher.ism }} {{ teacher.familiya }}</button>
             {% endfor %}
             <div class="search-box">
-                <form method="GET" action="{% url 'search_video' %}" style="margin-bottom:32px;">
-                    <div class="search-box">
-                        <input type="text"
-                               name="q"
-                               placeholder="Video sarlavhasi yoki kalit so'z..."
-                               value="{{ request.GET.q }}"
-                               style="width:100%; border-radius:12px;" />
-                    </div>
+                <form method="GET" action="{% url 'search_video' %}" class="m-0">
+                    <input type="text"
+                           id="videoSearch"
+                           name="q"
+                           placeholder="Video darsni qidirish..."
+                           value="{{ request.GET.q }}"
+                           style="width:100%; border-radius:10px;" />
                 </form>
             </div>
         </div>

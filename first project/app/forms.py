@@ -99,17 +99,29 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ['nomi', 'muallif', 'haqida', 'video', 'sana', 'foreveryone']
+        widgets = {
+            'sana': forms.DateInput(attrs={'type': 'date'}),
+            'haqida': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Video dars haqida qisqacha ma\'lumot...'}),
+            'nomi': forms.TextInput(attrs={'placeholder': 'Video dars mavzusi / nomi'}),
+        }
 
     def clean_video(self):
         return validate_safe_video(self.cleaned_data.get('video'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs.update({
-                'class': 'form-control',
-                'style': 'border-radius:8px; padding:8px; font-size:14px;'
-            })
+        for name, field in self.fields.items():
+            if name == 'foreveryone':
+                field.widget.attrs.update({
+                    'class': 'form-check-input',
+                    'style': 'width:20px; height:20px; cursor:pointer;'
+                })
+            else:
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'style': 'border-radius:8px; padding:8px; font-size:14px;'
+                })
+
 
 
 

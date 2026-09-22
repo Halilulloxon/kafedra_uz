@@ -1,60 +1,27 @@
 <!DOCTYPE html>
 {% load static %}
 <html class="loading" lang="uz" data-textdirection="ltr">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
-    <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
-    <meta name="author" content="Kafedralar.uz">
-    <title>Dashboard eCommerce - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.css">
-
-    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <title>Video Darsni Tahrirlash — Kafedralar.uz</title>
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-    <!-- Free Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CQuicksand:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.7/css/flag-icon.min.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/weather-icons/climacons.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/fonts/meteocons/style.min.css' %}">
-
-    <!-- END: Vendor CSS-->
-    <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
-    <!-- END: Theme CSS-->
-    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/fonts/simple-line-icons/style.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/timeline.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
-    <!-- END: Page CSS-->
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
-    <!-- END: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/morris.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist.css' %}">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist-plugin-tooltip.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
 
-<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
-
-    <!-- Header Navbar -->
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
         <div class="navbar-wrapper">
@@ -67,7 +34,7 @@
                     </li>
                     <li class="nav-item mr-auto">
                         <a class="navbar-brand" href="{% url 'index' %}">
-                            <img class="brand-logo" alt="logo" src="/static/app/app-assets/images/logo/logo.png" style="height:32px;">
+                            <img class="brand-logo" alt="logo" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
                             <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
                         </a>
                     </li>
@@ -84,7 +51,7 @@
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fas fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
+                                <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
                             </span>
                         </li>
                     </ul>
@@ -145,7 +112,7 @@
         </div>
     </nav>
     <!-- END: Header-->
-    <!-- Main Menu -->
+
     <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
@@ -179,80 +146,83 @@
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
-
+            <div class="content-header row">
+                <div class="content-header-left col-md-12 col-12 mb-2 breadcrumb-new">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                        <div>
+                            <h3 class="content-header-title mb-0 text-bold-600"><i class="fas fa-edit text-warning mr-1"></i> <span data-i18n="edit_video_title">Video Darsni Tahrirlash</span></h3>
+                            <small class="text-muted" data-i18n="edit_video_sub">Mavjud video darslik ma'lumotlarini o'zgartirish</small>
+                        </div>
+                        <div>
+                            <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 mt-1 mt-sm-0">
+                                <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="back_to_list">Ro'yxatga qaytish</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="content-body">
-                <!-- eCommerce statistic -->
-                <!-- BEGIN: Content-->
-
-                <div class="row mt-0 pt-0">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Tahrirlash</h4>
-                                <a class="heading-elements-toggle"><i class="fas fa-ellipsis-h font-medium-3"></i></a>
-                                <div class="heading-elements">
-                                    <ul class="list-inline mb-0">
-                                        <li><a data-action="collapse"><i class="fas fa-minus"></i></a></li>
-                                        <li><a data-action="reload"><i class="fas fa-sync-alt"></i></a></li>
-                                        <li><a data-action="expand"><i class="fas fa-expand"></i></a></li>
-                                        <li><a data-action="close"><i class="fas fa-times"></i></a></li>
-
-                                    </ul>
-                                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+                        <div class="card shadow-sm border-0" style="border-radius: 14px;">
+                            <div class="card-header bg-transparent border-bottom pb-2">
+                                <h4 class="card-title font-weight-bold"><i class="fas fa-file-video text-warning mr-1"></i> <span data-i18n="edit_video_info">Ma’lumotlarni tahrirlash</span></h4>
                             </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body">
-                                    <form method="POST" enctype="multipart/form-data" action="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}" class="form form-horizontal striped-labels form-bordered">
+                            <div class="card-content">
+                                <div class="card-body p-4">
+                                    <form method="POST" enctype="multipart/form-data" action="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}">
                                         {% csrf_token %}
-                                        <div class="form-body">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Nomi</label>
-                                                <div class="col-md-9">
-                                                    {{ form.nomi }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Haqida</label>
-                                                <div class="col-md-9">
-                                                    {{ form.haqida }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Muallif</label>
-                                                <div class="col-md-9">
-                                                    {{ form.muallif }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Sana</label>
-                                                <div class="col-md-9">
-                                                    {{ form.sana }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Hamma uchun</label>
-                                                <div class="col-md-9">
-                                                    {{ form.foreveryone }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control">Fayl</label>
-                                                <div class="col-md-9">
-                                                    {{ form.video }}
-                                                    {% if ilmiy.fayl %}
-                                                    <div class="current-file">
-                                                        📎 Joriy fayl: <a href="{{ videolar.get_video_url }}" target="_blank">{{ videolar.video.name }}</a>
-                                                    </div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
 
-
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark mb-1"><i class="fas fa-heading mr-1 text-primary"></i> <span data-i18n="video_name">Video dars nomi / mavzusi</span> <span class="text-danger">*</span></label>
+                                            {{ form.nomi }}
                                         </div>
-                                        <div class="form-actions">
-                                            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Saqlash</button>
-                                            <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}" class="btn btn-warning"><i class="fas fa-times"></i> Bekor qilish</a>
+
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark mb-1"><i class="fas fa-user-tie mr-1 text-primary"></i> <span data-i18n="author">Muallif</span> <span class="text-danger">*</span></label>
+                                            {{ form.muallif }}
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark mb-1"><i class="fas fa-align-left mr-1 text-primary"></i> <span data-i18n="description">Qisqacha tavsif / haqida</span></label>
+                                            {{ form.haqida }}
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-12 col-md-6 form-group mb-3">
+                                                <label class="font-weight-bold text-dark mb-1"><i class="fas fa-calendar-alt mr-1 text-primary"></i> <span data-i18n="date">Sana</span> <span class="text-danger">*</span></label>
+                                                {{ form.sana }}
+                                            </div>
+                                            <div class="col-12 col-md-6 form-group mb-3">
+                                                <label class="font-weight-bold text-dark mb-1"><i class="fas fa-file-upload mr-1 text-primary"></i> <span data-i18n="change_video_file">Yangi video fayl yuklash</span></label>
+                                                {{ form.video }}
+                                                {% if video.video %}
+                                                <div class="current-file mt-2 p-2 bg-light rounded border font-small-3">
+                                                    <i class="fas fa-paperclip text-primary mr-1"></i> Joriy video: 
+                                                    <a href="{{ video.get_video_url }}" target="_blank" class="font-weight-bold">{{ video.nomi }}</a>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="card p-3 mb-4 bg-light border-0" style="border-radius: 10px;">
+                                            <div class="custom-control custom-checkbox d-flex align-items-center">
+                                                {{ form.foreveryone }}
+                                                <label class="custom-control-label font-weight-bold text-dark ml-2" for="id_foreveryone" style="cursor: pointer;">
+                                                    <i class="fas fa-globe text-success mr-1"></i> <span data-i18n="public_visible">Barcha foydalanuvchilar (ommaviy) uchun ko'rinsin</span>
+                                                </label>
+                                            </div>
+                                            <small class="text-muted pl-4 mt-1">Belgilansa, ushbu video dars bosh sahifa va umumiy video darslar portalida hammaga ko'rinadi.</small>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap align-items-center justify-content-between pt-2" style="gap: 10px;">
+                                            <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary rounded-pill px-4">
+                                                <i class="fas fa-times mr-1"></i> <span data-i18n="cancel">Bekor qilish</span>
+                                            </a>
+                                            <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                                                <i class="fas fa-save mr-1"></i> <span data-i18n="save_changes">Saqlash</span>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -260,40 +230,21 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- END: Content-->
-                <!--/ Products sell and New Orders -->
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light navbar-border navbar-shadow">
         <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
-        © 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.
+            © 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.
         </p>
     </footer>
+    <!-- END: Footer-->
 
     <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
-    <!-- BEGIN Vendor JS-->
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{% static 'app/app-assets/vendors/js/charts/chartist.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/charts/raphael-min.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/charts/morris.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/timeline/horizontal-timeline.js' %}"></script>
-
-
-    <!-- END: Page Vendor JS-->
-    <!-- BEGIN: Theme JS-->
     <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
     <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
-    <!-- END: Theme JS-->
-    <!-- BEGIN: Page JS-->
-    <script src="https://unpkg.com/feather-icons"></script>
-
-    <script src="{% static 'app/app-assets/js/scripts/pages/dashboard-ecommerce.min.js' %}"></script>
     <script src="{% static 'app/assets/js/theme-dark-lang.js' %}"></script>
 </body>
 </html>
