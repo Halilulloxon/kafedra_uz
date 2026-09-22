@@ -188,7 +188,7 @@ body.dark-mode .search-box input {
 }
 
 /* ==========================================================================
-   Mobile Responsive Optimizations
+   Mobile Responsive & Navbar Optimizations
    ========================================================================== */
 
 /* Universal Responsive Table Wrapper */
@@ -207,20 +207,134 @@ body.dark-mode .search-box input {
     gap: 8px;
 }
 
+/* ── Top Header & Navbar Layout ── */
+.header-navbar {
+    min-height: 4rem;
+}
+
+.header-navbar .navbar-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.header-navbar .navbar-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex: 1 1 auto;
+    padding-right: 1.25rem;
+    overflow: visible;
+}
+
+.header-navbar .navbar-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.header-navbar .navbar-nav.ml-auto {
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+/* User Name Truncation */
+.dropdown-user-link {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-user-link .user-name {
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ── Theme Toggle Button in Navbar ── */
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(30, 136, 229, 0.08);
+    color: #1e88e5;
+    border: 1px solid rgba(30, 136, 229, 0.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    outline: none;
+    line-height: 1.4;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(30, 136, 229, 0.18);
+    border-color: #1e88e5;
+    transform: translateY(-1px);
+}
+
+body.dark-mode .theme-toggle-btn {
+    background: rgba(245, 200, 66, 0.12);
+    color: #f5c842;
+    border-color: rgba(245, 200, 66, 0.35);
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+    background: rgba(245, 200, 66, 0.22);
+    border-color: #f5c842;
+}
+
+/* ── Language Selector in Navbar ── */
+.lang-select {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    color: #2c3e50;
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.25s ease;
+    line-height: 1.4;
+}
+
+body.dark-mode .lang-select {
+    background: #1e293b;
+    color: #f8fafc;
+    border-color: #475569;
+}
+
+.lang-select:focus,
+.lang-select:hover {
+    border-color: #3b82f6;
+}
+
 /* Global Floating Controls (Theme & Lang) for pages without top navbar */
 .global-floating-controls {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
     display: flex;
     align-items: center;
     gap: 8px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 30px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
@@ -235,7 +349,7 @@ body.dark-mode .global-floating-controls {
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
     padding: 4px 8px;
     border-radius: 20px;
     display: inline-flex;
@@ -269,13 +383,26 @@ body.dark-mode .global-lang-select {
 }
 
 /* Media Queries for Tablets & Phones */
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
     .content-header-title {
         font-size: 1.4rem !important;
     }
     .main-menu.menu-fixed {
         position: fixed;
         z-index: 1032;
+    }
+    .header-navbar .navbar-container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .header-navbar .navbar-nav.ml-auto {
+        gap: 6px;
+    }
+    .theme-toggle-btn {
+        padding: 6px 8px;
+    }
+    .dropdown-user-link .user-name {
+        max-width: 110px;
     }
 }
 
@@ -299,9 +426,9 @@ body.dark-mode .global-lang-select {
         font-size: 0.85rem !important;
     }
     .global-floating-controls {
-        bottom: 14px;
-        right: 14px;
-        padding: 5px 10px;
+        bottom: 12px;
+        right: 12px;
+        padding: 4px 8px;
         font-size: 12px;
     }
     .global-theme-btn span {
@@ -309,7 +436,7 @@ body.dark-mode .global-lang-select {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 575.98px) {
     .navbar-brand .brand-text {
         font-size: 1.1rem !important;
     }
@@ -320,5 +447,24 @@ body.dark-mode .global-lang-select {
     .table th, .table td {
         padding: 8px 6px !important;
         font-size: 12px !important;
+    }
+    .dropdown-user-link .user-name {
+        display: none !important;
+    }
+    .theme-toggle-btn {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .theme-toggle-btn span {
+        display: none !important;
+    }
+    .lang-select {
+        padding: 4px 6px;
+        font-size: 12px;
     }
 }
