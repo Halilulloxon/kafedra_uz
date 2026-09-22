@@ -447,7 +447,223 @@ body.dark-mode .global-lang-select {
 
 /* ==========================================================================
    Card, Layout Spacing & Mobile Responsive Optimizations
+/* ==========================================================================
+   Universal Device Adaptation & Responsive Layout Engine (320px - 4K)
    ========================================================================== */
+
+/* Universal Fluid Box-Sizing & Media Constraints */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+img, video, iframe, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Public Pages Universal Navigation Responsive ── */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 48px);
+    min-height: 64px;
+    height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+nav .logo {
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+    white-space: nowrap;
+}
+
+nav .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* On medium & mobile screens: Make public nav items horizontally scrollable pill bar */
+@media (max-width: 900px) {
+    nav {
+        flex-wrap: wrap;
+        padding: 8px 14px;
+        gap: 8px;
+    }
+    nav ul {
+        display: flex !important;
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 0;
+        margin: 0;
+        gap: 6px;
+        scrollbar-width: none; /* Firefox */
+    }
+    nav ul::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
+    nav ul li {
+        flex-shrink: 0;
+    }
+    nav ul li a {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+    }
+    body.dark-mode nav ul li a {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* ── Hero & Stats Grid Universal Adaptation ── */
+.hero {
+    padding: clamp(60px, 8vw, 110px) clamp(14px, 4vw, 48px) clamp(40px, 6vw, 70px) !important;
+}
+
+.hero h1 {
+    font-size: clamp(1.85rem, 5.5vw, 3.8rem) !important;
+    line-height: 1.15 !important;
+    word-break: break-word;
+}
+
+.hero p {
+    font-size: clamp(0.92rem, 1.8vw, 1.15rem) !important;
+    line-height: 1.65 !important;
+}
+
+/* Responsive Stats Row (Index page) */
+.stats-row {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: clamp(30px, 5vw, 60px) !important;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1px;
+    }
+    .stats-row .stat {
+        padding: 16px 12px !important;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .stat-num {
+        font-size: 28px !important;
+    }
+    .stat-label {
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .stats-row .stat {
+        padding: 12px 8px !important;
+    }
+    .stat-num {
+        font-size: 24px !important;
+    }
+}
+
+/* ── Public Grids (Teachers, Books, Articles, Videos, Features) ── */
+.features-grid,
+.books-grid,
+.articles-grid,
+.teachers-grid,
+.videos-grid,
+.grid-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) !important;
+    gap: clamp(14px, 2.5vw, 24px) !important;
+    width: 100%;
+}
+
+@media (max-width: 576px) {
+    .features-grid,
+    .books-grid,
+    .articles-grid,
+    .teachers-grid,
+    .videos-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .page-header {
+        padding: clamp(60px, 12vw, 90px) 14px 30px !important;
+    }
+    .page-header h1 {
+        font-size: clamp(1.6rem, 6vw, 2.4rem) !important;
+    }
+    .main {
+        padding: 20px 12px 60px !important;
+    }
+}
+
+/* ── Filters & Search Boxes ── */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        gap: 6px;
+    }
+    .filter-btn {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+    .search-box {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 6px;
+    }
+    .search-box input {
+        width: 100% !important;
+    }
+}
+
+/* ── Dashboard Layout & Container Adaptation ── */
+.app-content.content {
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+.content-wrapper {
+    padding: clamp(12px, 2.5vw, 28px) clamp(10px, 2vw, 24px) !important;
+}
+
+.content-header {
+    margin-bottom: 1rem;
+}
+
+.content-header-title {
+    font-size: clamp(1.2rem, 3vw, 1.6rem) !important;
+    font-weight: 700 !important;
+}
 
 /* Universal Responsive Table Wrapper */
 .table-responsive {
@@ -464,39 +680,37 @@ body.dark-mode .global-lang-select {
     border-radius: 12px !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 18px !important;
     overflow: hidden;
 }
 
 .card-body {
-    padding: 1.25rem !important;
+    padding: clamp(12px, 2vw, 24px) !important;
 }
 
-/* Form Inputs & Filter Spacing */
-.form-control-sm,
-.custom-select-sm {
-    height: 38px !important;
-    padding: 6px 12px !important;
-    font-size: 13.5px !important;
-    border-radius: 8px !important;
-}
-
+/* Form Controls & Filter Form-Row */
 .form-row {
-    margin-right: -6px !important;
-    margin-left: -6px !important;
+    margin-right: -4px !important;
+    margin-left: -4px !important;
 }
 
 .form-row > [class*="col-"] {
-    padding-right: 6px !important;
-    padding-left: 6px !important;
-    margin-bottom: 10px !important;
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+    margin-bottom: 8px !important;
 }
 
-.form-row label {
-    font-size: 12.5px !important;
-    font-weight: 600 !important;
-    margin-bottom: 5px !important;
-    display: inline-block !important;
+.form-control,
+.custom-select {
+    font-size: 14px !important;
+    border-radius: 8px !important;
+}
+
+.form-control-sm,
+.custom-select-sm {
+    height: 38px !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
 }
 
 /* Table Padding & Spacing */
@@ -506,7 +720,7 @@ body.dark-mode .global-lang-select {
 }
 
 .table th {
-    padding: 14px 16px !important;
+    padding: 12px 14px !important;
     font-size: 13px !important;
     font-weight: 700 !important;
     white-space: nowrap !important;
@@ -514,95 +728,81 @@ body.dark-mode .global-lang-select {
 }
 
 .table td {
-    padding: 14px 16px !important;
-    font-size: 13.5px !important;
+    padding: 12px 14px !important;
+    font-size: 13px !important;
     vertical-align: middle !important;
 }
 
-/* Flexible Action Bar */
+/* Action Button Groups */
+.action-btn-group,
 .action-bar-responsive {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 8px;
+    width: auto;
 }
 
-/* Media Queries for Tablets & Phones */
-@media (max-width: 991.98px) {
-    .content-header-title {
-        font-size: 1.35rem !important;
+@media (max-width: 576px) {
+    .action-btn-group {
+        width: 100%;
     }
-    .main-menu.menu-fixed {
-        position: fixed;
-        z-index: 1032;
+    .action-btn-group .btn,
+    .action-btn-group a {
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+}
+
+/* Header Navbar Mobile Tuning */
+@media (max-width: 991.98px) {
+    .header-navbar .navbar-header {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 10px !important;
+        height: 56px !important;
     }
     .header-navbar .navbar-container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
     .header-navbar .navbar-nav.ml-auto {
-        gap: 6px;
-    }
-    .theme-toggle-btn {
-        padding: 6px 8px;
+        gap: 6px !important;
     }
     .dropdown-user-link .user-name {
-        max-width: 110px;
-    }
-}
-
-@media (max-width: 768px) {
-    .app-content {
-        padding: 12px 10px !important;
-    }
-    .content-wrapper {
-        padding: 14px 10px !important;
-    }
-    .card {
-        margin-bottom: 16px !important;
-    }
-    .card-body {
-        padding: 14px 12px !important;
-    }
-    .stat-card h2 {
-        font-size: 1.5rem !important;
-    }
-    .stat-card span {
-        font-size: 0.85rem !important;
-    }
-    .global-floating-controls {
-        bottom: 12px;
-        right: 12px;
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-    .global-theme-btn span {
-        display: none;
+        max-width: 100px !important;
     }
 }
 
 @media (max-width: 575.98px) {
-    .content-wrapper {
-        padding: 10px 6px !important;
+    .header-navbar {
+        padding: 0 !important;
+    }
+    .navbar-brand .brand-logo {
+        height: 26px !important;
     }
     .navbar-brand .brand-text {
-        font-size: 1.1rem !important;
-    }
-    .btn-sm {
-        padding: 0.4rem 0.75rem !important;
-        font-size: 0.82rem !important;
-    }
-    .table th, .table td {
-        padding: 10px 10px !important;
-        font-size: 12.5px !important;
+        font-size: 0.95rem !important;
+        margin-left: 6px !important;
     }
     .dropdown-user-link .user-name {
         display: none !important;
     }
+    .dropdown-user-link .avatar {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    .dropdown-user-link .avatar img {
+        width: 32px !important;
+        height: 32px !important;
+    }
     .theme-toggle-btn {
-        width: 34px;
-        height: 34px;
+        width: 32px !important;
+        height: 32px !important;
         padding: 0 !important;
         border-radius: 50% !important;
         display: inline-flex !important;
@@ -613,7 +813,87 @@ body.dark-mode .global-lang-select {
         display: none !important;
     }
     .lang-select {
-        padding: 4px 6px !important;
+        padding: 3px 5px !important;
+        font-size: 11.5px !important;
+        border-radius: 8px !important;
+    }
+    .btn-sm {
+        padding: 0.35rem 0.65rem !important;
+        font-size: 0.8rem !important;
+    }
+    .table th, .table td {
+        padding: 8px 8px !important;
         font-size: 12px !important;
     }
 }
+
+/* Floating Controls for Mobile */
+.global-floating-controls {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 5px 10px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .global-floating-controls {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: #334155;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.global-theme-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 3px 6px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    color: inherit;
+}
+
+.global-lang-select {
+    border: 1px solid #cbd5e1;
+    background: transparent;
+    color: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+body.dark-mode .global-lang-select {
+    border-color: #475569;
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+/* Ultrawide Screens (>= 1600px) */
+@media (min-width: 1600px) {
+    .main,
+    .hero-content,
+    .features,
+    .profile-hero,
+    .container,
+    .container-fluid {
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
