@@ -366,11 +366,31 @@
 
         var t = translations[lang] || translations.uz;
 
-        // A. Elements with data-i18n
+        // A. Elements with data-i18n (safely preserve any child icons)
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
             var key = el.getAttribute('data-i18n');
             if (t[key]) {
-                el.textContent = t[key];
+                var icons = el.querySelectorAll('i, svg');
+                if (icons.length > 0) {
+                    var span = el.querySelector('span:not(.badge)');
+                    if (span) {
+                        span.textContent = t[key];
+                    } else {
+                        var textNodeFound = false;
+                        Array.from(el.childNodes).forEach(function (node) {
+                            if (node.nodeType === 3 && node.textContent.trim().length > 0) {
+                                node.textContent = ' ' + t[key];
+                                textNodeFound = true;
+                            }
+                        });
+                        if (!textNodeFound) {
+                            var iconsHtml = Array.from(icons).map(function(ic) { return ic.outerHTML; }).join(' ');
+                            el.innerHTML = iconsHtml + ' ' + t[key];
+                        }
+                    }
+                } else {
+                    el.textContent = t[key];
+                }
             }
         });
 
@@ -378,6 +398,7 @@
         var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge, .menu-title');
         textElements.forEach(function (el) {
             if (el.hasAttribute('data-i18n')) return; // Already handled
+            if (el.tagName === 'I' || el.tagName === 'SVG' || el.classList.contains('fa') || el.classList.contains('fas') || el.classList.contains('far') || el.classList.contains('fab')) return;
 
             // If it's a leaf element (no child tags)
             if (el.children.length === 0) {
@@ -393,11 +414,11 @@
                 // If element has children (e.g. <i> icon + text), update only TEXT_NODES
                 Array.from(el.childNodes).forEach(function (node) {
                     if (node.nodeType === 3) { // Text Node
-                        var txt = (node.datasetI18nOrig !== undefined) ? node.datasetI18nOrig : node.textContent.trim();
-                        if (node.datasetI18nOrig === undefined && txt) {
-                            node.datasetI18nOrig = txt;
+                        var txt = (node._i18nOrig !== undefined) ? node._i18nOrig : node.textContent.trim();
+                        if (node._i18nOrig === undefined && txt) {
+                            node._i18nOrig = txt;
                         }
-                        var orig = node.datasetI18nOrig;
+                        var orig = node._i18nOrig;
                         if (orig && phraseDict[orig]) {
                             var translated = (lang === 'uz') ? orig : (phraseDict[orig][lang] || orig);
                             var leading = node.textContent.match(/^\s*/)[0];

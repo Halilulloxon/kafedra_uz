@@ -1,8 +1,56 @@
 /* ==========================================================================
    Kafedralar.uz — Global Dark Mode, Icons & Mobile Responsive Styling
    ========================================================================== */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
-@import url("../../app-assets/fonts/font-awesome/css/all.min.css");
+/* Local FontAwesome 6 Webfonts */
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 Brands';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-brands-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-brands-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 v4 Compatibility';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-v4compatibility.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-v4compatibility.ttf") format("truetype");
+}
+
 
 /* ── Universal FontAwesome 6 Icon Enforcement ── */
 .fa, .fas, .fa-solid, i.fa, i.fas, i.fa-solid,

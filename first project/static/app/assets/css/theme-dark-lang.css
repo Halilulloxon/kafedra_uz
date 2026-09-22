@@ -1,11 +1,60 @@
 /* ==========================================================================
    Kafedralar.uz — Global Dark Mode, Icons & Mobile Responsive Styling
    ========================================================================== */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+/* Local FontAwesome 6 Webfonts */
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 Brands';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-brands-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-brands-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-solid-900.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-regular-400.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'Font Awesome 6 v4 Compatibility';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../../app-assets/fonts/font-awesome/webfonts/fa-v4compatibility.woff2") format("woff2"),
+         url("../../app-assets/fonts/font-awesome/webfonts/fa-v4compatibility.ttf") format("truetype");
+}
+
 
 /* ── Universal FontAwesome 6 Icon Enforcement ── */
-.fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands,
-.main-menu i, .stat-card i, .header-navbar i, .nav-item i, .btn i,
+.fa, .fas, .fa-solid, i.fa, i.fas, i.fa-solid,
+.stat-card i, .header-navbar i, .nav-item i, .btn i,
 i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
     font-family: "Font Awesome 6 Free", "FontAwesome" !important;
     font-weight: 900 !important;
@@ -15,12 +64,30 @@ i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
 }
-.fa-regular, .far, i.far {
+
+.fa-regular, .far, i.far, i.fa-regular {
+    font-family: "Font Awesome 6 Free", "FontAwesome" !important;
     font-weight: 400 !important;
+    font-style: normal !important;
+    display: inline-block !important;
 }
-.fa-brands, .fab, i.fab {
+
+.fa-brands, .fab, i.fab, i.fa-brands {
     font-family: "Font Awesome 6 Brands" !important;
     font-weight: 400 !important;
+    font-style: normal !important;
+    display: inline-block !important;
+}
+
+/* Sidebar Menu Icon Styling */
+.main-menu .navigation > li > a > i {
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    width: 26px !important;
+    text-align: center !important;
+    margin-right: 10px !important;
 }
 
 :root {
@@ -447,162 +514,454 @@ body.dark-mode .global-lang-select {
 
 /* ==========================================================================
    Card, Layout Spacing & Mobile Responsive Optimizations
+/* ==========================================================================
+   Universal Device Adaptation & Responsive Layout Engine (320px - 4K)
    ========================================================================== */
 
-/* Universal Responsive Table Wrapper */
+/* Universal Fluid Box-Sizing & Media Constraints */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+img, video, iframe, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Public Pages Universal Navigation Responsive ── */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 48px);
+    min-height: 64px;
+    height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+nav .logo {
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+    white-space: nowrap;
+}
+
+nav .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* On medium & mobile screens: Make public nav items horizontally scrollable pill bar */
+@media (max-width: 900px) {
+    nav {
+        flex-wrap: wrap;
+        padding: 8px 14px;
+        gap: 8px;
+    }
+    nav ul {
+        display: flex !important;
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 0;
+        margin: 0;
+        gap: 6px;
+        scrollbar-width: none; /* Firefox */
+    }
+    nav ul::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
+    nav ul li {
+        flex-shrink: 0;
+    }
+    nav ul li a {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+    }
+    body.dark-mode nav ul li a {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* ── Hero & Stats Grid Universal Adaptation ── */
+.hero {
+    padding: clamp(60px, 8vw, 110px) clamp(14px, 4vw, 48px) clamp(40px, 6vw, 70px) !important;
+}
+
+.hero h1 {
+    font-size: clamp(1.85rem, 5.5vw, 3.8rem) !important;
+    line-height: 1.15 !important;
+    word-break: break-word;
+}
+
+.hero p {
+    font-size: clamp(0.92rem, 1.8vw, 1.15rem) !important;
+    line-height: 1.65 !important;
+}
+
+/* Responsive Stats Row (Index page) */
+.stats-row {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: clamp(30px, 5vw, 60px) !important;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1px;
+    }
+    .stats-row .stat {
+        padding: 16px 12px !important;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .stat-num {
+        font-size: 28px !important;
+    }
+    .stat-label {
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .stats-row .stat {
+        padding: 12px 8px !important;
+    }
+    .stat-num {
+        font-size: 24px !important;
+    }
+}
+
+/* ── Public Grids (Teachers, Books, Articles, Videos, Features) ── */
+.features-grid,
+.books-grid,
+.articles-grid,
+.teachers-grid,
+.videos-grid,
+.grid-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) !important;
+    gap: clamp(14px, 2.5vw, 24px) !important;
+    width: 100%;
+}
+
+@media (max-width: 576px) {
+    .features-grid,
+    .books-grid,
+    .articles-grid,
+    .teachers-grid,
+    .videos-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .page-header {
+        padding: clamp(60px, 12vw, 90px) 14px 30px !important;
+    }
+    .page-header h1 {
+        font-size: clamp(1.6rem, 6vw, 2.4rem) !important;
+    }
+    .main {
+        padding: 20px 12px 60px !important;
+    }
+}
+
+/* ── Filters & Search Boxes ── */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        gap: 6px;
+    }
+    .filter-btn {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+    .search-box {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 6px;
+    }
+    .search-box input {
+        width: 100% !important;
+    }
+}
+
+/* ── Dashboard Layout & Container Adaptation ── */
+.app-content.content {
+    min-height: 100vh;
+    transition: all 0.3s ease;
+    background-color: #f8fafc !important;
+}
+
+body.dark-mode .app-content.content {
+    background-color: #0b1120 !important;
+}
+
+.content-wrapper {
+    padding: clamp(14px, 2.5vw, 28px) clamp(12px, 2vw, 26px) !important;
+}
+
+.content-header {
+    margin-bottom: 1.25rem !important;
+}
+
+.content-header-title {
+    font-size: clamp(1.25rem, 3vw, 1.6rem) !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    letter-spacing: -0.3px;
+}
+
+body.dark-mode .content-header-title {
+    color: #f8fafc !important;
+}
+
+.content-header-left {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
+
+/* Universal Responsive Table Wrapper & Cards */
 .table-responsive {
     display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    border-radius: 10px;
+    border-radius: 12px;
     margin-bottom: 0 !important;
 }
 
 /* Card Spacing & Polish */
 .card {
-    border-radius: 12px !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    border-radius: 14px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
     margin-bottom: 20px !important;
+    background: #ffffff !important;
     overflow: hidden;
 }
 
+body.dark-mode .card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
 .card-body {
-    padding: 1.25rem !important;
+    padding: clamp(14px, 2vw, 24px) !important;
 }
 
-/* Form Inputs & Filter Spacing */
-.form-control-sm,
-.custom-select-sm {
-    height: 38px !important;
-    padding: 6px 12px !important;
-    font-size: 13.5px !important;
-    border-radius: 8px !important;
-}
-
+/* Form Controls & Filter Form-Row */
 .form-row {
-    margin-right: -6px !important;
-    margin-left: -6px !important;
+    margin-right: -5px !important;
+    margin-left: -5px !important;
 }
 
 .form-row > [class*="col-"] {
-    padding-right: 6px !important;
-    padding-left: 6px !important;
-    margin-bottom: 10px !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    margin-bottom: 8px !important;
 }
 
-.form-row label {
+.form-row label,
+.card-body label {
     font-size: 12.5px !important;
     font-weight: 600 !important;
-    margin-bottom: 5px !important;
-    display: inline-block !important;
+    color: #475569 !important;
+    margin-bottom: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
 }
 
-/* Table Padding & Spacing */
+body.dark-mode .form-row label,
+body.dark-mode .card-body label {
+    color: #94a3b8 !important;
+}
+
+.form-control,
+.custom-select {
+    font-size: 13.5px !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-control:focus,
+.custom-select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .custom-select {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .custom-select:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+}
+
+.form-control-sm,
+.custom-select-sm {
+    height: 40px !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+}
+
+/* Modern Table Polish */
 .table {
     margin-bottom: 0 !important;
     width: 100% !important;
+    border-collapse: collapse !important;
 }
 
-.table th {
+.table thead th {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
     padding: 14px 16px !important;
-    font-size: 13px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
     white-space: nowrap !important;
     border-top: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
 }
 
-.table td {
-    padding: 14px 16px !important;
+body.dark-mode .table thead th {
+    background-color: #162032 !important;
+    color: #94a3b8 !important;
+    border-bottom: 2px solid #334155 !important;
+}
+
+.table tbody td {
+    padding: 13px 16px !important;
     font-size: 13.5px !important;
     vertical-align: middle !important;
+    border-top: 1px solid #f1f5f9 !important;
+    color: #334155 !important;
+    transition: background-color 0.15s ease !important;
 }
 
-/* Flexible Action Bar */
+body.dark-mode .table tbody td {
+    border-top: 1px solid #273549 !important;
+    color: #e2e8f0 !important;
+}
+
+.table tbody tr:hover td {
+    background-color: #f8fafc !important;
+}
+
+body.dark-mode .table tbody tr:hover td {
+    background-color: #243042 !important;
+}
+
+/* Action Button Groups & Badges */
+.action-btn-group,
 .action-bar-responsive {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 8px;
+    width: auto;
 }
 
-/* Media Queries for Tablets & Phones */
-@media (max-width: 991.98px) {
-    .content-header-title {
-        font-size: 1.35rem !important;
+@media (max-width: 576px) {
+    .action-btn-group {
+        width: 100%;
     }
-    .main-menu.menu-fixed {
-        position: fixed;
-        z-index: 1032;
+    .action-btn-group .btn,
+    .action-btn-group a {
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+}
+
+/* Header Navbar Mobile Tuning */
+@media (max-width: 991.98px) {
+    .header-navbar .navbar-header {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 10px !important;
+        height: 56px !important;
     }
     .header-navbar .navbar-container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
     .header-navbar .navbar-nav.ml-auto {
-        gap: 6px;
-    }
-    .theme-toggle-btn {
-        padding: 6px 8px;
+        gap: 6px !important;
     }
     .dropdown-user-link .user-name {
-        max-width: 110px;
-    }
-}
-
-@media (max-width: 768px) {
-    .app-content {
-        padding: 12px 10px !important;
-    }
-    .content-wrapper {
-        padding: 14px 10px !important;
-    }
-    .card {
-        margin-bottom: 16px !important;
-    }
-    .card-body {
-        padding: 14px 12px !important;
-    }
-    .stat-card h2 {
-        font-size: 1.5rem !important;
-    }
-    .stat-card span {
-        font-size: 0.85rem !important;
-    }
-    .global-floating-controls {
-        bottom: 12px;
-        right: 12px;
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-    .global-theme-btn span {
-        display: none;
+        max-width: 100px !important;
     }
 }
 
 @media (max-width: 575.98px) {
-    .content-wrapper {
-        padding: 10px 6px !important;
+    .header-navbar {
+        padding: 0 !important;
+    }
+    .navbar-brand .brand-logo {
+        height: 26px !important;
     }
     .navbar-brand .brand-text {
-        font-size: 1.1rem !important;
-    }
-    .btn-sm {
-        padding: 0.4rem 0.75rem !important;
-        font-size: 0.82rem !important;
-    }
-    .table th, .table td {
-        padding: 10px 10px !important;
-        font-size: 12.5px !important;
+        font-size: 0.95rem !important;
+        margin-left: 6px !important;
     }
     .dropdown-user-link .user-name {
         display: none !important;
     }
+    .dropdown-user-link .avatar {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    .dropdown-user-link .avatar img {
+        width: 32px !important;
+        height: 32px !important;
+    }
     .theme-toggle-btn {
-        width: 34px;
-        height: 34px;
+        width: 32px !important;
+        height: 32px !important;
         padding: 0 !important;
         border-radius: 50% !important;
         display: inline-flex !important;
@@ -613,7 +972,217 @@ body.dark-mode .global-lang-select {
         display: none !important;
     }
     .lang-select {
-        padding: 4px 6px !important;
+        padding: 3px 5px !important;
+        font-size: 11.5px !important;
+        border-radius: 8px !important;
+    }
+    .btn-sm {
+        padding: 0.35rem 0.65rem !important;
+        font-size: 0.8rem !important;
+    }
+    .table th, .table td {
+        padding: 8px 8px !important;
         font-size: 12px !important;
     }
 }
+
+/* Floating Controls for Mobile */
+.global-floating-controls {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 5px 10px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .global-floating-controls {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: #334155;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.global-theme-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 3px 6px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    color: inherit;
+}
+
+.global-lang-select {
+    border: 1px solid #cbd5e1;
+    background: transparent;
+    color: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+body.dark-mode .global-lang-select {
+    border-color: #475569;
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+/* Ultrawide Screens (>= 1600px) */
+@media (min-width: 1600px) {
+    .main,
+    .hero-content,
+    .features,
+    .profile-hero,
+    .container,
+    .container-fluid {
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ── Login / Register Form & Icon Fixes ── */
+.form-control-position {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+}
+.form-control-position i {
+    font-size: 1rem !important;
+    color: #64748b !important;
+}
+body.dark-mode .form-control-position i {
+    color: #94a3b8 !important;
+}
+body.dark-mode .line-on-side {
+    border-bottom: 1px solid #334155 !important;
+}
+body.dark-mode .line-on-side span {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+}
+body.dark-mode .line-on-side span a {
+    color: #60a5fa !important;
+}
+body.dark-mode .card.border-grey {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+body.dark-mode .password-wrapper .toggle-password {
+    color: #94a3b8 !important;
+}
+body.dark-mode .password-wrapper .toggle-password:hover {
+    color: #f1f5f9 !important;
+}
+
+/* ── Teachers & Teacher Profile Light/Dark Theme Support ── */
+body:not(.dark-mode) .teachers-grid .t-card,
+body:not(.dark-mode) .t-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+body:not(.dark-mode) .t-card .t-name {
+    color: #ffffff !important;
+}
+body:not(.dark-mode) .t-card .t-card-body {
+    background: #ffffff !important;
+    color: #1e293b !important;
+}
+body:not(.dark-mode) .t-stats {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .summary-bar {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .sum-item {
+    border-right-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .filter-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #334155 !important;
+}
+body:not(.dark-mode) .filter-btn.active {
+    background: #1e88e5 !important;
+    border-color: #1e88e5 !important;
+    color: #ffffff !important;
+}
+body:not(.dark-mode) .search-form input {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+}
+body:not(.dark-mode) .page-header {
+    background: linear-gradient(180deg, rgba(30, 136, 229, 0.06) 0%, transparent 100%) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+body:not(.dark-mode) .page-header h1 {
+    color: #0f172a !important;
+}
+body:not(.dark-mode) .page-header p {
+    color: #64748b !important;
+}
+
+body.dark-mode .teachers-grid .t-card,
+body.dark-mode .t-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+body.dark-mode .t-card .t-card-body {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+body.dark-mode .t-stats {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+body.dark-mode .summary-bar {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body.dark-mode .sum-item {
+    border-right-color: #334155 !important;
+}
+body.dark-mode .filter-btn {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+body.dark-mode .filter-btn.active {
+    background: #1e88e5 !important;
+    border-color: #1e88e5 !important;
+    color: #ffffff !important;
+}
+body.dark-mode .search-form input {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+

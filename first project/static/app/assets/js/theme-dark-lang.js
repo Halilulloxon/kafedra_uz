@@ -66,9 +66,18 @@
         "▶ Tomosha qilish": { ru: "▶ Смотреть", en: "▶ Watch" },
         "⬇ Yuklab olish": { ru: "⬇ Скачать", en: "⬇ Download" },
         "O'qituvchi Kabineti": { ru: "Кабинет преподавателя", en: "Teacher Cabinet" },
+        "Kafedra Mudiri Paneli": { ru: "Панель зав. кафедрой", en: "Department Head Panel" },
+        "Dekan Boshqaruv Paneli": { ru: "Панель декана", en: "Dean Management Panel" },
+        "Prorektor Boshqaruv Paneli": { ru: "Панель проректора", en: "Vice-Rector Panel" },
+        "Prorektor boshqaruvi": { ru: "Панель проректора", en: "Vice-Rector Panel" },
         "Mudir paneli": { ru: "Панель зав. кафедрой", en: "Department Head Panel" },
         "Dekan paneli": { ru: "Панель декана", en: "Dean Panel" },
         "Prorektor paneli": { ru: "Панель проректора", en: "Vice-Rector Panel" },
+        "O'qituvchi Profilim": { ru: "Мой профиль преподавателя", en: "My Teacher Profile" },
+        "Mudir Paneli": { ru: "Панель зав. кафедрой", en: "Department Head Panel" },
+        "Dekan Paneli": { ru: "Панель декана", en: "Dean Panel" },
+        "Prorektor Paneli": { ru: "Панель проректора", en: "Vice-Rector Panel" },
+        "Shaxsiy O'qituvchi Profili": { ru: "Личный профиль преподавателя", en: "Personal Teacher Profile" },
         "Tungi rejim": { ru: "Темная тема", en: "Dark mode" },
         "Kunduzgi rejim": { ru: "Светлая тема", en: "Light mode" },
         "Top Mualliflar": { ru: "Топ авторы", en: "Top Authors" },
@@ -106,9 +115,66 @@
             sci_works_menu: "Ilmiy ishlar",
             video_lessons_menu: "Video darslar",
             role_badge: "O'qituvchi Kabineti",
+            role_oqituvchi: "O'qituvchi Kabineti",
+            role_mudir: "Kafedra Mudiri Paneli",
+            role_dekan: "Dekan Boshqaruv Paneli",
+            role_prorektor: "Prorektor Boshqaruv Paneli",
+            switch_teacher_profile: "O'qituvchi Profilim",
+            switch_mudir_panel: "Mudir Paneli",
+            switch_dekan_panel: "Dekan Paneli",
+            switch_prorektor_panel: "Prorektor Paneli",
+            my_teacher_profile: "Shaxsiy O'qituvchi Profili",
+            dept_requirements: "Kafedra Talablari & Rejasi",
+            dept_sci_works: "Kafedra Ilmiy Ishlari",
+            dept_edu_works: "Kafedra O'quv Ishlari",
+            fac_sci_works: "Fakultet Ilmiy Ishlari",
+            fac_edu_works: "Fakultet O'quv Ishlari",
             edit_profile: "Profilni tahrirlash",
             dark_mode: "Tungi rejim",
-            light_mode: "Kunduzgi rejim"
+            light_mode: "Kunduzgi rejim",
+            video_lessons_sub: "Barcha yuklangan video darslar ro'yxati",
+            back_dashboard: "Boshqaruv paneliga qaytish",
+            download_zip: "ZIP yuklab olish",
+            add_new: "Yangi qo'shish",
+            delete: "O'chirish",
+            total_videos: "Jami",
+            video_count_unit: "ta video dars",
+            from_date: "Dan",
+            to_date: "Gacha",
+            filter_btn: "Filtrlash",
+            no_videos_found: "Hech qanday video dars topilmadi",
+            add_video_prompt: "Yangi video dars qo'shish uchun yuqoridagi 'Yangi qo'shish' tugmasini bosing.",
+            add_video_title: "Video Dars Qo‘shish",
+            add_video_sub: "Platformaga yangi video darslik yuklash",
+            back_to_list: "Ro'yxatga qaytish",
+            video_details: "Video dars ma’lumotlari",
+            video_name: "Video dars nomi / mavzusi",
+            author: "Muallif",
+            description: "Qisqacha tavsif / haqida",
+            date: "Sana",
+            video_file: "Video fayli (.mp4, .mkv, .mov)",
+            change_video_file: "Yangi video fayl yuklash",
+            public_visible: "Barcha foydalanuvchilar (ommaviy) uchun ko'rinsin",
+            cancel: "Bekor qilish",
+            save_add: "Saqlash va qo‘shish",
+            edit_video_title: "Video Darsni Tahrirlash",
+            edit_video_sub: "Mavjud video darslik ma'lumotlarini o'zgartirish",
+            edit_video_info: "Ma’lumotlarni tahrirlash",
+            save_changes: "Saqlash",
+            delete_video_title: "Video Darsni O'chirish",
+            delete_video_sub: "Keraksiz video darslikni o'chirish",
+            confirm_delete: "O'chirishni tasdiqlang",
+            confirm_delete_btn: "O‘chirish",
+            edu_videos_tag: "Ta'lim videolari",
+            video_lessons_title: "Video Darslar",
+            video_lessons_desc: "O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.",
+            teacher_filter: "O'qituvchi:",
+            all: "Barchasi",
+            username_placeholder: "Foydalanuvchi nomi",
+            password_placeholder: "Parolni kiriting",
+            remember_me: "Meni eslab qol",
+            login_btn: "Kirish",
+            register_prompt: "Yangi foydalanuvchimisiz?"
         },
         ru: {
             theme_dark: "Темная тема",
@@ -125,9 +191,66 @@
             sci_works_menu: "Научные работы",
             video_lessons_menu: "Видеоуроки",
             role_badge: "Кабинет преподавателя",
+            role_oqituvchi: "Кабинет преподавателя",
+            role_mudir: "Панель зав. кафедрой",
+            role_dekan: "Панель декана",
+            role_prorektor: "Панель проректора",
+            switch_teacher_profile: "Мой профиль преподавателя",
+            switch_mudir_panel: "Панель зав. кафедрой",
+            switch_dekan_panel: "Панель декана",
+            switch_prorektor_panel: "Панель проректора",
+            my_teacher_profile: "Личный профиль преподавателя",
+            dept_requirements: "Требования кафедры",
+            dept_sci_works: "Научные работы кафедры",
+            dept_edu_works: "Учебные работы кафедры",
+            fac_sci_works: "Научные работы факультета",
+            fac_edu_works: "Учебные работы факультета",
             edit_profile: "Редактировать профиль",
             dark_mode: "Темная тема",
-            light_mode: "Светлая тема"
+            light_mode: "Светлая тема",
+            video_lessons_sub: "Список всех загруженных видеоуроков",
+            back_dashboard: "Вернуться в панель управления",
+            download_zip: "Скачать ZIP",
+            add_new: "Добавить",
+            delete: "Удалить",
+            total_videos: "Всего",
+            video_count_unit: "видеоуроков",
+            from_date: "От",
+            to_date: "До",
+            filter_btn: "Фильтровать",
+            no_videos_found: "Видеоуроки не найдены",
+            add_video_prompt: "Нажмите кнопку 'Добавить' выше, чтобы загрузить новый видеоурок.",
+            add_video_title: "Добавить видеоурок",
+            add_video_sub: "Загрузка нового видеоурока на платформу",
+            back_to_list: "Вернуться к списку",
+            video_details: "Информация о видеоуроке",
+            video_name: "Тема / Название видеоурока",
+            author: "Автор",
+            description: "Краткое описание",
+            date: "Дата",
+            video_file: "Видеофайл (.mp4, .mkv, .mov)",
+            change_video_file: "Загрузить новый видеофайл",
+            public_visible: "Сделать общедоступным (для всех)",
+            cancel: "Отмена",
+            save_add: "Сохранить и добавить",
+            edit_video_title: "Редактировать видеоурок",
+            edit_video_sub: "Изменение данных существующего видеоурока",
+            edit_video_info: "Редактирование данных",
+            save_changes: "Сохранить",
+            delete_video_title: "Удалить видеоурок",
+            delete_video_sub: "Удаление видеоурока",
+            confirm_delete: "Подтвердите удаление",
+            confirm_delete_btn: "Удалить",
+            edu_videos_tag: "Образовательные видео",
+            video_lessons_title: "Видеоуроки",
+            video_lessons_desc: "Платформа качественных видеоуроков от наших преподавателей.",
+            teacher_filter: "Преподаватель:",
+            all: "Все",
+            username_placeholder: "Имя пользователя",
+            password_placeholder: "Введите пароль",
+            remember_me: "Запомнить меня",
+            login_btn: "Войти",
+            register_prompt: "Вы новый пользователь?"
         },
         en: {
             theme_dark: "Dark mode",
@@ -144,9 +267,66 @@
             sci_works_menu: "Scientific works",
             video_lessons_menu: "Video lessons",
             role_badge: "Teacher Cabinet",
+            role_oqituvchi: "Teacher Cabinet",
+            role_mudir: "Department Head Panel",
+            role_dekan: "Dean Management Panel",
+            role_prorektor: "Vice-Rector Panel",
+            switch_teacher_profile: "My Teacher Profile",
+            switch_mudir_panel: "Dept. Head Panel",
+            switch_dekan_panel: "Dean Panel",
+            switch_prorektor_panel: "Vice-Rector Panel",
+            my_teacher_profile: "Personal Teacher Profile",
+            dept_requirements: "Department Requirements",
+            dept_sci_works: "Dept. Scientific Works",
+            dept_edu_works: "Dept. Educational Works",
+            fac_sci_works: "Faculty Scientific Works",
+            fac_edu_works: "Faculty Educational Works",
             edit_profile: "Edit profile",
             dark_mode: "Dark mode",
-            light_mode: "Light mode"
+            light_mode: "Light mode",
+            video_lessons_sub: "List of all uploaded video lessons",
+            back_dashboard: "Back to dashboard",
+            download_zip: "Download ZIP",
+            add_new: "Add New",
+            delete: "Delete",
+            total_videos: "Total",
+            video_count_unit: "video lessons",
+            from_date: "From",
+            to_date: "To",
+            filter_btn: "Filter",
+            no_videos_found: "No video lessons found",
+            add_video_prompt: "Click 'Add New' above to upload a new video lesson.",
+            add_video_title: "Add Video Lesson",
+            add_video_sub: "Upload a new video lesson to the platform",
+            back_to_list: "Back to list",
+            video_details: "Video Lesson Details",
+            video_name: "Video lesson title / topic",
+            author: "Author",
+            description: "Short description",
+            date: "Date",
+            video_file: "Video file (.mp4, .mkv, .mov)",
+            change_video_file: "Upload new video file",
+            public_visible: "Make visible to everyone (public)",
+            cancel: "Cancel",
+            save_add: "Save and Add",
+            edit_video_title: "Edit Video Lesson",
+            edit_video_sub: "Update existing video lesson information",
+            edit_video_info: "Edit Details",
+            save_changes: "Save Changes",
+            delete_video_title: "Delete Video Lesson",
+            delete_video_sub: "Delete video lesson",
+            confirm_delete: "Confirm deletion",
+            confirm_delete_btn: "Delete",
+            edu_videos_tag: "Educational Videos",
+            video_lessons_title: "Video Lessons",
+            video_lessons_desc: "Quality video lessons platform created by our teachers.",
+            teacher_filter: "Teacher:",
+            all: "All",
+            username_placeholder: "Username",
+            password_placeholder: "Enter password",
+            remember_me: "Remember me",
+            login_btn: "Sign In",
+            register_prompt: "New user? Sign up"
         }
     };
 
@@ -186,37 +366,79 @@
 
         var t = translations[lang] || translations.uz;
 
-        // A. Elements with data-i18n
+        // A. Elements with data-i18n (safely preserve any child icons)
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
             var key = el.getAttribute('data-i18n');
             if (t[key]) {
-                el.textContent = t[key];
-            }
-        });
-
-        // B. Translate text nodes using phraseDict
-        var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge');
-        textElements.forEach(function (el) {
-            // Ignore containers that have complex child elements
-            if (el.children.length > 2) return;
-
-            var rawText = (el.dataset.i18nOrig !== undefined) ? el.dataset.i18nOrig : el.innerText.trim();
-            if (!el.dataset.i18nOrig && rawText) {
-                el.dataset.i18nOrig = rawText;
-            }
-
-            var orig = el.dataset.i18nOrig;
-            if (orig && phraseDict[orig]) {
-                if (lang === 'uz') {
-                    el.innerText = orig;
-                } else if (phraseDict[orig][lang]) {
-                    el.innerText = phraseDict[orig][lang];
+                var icons = el.querySelectorAll('i, svg');
+                if (icons.length > 0) {
+                    var span = el.querySelector('span:not(.badge)');
+                    if (span) {
+                        span.textContent = t[key];
+                    } else {
+                        var textNodeFound = false;
+                        Array.from(el.childNodes).forEach(function (node) {
+                            if (node.nodeType === 3 && node.textContent.trim().length > 0) {
+                                node.textContent = ' ' + t[key];
+                                textNodeFound = true;
+                            }
+                        });
+                        if (!textNodeFound) {
+                            var iconsHtml = Array.from(icons).map(function(ic) { return ic.outerHTML; }).join(' ');
+                            el.innerHTML = iconsHtml + ' ' + t[key];
+                        }
+                    }
+                } else {
+                    el.textContent = t[key];
                 }
             }
         });
 
+        // B. Translate text nodes using phraseDict safely (never destroying icon child elements)
+        var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge, .menu-title');
+        textElements.forEach(function (el) {
+            if (el.hasAttribute('data-i18n')) return; // Already handled
+            if (el.tagName === 'I' || el.tagName === 'SVG' || el.classList.contains('fa') || el.classList.contains('fas') || el.classList.contains('far') || el.classList.contains('fab')) return;
+
+            // If it's a leaf element (no child tags)
+            if (el.children.length === 0) {
+                var rawText = (el.dataset.i18nOrig !== undefined) ? el.dataset.i18nOrig : el.textContent.trim();
+                if (!el.dataset.i18nOrig && rawText) {
+                    el.dataset.i18nOrig = rawText;
+                }
+                var orig = el.dataset.i18nOrig;
+                if (orig && phraseDict[orig]) {
+                    el.textContent = (lang === 'uz') ? orig : (phraseDict[orig][lang] || orig);
+                }
+            } else {
+                // If element has children (e.g. <i> icon + text), update only TEXT_NODES
+                Array.from(el.childNodes).forEach(function (node) {
+                    if (node.nodeType === 3) { // Text Node
+                        var txt = (node._i18nOrig !== undefined) ? node._i18nOrig : node.textContent.trim();
+                        if (node._i18nOrig === undefined && txt) {
+                            node._i18nOrig = txt;
+                        }
+                        var orig = node._i18nOrig;
+                        if (orig && phraseDict[orig]) {
+                            var translated = (lang === 'uz') ? orig : (phraseDict[orig][lang] || orig);
+                            var leading = node.textContent.match(/^\s*/)[0];
+                            var trailing = node.textContent.match(/\s*$/)[0];
+                            node.textContent = leading + translated + trailing;
+                        }
+                    }
+                });
+            }
+        });
+
         // C. Translate Input Placeholders
-        document.querySelectorAll('input[placeholder]').forEach(function (inp) {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (inp) {
+            var pKey = inp.getAttribute('data-i18n-placeholder');
+            if (t[pKey]) {
+                inp.setAttribute('placeholder', t[pKey]);
+            }
+        });
+
+        document.querySelectorAll('input[placeholder]:not([data-i18n-placeholder])').forEach(function (inp) {
             if (!inp.dataset.origPh) {
                 inp.dataset.origPh = inp.getAttribute('placeholder');
             }
