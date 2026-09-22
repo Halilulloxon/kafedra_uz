@@ -232,7 +232,7 @@
 
                                                     <p class="mt-1">
                                                         Joriy rasm:
-                                                        <img src="{{ form.image.url }}" width="80" class="img-thumbnail">
+                                                        <img src="{{ form.instance.get_image_url|default:"" }}" width="80" class="img-thumbnail">
                                                     </p>
 
                                                 </div>

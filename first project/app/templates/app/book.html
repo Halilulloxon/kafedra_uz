@@ -52,7 +52,7 @@
             {% for kitob in kitoblar %}
             <div class="book-card">
                 <div class="book-cover c2">
-                    <img src="{{ kitob.image.url }}" alt="{{ kitob.nomi }}" style="width:100%; height:100%; object-fit:cover;">
+                    <img src="{{ kitob.get_image_url }}" alt="{{ kitob.nomi }}" style="width:100%; height:100%; object-fit:cover;">
                     <span class="book-badge badge-pop">POPULAR</span>
                     <span class="book-year-tag">{{kitob.sana}}</span>
                 </div>

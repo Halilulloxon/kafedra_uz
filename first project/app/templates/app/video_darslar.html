@@ -245,7 +245,7 @@
                                                 <td>{{video.haqida}}</td>
                                                 <td>{{video.muallif}}</td>
                                                 <td>{{video.sana}}</td>
-                                                <td><a href="{{video.video.url}}" target="_blank">{{video.video}}</a></td>
+                                                <td>{% if video.get_video_url %}<a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="la la-play-circle"></i> Ko'rish</a>{% else %}<span class="badge badge-light text-muted">Video yo'q</span>{% endif %}</td>
                                             </tr>
                                             {% endfor %}
 

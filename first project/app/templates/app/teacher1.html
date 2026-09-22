@@ -694,7 +694,7 @@
                 {% for kitob in kitoblar %}
                 <div class="book-card">
                     {% if kitob.image %}
-                    <img src="{{ kitob.image.url }}" alt="{{ kitob.nomi }}" class="book-cover">
+                    <img src="{{ kitob.get_image_url }}" alt="{{ kitob.nomi }}" class="book-cover">
                     {% else %}
                     <div class="book-cover-placeholder c{{ forloop.counter|divisibleby:4|yesno:'4,1,2,3' }}">📖</div>
                     {% endif %}

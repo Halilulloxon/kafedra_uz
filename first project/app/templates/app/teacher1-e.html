@@ -202,7 +202,7 @@
                     <div class="books-grid">
                         {% for kitob in kitoblar %}
                         <div class="book-card">
-                            <img src="{{ kitob.image.url }}" alt="Kitob" class="book-cover">
+                            <img src="{{ kitob.get_image_url }}" alt="Kitob" class="book-cover">
                             <h3 class="book-title">{{ kitob.nomi }}</h3>
                             <div class="book-info">
                                 <p><strong>Muallifi:</strong> {{ kitob.muallif }}</p>
