@@ -128,6 +128,22 @@ Author: Kafedralar.uz
 
                                 <div class="card-content">
                                     <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <a href="{% url 'index' %}" class="btn btn-sm btn-outline-secondary rounded-pill">
+                                                <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="nav_home">Bosh sahifa</span>
+                                            </a>
+                                            <div class="d-flex align-items-center" style="gap:8px;">
+                                                <button id="themeToggleBtn" type="button" class="theme-toggle-btn btn-sm" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
+                                                    🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
+                                                </button>
+                                                <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
+                                                    <option value="uz">🇺🇿 UZ</option>
+                                                    <option value="ru">🇷🇺 RU</option>
+                                                    <option value="en">🇬🇧 EN</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <form class="form-horizontal" action="{% url 'login' %}" method="POST">
                                             {% csrf_token %}
 
@@ -138,9 +154,10 @@ Author: Kafedralar.uz
                                                        name="login_f"
                                                        id="user-name"
                                                        placeholder="Foydalanuvchi nomi"
+                                                       data-i18n-placeholder="username_placeholder"
                                                        required>
                                                 <div class="form-control-position">
-                                                    <i class="la la-user"></i>
+                                                    <i class="fas fa-user"></i>
                                                 </div>
                                             </fieldset>
 
@@ -152,12 +169,13 @@ Author: Kafedralar.uz
                                                            name="password"
                                                            id="user-password"
                                                            placeholder="Parolni kiriting"
+                                                           data-i18n-placeholder="password_placeholder"
                                                            required>
                                                     <div class="form-control-position">
-                                                        <i class="la la-key"></i>
+                                                        <i class="fas fa-lock"></i>
                                                     </div>
                                                     <span class="toggle-password" id="toggle-password" title="Parolni ko'rsat/yashir">
-                                                        <i class="fa fa-eye" id="toggle-icon"></i>
+                                                        <i class="fas fa-eye" id="toggle-icon"></i>
                                                     </span>
                                                 </div>
                                             </fieldset>
@@ -166,20 +184,20 @@ Author: Kafedralar.uz
                                                 <div class="col-sm-6 col-12 text-center text-sm-left pr-0">
                                                     <fieldset>
                                                         <input type="checkbox" id="remember-me" class="chk-remember">
-                                                        <label for="remember-me"> Meni eslab qol</label>
+                                                        <label for="remember-me" data-i18n="remember_me"> Meni eslab qol</label>
                                                     </fieldset>
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-outline-info btn-block">
-                                                <i class="la la-unlock"></i> Kirish
+                                            <button type="submit" class="btn btn-outline-info btn-block shadow-sm">
+                                                <i class="fas fa-sign-in-alt mr-1"></i> <span data-i18n="login_btn">Kirish</span>
                                             </button>
                                         </form>
                                     </div>
 
                                     <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
                                         <span>
-                                            <a href="{% url 'registratsiya' %}">Yangi foydalanuvchimisiz?</a>
+                                            <a href="{% url 'registratsiya' %}" data-i18n="register_prompt">Yangi foydalanuvchimisiz?</a>
                                         </span>
                                     </p>
                                 </div>

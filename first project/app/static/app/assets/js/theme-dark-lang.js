@@ -146,7 +146,12 @@
             video_lessons_title: "Video Darslar",
             video_lessons_desc: "O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.",
             teacher_filter: "O'qituvchi:",
-            all: "Barchasi"
+            all: "Barchasi",
+            username_placeholder: "Foydalanuvchi nomi",
+            password_placeholder: "Parolni kiriting",
+            remember_me: "Meni eslab qol",
+            login_btn: "Kirish",
+            register_prompt: "Yangi foydalanuvchimisiz?"
         },
         ru: {
             theme_dark: "Темная тема",
@@ -203,7 +208,12 @@
             video_lessons_title: "Видеоуроки",
             video_lessons_desc: "Платформа качественных видеоуроков от наших преподавателей.",
             teacher_filter: "Преподаватель:",
-            all: "Все"
+            all: "Все",
+            username_placeholder: "Имя пользователя",
+            password_placeholder: "Введите пароль",
+            remember_me: "Запомнить меня",
+            login_btn: "Войти",
+            register_prompt: "Вы новый пользователь?"
         },
         en: {
             theme_dark: "Dark mode",
@@ -260,7 +270,12 @@
             video_lessons_title: "Video Lessons",
             video_lessons_desc: "Quality video lessons platform created by our teachers.",
             teacher_filter: "Teacher:",
-            all: "All"
+            all: "All",
+            username_placeholder: "Username",
+            password_placeholder: "Enter password",
+            remember_me: "Remember me",
+            login_btn: "Sign In",
+            register_prompt: "New user? Sign up"
         }
     };
 
@@ -330,7 +345,14 @@
         });
 
         // C. Translate Input Placeholders
-        document.querySelectorAll('input[placeholder]').forEach(function (inp) {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (inp) {
+            var pKey = inp.getAttribute('data-i18n-placeholder');
+            if (t[pKey]) {
+                inp.setAttribute('placeholder', t[pKey]);
+            }
+        });
+
+        document.querySelectorAll('input[placeholder]:not([data-i18n-placeholder])').forEach(function (inp) {
             if (!inp.dataset.origPh) {
                 inp.dataset.origPh = inp.getAttribute('placeholder');
             }

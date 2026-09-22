@@ -897,3 +897,44 @@ body.dark-mode .global-lang-select {
     }
 }
 
+/* ── Login / Register Form & Icon Fixes ── */
+.form-control-position {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+}
+.form-control-position i {
+    font-size: 1rem !important;
+    color: #64748b !important;
+}
+body.dark-mode .form-control-position i {
+    color: #94a3b8 !important;
+}
+body.dark-mode .line-on-side {
+    border-bottom: 1px solid #334155 !important;
+}
+body.dark-mode .line-on-side span {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+}
+body.dark-mode .line-on-side span a {
+    color: #60a5fa !important;
+}
+body.dark-mode .card.border-grey {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+body.dark-mode .password-wrapper .toggle-password {
+    color: #94a3b8 !important;
+}
+body.dark-mode .password-wrapper .toggle-password:hover {
+    color: #f1f5f9 !important;
+}
+
