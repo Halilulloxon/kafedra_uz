@@ -7,6 +7,8 @@
     <title>Ilmiy ishni tahrirlash</title>
     <link rel="stylesheet" href="{% static 'app/content/tahrirlash.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -41,7 +43,7 @@
                         {{ form.fayl }}
                         {% if ilmiy.fayl %}
                         <div class="current-file">
-                            📎 Joriy fayl: <a href="{{ ilmiy.fayl.url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
+                            📎 Joriy fayl: <a href="{{ ilmiy.get_fayl_url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
                         </div>
                         {% endif %}
                     </td>

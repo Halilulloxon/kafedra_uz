@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{% static 'yangi/style.css' %}" />
     <link rel="stylesheet" href="{% static 'yangi/pages.css' %}" />
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -60,13 +62,13 @@
                     <div class="book-type-tag">{{kitob.turi}}</div>
                     <div class="book-stats"><span>📄 {{kitob.betlar_soni}} bet</span><span></span></div>
                     <div class="book-actions">
-                        <a href="{{ kitob.fayl.url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
+                        <a href="{{ kitob.get_fayl_url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
                             <span>📄</span>
                             <span>O'qish</span>
                             <span>→</span>
                         </a>
 
-                        <a href="{{ kitob.fayl.url }}" download class="download-btn">
+                        <a href="{{ kitob.get_fayl_url }}" download class="download-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                 <polyline points="7 10 12 15 17 10" />

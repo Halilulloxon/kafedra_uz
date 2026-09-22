@@ -119,6 +119,16 @@ class ilmiy_ishlari(models.Model):
     )
     fayl = models.FileField(upload_to='ilmiy_ishlari/')
     foreveryone= models.BooleanField(default=False)
+
+    @property
+    def get_fayl_url(self):
+        if self.fayl and hasattr(self.fayl, 'url'):
+            try:
+                return self.fayl.url
+            except Exception:
+                pass
+        return None
+
     def save(self, *args, **kwargs):
         if self.i_id is None:
             last = ilmiy_ishlari.objects.order_by('-i_id').first()
@@ -142,6 +152,25 @@ class oquvIshlari(models.Model):
     fayl = models.FileField(upload_to='oquv_ishlari/')
     image = models.ImageField(upload_to='oquv_ishlari_images/', null=True, blank=True)
     foreveryone= models.BooleanField(default=False)
+
+    @property
+    def get_fayl_url(self):
+        if self.fayl and hasattr(self.fayl, 'url'):
+            try:
+                return self.fayl.url
+            except Exception:
+                pass
+        return None
+
+    @property
+    def get_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            try:
+                return self.image.url
+            except Exception:
+                pass
+        return '/static/app/app-assets/images/portrait/small/avatar-s-11.png'
+
     def save(self, *args, **kwargs):
         if self.o_id is None:
             last = oquvIshlari.objects.order_by('-o_id').first()
@@ -158,6 +187,16 @@ class video_darslar(models.Model):
     video = models.FileField(upload_to='video_darslar/')
     sana = models.DateField(null=True)
     foreveryone= models.BooleanField(default=False)
+
+    @property
+    def get_video_url(self):
+        if self.video and hasattr(self.video, 'url'):
+            try:
+                return self.video.url
+            except Exception:
+                pass
+        return None
+
     def __str__(self):
         return self.nomi
 

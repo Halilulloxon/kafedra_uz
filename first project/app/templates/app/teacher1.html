@@ -609,6 +609,8 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -700,8 +702,8 @@
                         <h4>{{ kitob.nomi }}</h4>
                         <div class="book-type">{{ kitob.turi }}</div>
                         <div class="btn-group">
-                            <a href="{{ kitob.fayl.url }}" target="_blank" class="read-btn">📄 O'qish</a>
-                            <a href="{{ kitob.fayl.url }}" download class="download-btn">⬇ Yuklab</a>
+                            <a href="{{ kitob.get_fayl_url }}" target="_blank" class="read-btn">📄 O'qish</a>
+                            <a href="{{ kitob.get_fayl_url }}" download class="download-btn">⬇ Yuklab</a>
                         </div>
                     </div>
                 </div>
@@ -754,8 +756,8 @@
                     <h3>{{ maqola.nomi }}</h3>
                     <p>{{ maqola.haqida }}</p>
                     <div class="btn-group">
-                        <a href="{{ maqola.fayl.url }}" target="_blank" class="read-btn">📄 O'qish</a>
-                        <a href="{{ maqola.fayl.url }}" download class="download-btn">⬇ Yuklab olish</a>
+                        <a href="{{ maqola.get_fayl_url }}" target="_blank" class="read-btn">📄 O'qish</a>
+                        <a href="{{ maqola.get_fayl_url }}" download class="download-btn">⬇ Yuklab olish</a>
                     </div>
                 </div>
                 {% empty %}

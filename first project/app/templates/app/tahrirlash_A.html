@@ -211,7 +211,7 @@
                                                     {{ form.fayl }}
                                                     {% if ilmiy.fayl %}
                                                     <div class="current-file">
-                                                        📎 Joriy fayl: <a href="{{ ilmiy.fayl.url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
+                                                        📎 Joriy fayl: <a href="{{ ilmiy.get_fayl_url }}" target="_blank">{{ ilmiy.fayl.name }}</a>
                                                     </div>
                                                     {% endif %}
                                                 </div>
