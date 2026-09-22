@@ -11,46 +11,25 @@
     <title>Tables Sizing - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
     <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CQuicksand:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/icheck.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/custom.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/toggle/switchery.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/selects/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
-    <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
-    <!-- END: Vendor CSS-->
-    <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
-    <!-- END: Theme CSS-->
-    <!-- END: Page CSS-->
-    <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.css' %}">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.min.css' %}">
-    <!-- END: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/plugins/forms/switch.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-callout.min.css' %}">
-
-
-
-
-
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
-<body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
         <div class="navbar-wrapper">
@@ -58,7 +37,7 @@
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="fa fa-bars font-medium-3"></i>
+                            <i class="fas fa-bars font-medium-3"></i>
                         </a>
                     </li>
                     <li class="nav-item mr-auto">
@@ -69,7 +48,7 @@
                     </li>
                     <li class="nav-item d-none d-lg-block nav-toggle">
                         <a class="nav-link modern-nav-toggle pr-0">
-                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
+                            <i class="fas fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
                         </a>
                     </li>
                 </ul>
@@ -80,7 +59,7 @@
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fa fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
+                                <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
                             </span>
                         </li>
                     </ul>
@@ -104,15 +83,15 @@
                         <li class="nav-item mr-1">
                             {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
                             <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
+                                <i class="fas fa-user-tie mr-1"></i> Mudir paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
                             <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-university mr-1"></i> Dekan paneli
+                                <i class="fas fa-university mr-1"></i> Dekan paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
                             <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
-                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
+                                <i class="fas fa-shield-alt mr-1"></i> Prorektor paneli
                             </a>
                             {% endif %}
                         </li>
@@ -127,11 +106,11 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
-                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                                    <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                                    <i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
                                 </a>
                             </div>
                         </li>
@@ -141,46 +120,29 @@
         </div>
     </nav>
     <!-- END: Header-->
-    <!-- END: Header-->
-    <!-- BEGIN: Main Menu-->
 
     <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation">
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
+                        <i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
                     </a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
+                        <i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
                     </a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
+                        <i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
                     </a>
                 </li>
                 <li class="nav-item active">
                     <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'teachers' %}">
-                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">Barcha O'qituvchilar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'book' %}">
-                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'article' %}">
-                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                        <i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
                     </a>
                 </li>
             </ul>
@@ -193,69 +155,59 @@
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Ilmiy Ishlar</h3>
-                    <div class="row breadcrumbs-top d-inline-block">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{% url 'index' %}">Bosh sahifa</a>
-                                </li>
-
-                                <li class="breadcrumb-item active">
-                                    Ilmiy Ishlar
-                                </li>
-                            </ol>
+                <div class="content-header-left col-md-12 col-12 mb-2 breadcrumb-new">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                        <div>
+                            <h3 class="content-header-title mb-0 text-bold-600"><i class="fas fa-video text-danger mr-1"></i> Video Darslar</h3>
+                            <small class="text-muted">Barcha yuklangan video darslar ro'yxati</small>
+                        </div>
+                        <div>
+                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                                <i class="fas fa-arrow-left mr-1"></i> Boshqaruv paneliga qaytish
+                            </a>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="row g-2 align-items-center">
 
-                        <!-- Faylni yuklab olish -->
-                        <div class="col-auto">
-                            <button class="btn btn-primary btn-sm" id="downloadZipBtn">
-                                Faylni yuklab olish
+            <div class="card mb-3 shadow-sm border-0" style="border-radius: 12px;">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
+                        <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
+                            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn">
+                                <i class="fas fa-file-archive mr-1"></i> ZIP yuklab olish
                             </button>
+                            <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
+                                <i class="fas fa-plus mr-1"></i> Yangi qo'shish
+                            </a>
+                            <a href="{% url 'ochir_video' v_id=1 user_id=foydalanuvchi.id %}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
+                                <i class="fas fa-trash mr-1"></i> O'chirish
+                            </a>
                         </div>
-
-                        <!-- Qo'shish -->
-                        <div class="col-auto">
-                            <form action="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="m-0">
-                                <button class="btn btn-success btn-sm">Qo'shish</button>
-                            </form>
+                        <div>
+                            <span class="badge badge-light text-muted px-3 py-2 border rounded-pill font-small-3">
+                                <i class="fas fa-video mr-1"></i> Jami: <strong>{{ videolar|length }}</strong> ta video dars
+                            </span>
                         </div>
-
-                        <!-- O'chirish -->
-                        <div class="col-auto">
-                            <form action="{% url 'ochirish_video' user_id=foydalanuvchi.id %}" method="post" class="m-0">
-                                {% csrf_token %}
-                                <button class="btn btn-danger btn-sm">O'chirish</button>
-                            </form>
-                        </div>
-
-                        <!-- Filtrlash formasi -->
-                        <div class="col">
-                            <form action="{% url 'video_filtrlash' user_id=foydalanuvchi.id %}" method="get" class="row g-2 align-items-center m-0">
-                                <div class="col-sm-auto">
-                                    <input type="date" name="from" class="form-control form-control-sm" placeholder="Boshlanish sanasi">
-                                </div>
-                                <div class="col-sm-auto">
-                                    <input type="date" name="to" class="form-control form-control-sm" placeholder="Tugash sanasi">
-                                </div>
-
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-outline-primary btn-sm">Filtrlash</button>
-
-                                </div>
-
-                            </form>
-                        </div>
-
                     </div>
+
+                    <form action="{% url 'video_filtrlash' user_id=foydalanuvchi.id %}" method="get" class="m-0">
+                        <div class="form-row align-items-end">
+                            <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar mr-1"></i>Dan</label>
+                                <input type="date" name="from" class="form-control form-control-sm rounded" value="{{ request.GET.from }}">
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar mr-1"></i>Gacha</label>
+                                <input type="date" name="to" class="form-control form-control-sm rounded" value="{{ request.GET.to }}">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="submit" class="btn btn-info btn-sm btn-block rounded shadow-sm">
+                                    <i class="fas fa-filter mr-1"></i> Filtrlash
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -264,9 +216,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-
                             <div class="card-content collapse show">
-
                                 <div class="table-responsive">
                                     <table class="table table-xl mb-0" id="myTable">
                                         <thead>
@@ -284,10 +234,10 @@
                                             <tr class="clickable-row" data-id="{{ video.id }}" data-href="{% url 'tahrirlash_video' v_id=video.id user_id=foydalanuvchi.id %}">
                                                 <td>{{forloop.counter}}</td>
                                                 <td>{{video.nomi}}</td>
-                                                <td>{{video.haqida}}</td>
+                                                <td>{{video.haqida|default:"-"}}</td>
                                                 <td>{{video.muallif}}</td>
                                                 <td>{{video.sana}}</td>
-                                                <td>{% if video.get_video_url %}<a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="la la-play-circle"></i> Ko'rish</a>{% else %}<span class="badge badge-light text-muted">Video yo'q</span>{% endif %}</td>
+                                                <td>{% if video.get_video_url %}<a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-play mr-1"></i> Ko'rish</a>{% else %}<span class="badge badge-light text-muted">Video yo'q</span>{% endif %}</td>
                                             </tr>
                                             {% endfor %}
 

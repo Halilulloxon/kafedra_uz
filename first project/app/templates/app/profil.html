@@ -11,7 +11,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CQuicksand:400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
@@ -23,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 
     <style>
         body.dark-mode { background-color: #121927 !important; color: #cbd5e1 !important; }
@@ -38,10 +38,6 @@
         .lang-select { border-radius: 8px; padding: 4px 8px; font-size: 13px; border: 1px solid #cbd5e1; background: transparent; }
         .progress-bar-animated { animation: progress-bar-stripes 1s linear infinite; }
     </style>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
 
 <body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
@@ -54,7 +50,7 @@
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="fa fa-bars font-medium-3"></i>
+                            <i class="fas fa-bars font-medium-3"></i>
                         </a>
                     </li>
                     <li class="nav-item mr-auto">
@@ -65,7 +61,7 @@
                     </li>
                     <li class="nav-item d-none d-lg-block nav-toggle">
                         <a class="nav-link modern-nav-toggle pr-0">
-                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
+                            <i class="fas fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
                         </a>
                     </li>
                 </ul>
@@ -76,7 +72,7 @@
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fa fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
+                                <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
                             </span>
                         </li>
                     </ul>
@@ -100,15 +96,15 @@
                         <li class="nav-item mr-1">
                             {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
                             <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
+                                <i class="fas fa-user-tie mr-1"></i> Mudir paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
                             <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-university mr-1"></i> Dekan paneli
+                                <i class="fas fa-university mr-1"></i> Dekan paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
                             <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
-                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
+                                <i class="fas fa-shield-alt mr-1"></i> Prorektor paneli
                             </a>
                             {% endif %}
                         </li>
@@ -123,11 +119,11 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
-                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                                    <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                                    <i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
                                 </a>
                             </div>
                         </li>
@@ -145,37 +141,22 @@
             <ul class="navigation navigation-main" id="main-menu-navigation">
                 <li class="nav-item active">
                     <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
+                        <i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
+                        <i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
+                        <i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'teachers' %}">
-                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">Barcha O'qituvchilar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'book' %}">
-                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'article' %}">
-                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                        <i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
                     </a>
                 </li>
             </ul>
@@ -198,7 +179,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ maqolalar_soni }}</h2>
                                         <span data-i18n="stat_articles">OAK Maqolalar</span>
                                     </div>
-                                    <div class="align-self-center"><i class="fa fa-newspaper font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fas fa-newspaper font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +193,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ scopuslar_soni }}</h2>
                                         <span data-i18n="stat_scopus">Scopus / WoS</span>
                                     </div>
-                                    <div class="align-self-center"><i class="fa fa-trophy font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fas fa-award font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +207,7 @@
                                         <h2 class="text-white text-bold-700 mb-0">{{ oquv_soni }}</h2>
                                         <span data-i18n="stat_books">O'quv ishlari</span>
                                     </div>
-                                    <div class="align-self-center"><i class="fa fa-book-open font-large-2 text-white"></i></div>
+                                    <div class="align-self-center"><i class="fas fa-book-open font-large-2 text-white"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -267,26 +248,26 @@
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted" data-i18n="faculty_label"><i class="fa fa-university font-large-2 text-white"></i> Fakultet:</span>
+                                        <span class="text-muted" data-i18n="faculty_label"><i class="fas fa-university text-primary mr-1"></i> Fakultet:</span>
                                         <strong>{{ foydalanuvchi.fakulteti.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted" data-i18n="department_label"><i class="fa fa-sitemap font-large-2 text-white"></i> Kafedra:</span>
+                                        <span class="text-muted" data-i18n="department_label"><i class="fas fa-sitemap text-primary mr-1"></i> Kafedra:</span>
                                         <strong>{{ foydalanuvchi.kafedra.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted" data-i18n="birth_label"><i class="la la-calendar"></i> Tug'ilgan sana:</span>
+                                        <span class="text-muted" data-i18n="birth_label"><i class="fas fa-calendar-alt text-primary mr-1"></i> Tug'ilgan sana:</span>
                                         <strong>{{ foydalanuvchi.tugulgan_sana|date:"d.m.Y"|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted" data-i18n="email_label"><i class="la la-envelope"></i> Email:</span>
+                                        <span class="text-muted" data-i18n="email_label"><i class="fas fa-envelope text-primary mr-1"></i> Email:</span>
                                         <strong>{{ foydalanuvchi.gmail|default:"-" }}</strong>
                                     </li>
                                 </ul>
 
                                 <div class="mt-3">
                                     <a href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-block">
-                                        <i class="la la-edit"></i> <span data-i18n="edit_profile_btn">Profilni tahrirlash</span>
+                                        <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile_btn">Profilni tahrirlash</span>
                                     </a>
                                 </div>
                             </div>
@@ -313,13 +294,13 @@
                                             <div class="progress-bar {% if t.foiz >= 100 %}bg-success{% else %}bg-info progress-bar-striped progress-bar-animated{% endif %}" role="progressbar" style="width: {{ t.foiz }}%;" aria-valuenow="{{ t.foiz }}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         {% if t.obj.muddati %}
-                                        <small class="text-muted"><i class="la la-clock-o"></i> Muddat: {{ t.obj.muddati|date:"d.m.Y" }}</small>
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i> Muddat: {{ t.obj.muddati|date:"d.m.Y" }}</small>
                                         {% endif %}
                                     </div>
                                     {% endfor %}
                                 {% else %}
                                     <div class="text-center py-4 text-muted">
-                                        <i class="la la-check-circle-o font-large-3 text-success d-block mb-2"></i>
+                                        <i class="fas fa-check-circle font-large-3 text-success d-block mb-2"></i>
                                         <p data-i18n="no_tasks_notice">Hozirda kafedrangiz tomonidan faol talablar kiritilmagan.</p>
                                     </div>
                                 {% endif %}

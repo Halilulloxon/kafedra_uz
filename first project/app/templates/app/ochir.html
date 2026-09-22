@@ -30,7 +30,6 @@ Author: Kafedralar.uz
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
     <!-- Free Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet"
@@ -54,8 +53,6 @@ Author: Kafedralar.uz
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/timeline.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.css' %}">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/1.3.0/css/line-awesome.min.css' %}">
     <!-- END: Page CSS-->
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
@@ -65,8 +62,6 @@ Author: Kafedralar.uz
 
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist-plugin-tooltip.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}">
 </head>
 <!-- END: Head-->
@@ -83,7 +78,7 @@ Author: Kafedralar.uz
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="fa fa-bars font-medium-3"></i>
+                            <i class="fas fa-bars font-medium-3"></i>
                         </a>
                     </li>
                     <li class="nav-item mr-auto">
@@ -94,7 +89,7 @@ Author: Kafedralar.uz
                     </li>
                     <li class="nav-item d-none d-lg-block nav-toggle">
                         <a class="nav-link modern-nav-toggle pr-0">
-                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
+                            <i class="fas fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
                         </a>
                     </li>
                 </ul>
@@ -105,7 +100,7 @@ Author: Kafedralar.uz
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fa fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
+                                <i class="fas fa-user-graduate mr-1"></i> <span data-i18n="role_badge">O'qituvchi Kabineti</span>
                             </span>
                         </li>
                     </ul>
@@ -129,15 +124,15 @@ Author: Kafedralar.uz
                         <li class="nav-item mr-1">
                             {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
                             <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-user-tie mr-1"></i> Mudir paneli
+                                <i class="fas fa-user-tie mr-1"></i> Mudir paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
                             <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                <i class="fa fa-university mr-1"></i> Dekan paneli
+                                <i class="fas fa-university mr-1"></i> Dekan paneli
                             </a>
                             {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
                             <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
-                                <i class="fa fa-shield-alt mr-1"></i> Prorektor paneli
+                                <i class="fas fa-shield-alt mr-1"></i> Prorektor paneli
                             </a>
                             {% endif %}
                         </li>
@@ -152,11 +147,11 @@ Author: Kafedralar.uz
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
-                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                                    <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                                    <i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
                                 </a>
                             </div>
                         </li>
@@ -173,39 +168,24 @@ Author: Kafedralar.uz
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation">
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
+                        <i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span>
                     </a>
                 </li>
                 <li class="nav-item active">
+                    <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}">
+                        <i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
+                        <i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span>
                     </a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'teachers' %}">
-                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">Barcha O'qituvchilar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'book' %}">
-                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'article' %}">
-                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
+                        <i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span>
                     </a>
                 </li>
             </ul>
@@ -241,7 +221,7 @@ Author: Kafedralar.uz
                                                         {% endfor %}
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger">O‘chirish</button>
+                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash mr-1"></i> O‘chirish</button>
                                             </form>
                                         </div>
                                     </div>
