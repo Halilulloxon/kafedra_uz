@@ -374,24 +374,38 @@
             }
         });
 
-        // B. Translate text nodes using phraseDict
-        var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge');
+        // B. Translate text nodes using phraseDict safely (never destroying icon child elements)
+        var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge, .menu-title');
         textElements.forEach(function (el) {
-            // Ignore containers that have complex child elements
-            if (el.children.length > 2) return;
+            if (el.hasAttribute('data-i18n')) return; // Already handled
 
-            var rawText = (el.dataset.i18nOrig !== undefined) ? el.dataset.i18nOrig : el.innerText.trim();
-            if (!el.dataset.i18nOrig && rawText) {
-                el.dataset.i18nOrig = rawText;
-            }
-
-            var orig = el.dataset.i18nOrig;
-            if (orig && phraseDict[orig]) {
-                if (lang === 'uz') {
-                    el.innerText = orig;
-                } else if (phraseDict[orig][lang]) {
-                    el.innerText = phraseDict[orig][lang];
+            // If it's a leaf element (no child tags)
+            if (el.children.length === 0) {
+                var rawText = (el.dataset.i18nOrig !== undefined) ? el.dataset.i18nOrig : el.textContent.trim();
+                if (!el.dataset.i18nOrig && rawText) {
+                    el.dataset.i18nOrig = rawText;
                 }
+                var orig = el.dataset.i18nOrig;
+                if (orig && phraseDict[orig]) {
+                    el.textContent = (lang === 'uz') ? orig : (phraseDict[orig][lang] || orig);
+                }
+            } else {
+                // If element has children (e.g. <i> icon + text), update only TEXT_NODES
+                Array.from(el.childNodes).forEach(function (node) {
+                    if (node.nodeType === 3) { // Text Node
+                        var txt = (node.datasetI18nOrig !== undefined) ? node.datasetI18nOrig : node.textContent.trim();
+                        if (node.datasetI18nOrig === undefined && txt) {
+                            node.datasetI18nOrig = txt;
+                        }
+                        var orig = node.datasetI18nOrig;
+                        if (orig && phraseDict[orig]) {
+                            var translated = (lang === 'uz') ? orig : (phraseDict[orig][lang] || orig);
+                            var leading = node.textContent.match(/^\s*/)[0];
+                            var trailing = node.textContent.match(/\s*$/)[0];
+                            node.textContent = leading + translated + trailing;
+                        }
+                    }
+                });
             }
         });
 
