@@ -26,14 +26,15 @@ i[class*="fa-"], i[class^="fa-"], [class*=" fa-"] {
 :root {
     --bg-main: #f4f5fa;
     --bg-card: #ffffff;
-    --text-main: #2c3e50;
-    --text-muted: #6c757d;
-    --border-color: #e9ecef;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
     --primary-color: #1e88e5;
     --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Dark Mode Variables */
+/* ── Dark Mode Root & Variables ── */
+html.dark-mode,
 body.dark-mode {
     --bg-main: #0f172a !important;
     --bg-card: #1e293b !important;
@@ -41,82 +42,153 @@ body.dark-mode {
     --text-muted: #94a3b8 !important;
     --border-color: #334155 !important;
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-    background-color: var(--bg-main) !important;
-    color: var(--text-main) !important;
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
 }
 
-/* Dark Mode Components */
-body.dark-mode .app-content,
-body.dark-mode .content-wrapper,
-body.dark-mode .content-body {
-    background-color: var(--bg-main) !important;
-    color: var(--text-main) !important;
+/* ── Dark Mode Public Pages Components ── */
+body.dark-mode .hero {
+    background: linear-gradient(135deg, #070c18 0%, #0f172a 50%, #1e293b 100%) !important;
 }
 
-body.dark-mode .card {
-    background-color: var(--bg-card) !important;
-    border-color: var(--border-color) !important;
-    box-shadow: var(--card-shadow) !important;
-    color: var(--text-main) !important;
+body.dark-mode .hero p,
+body.dark-mode .section-sub,
+body.dark-mode .feature-card p,
+body.dark-mode .book-about,
+body.dark-mode .article-desc,
+body.dark-mode .stat-label,
+body.dark-mode .text-muted,
+body.dark-mode p {
+    color: #94a3b8 !important;
 }
 
-body.dark-mode .card-header,
-body.dark-mode .card-footer {
-    background-color: var(--bg-card) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-main) !important;
+body.dark-mode .features {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
 }
 
-body.dark-mode .card-title,
+body.dark-mode .feature-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .section-title,
+body.dark-mode .feature-card h3,
+body.dark-mode .hero h1,
+body.dark-mode .book-title,
+body.dark-mode .article-title,
+body.dark-mode .author-info h5,
+body.dark-mode .teacher-name,
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
     color: #f8fafc !important;
 }
 
-body.dark-mode p, body.dark-mode span, body.dark-mode label, body.dark-mode small {
-    color: inherit;
+body.dark-mode .page-header {
+    background: linear-gradient(135deg, #070c18 0%, #0f172a 100%) !important;
+    border-bottom: 1px solid #334155 !important;
 }
 
-body.dark-mode .text-muted {
-    color: var(--text-muted) !important;
+body.dark-mode .page-header h1,
+body.dark-mode .page-header p {
+    color: #f8fafc !important;
 }
 
-/* Dark Mode Navigation & Sidebars */
+body.dark-mode .book-card-vertical,
+body.dark-mode .books-container,
+body.dark-mode .articles-container,
+body.dark-mode .article-item,
+body.dark-mode .author-sidebar,
+body.dark-mode .top-author,
+body.dark-mode .t-card,
+body.dark-mode .teacher-card,
+body.dark-mode .video-card,
+body.dark-mode .featured,
+body.dark-mode .card,
+body.dark-mode .card-body,
+body.dark-mode .main-content,
+body.dark-mode .modal-content,
+body.dark-mode .dropdown-menu {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .dropdown-item {
+    color: #e2e8f0 !important;
+}
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .stats-row {
+    border-color: #334155 !important;
+    background: rgba(30, 41, 59, 0.6) !important;
+}
+
+body.dark-mode .stat {
+    border-right-color: #334155 !important;
+}
+
+body.dark-mode nav {
+    background: rgba(11, 17, 32, 0.96) !important;
+    border-bottom: 1px solid #334155 !important;
+}
+
+body.dark-mode footer {
+    background: #070c18 !important;
+    border-top: 1px solid #334155 !important;
+    color: #94a3b8 !important;
+}
+
+/* ── Dark Mode Dashboard Components ── */
+body.dark-mode .app-content,
+body.dark-mode .content-wrapper,
+body.dark-mode .content-body {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .card-header,
+body.dark-mode .card-footer {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
 body.dark-mode .header-navbar {
     background-color: #0b1120 !important;
-    border-color: var(--border-color) !important;
+    border-color: #334155 !important;
 }
 
 body.dark-mode .main-menu,
 body.dark-mode .navbar-header {
     background-color: #0f172a !important;
-    border-color: var(--border-color) !important;
+    border-color: #334155 !important;
 }
 
 body.dark-mode .main-menu .navigation {
     background-color: transparent !important;
 }
 
-body.dark-mode .footer {
-    background-color: #0b1120 !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-muted) !important;
-}
-
-/* Dark Mode Tables */
+/* ── Dark Mode Tables ── */
 body.dark-mode .table {
-    color: var(--text-main) !important;
-    background-color: var(--bg-card) !important;
+    color: #f1f5f9 !important;
+    background-color: #1e293b !important;
 }
 
 body.dark-mode .table th {
     background-color: #1e293b !important;
     color: #93c5fd !important;
-    border-color: var(--border-color) !important;
+    border-color: #334155 !important;
 }
 
 body.dark-mode .table td {
-    border-color: var(--border-color) !important;
-    color: var(--text-main) !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
 }
 
 body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
@@ -128,11 +200,15 @@ body.dark-mode .clickable-row:hover {
     background-color: #334155 !important;
 }
 
-/* Dark Mode Form Inputs */
+/* ── Dark Mode Form Inputs ── */
 body.dark-mode .form-control,
 body.dark-mode .custom-select,
 body.dark-mode select,
-body.dark-mode textarea {
+body.dark-mode textarea,
+body.dark-mode .search-box input,
+body.dark-mode .search-form input,
+body.dark-mode .filter-bar select,
+body.dark-mode .filter-btn {
     background-color: #0f172a !important;
     border-color: #334155 !important;
     color: #f8fafc !important;
@@ -141,7 +217,8 @@ body.dark-mode textarea {
 body.dark-mode .form-control:focus,
 body.dark-mode .custom-select:focus,
 body.dark-mode select:focus,
-body.dark-mode textarea:focus {
+body.dark-mode textarea:focus,
+body.dark-mode .search-box input:focus {
     background-color: #0f172a !important;
     border-color: #3b82f6 !important;
     color: #ffffff !important;
@@ -154,37 +231,23 @@ body.dark-mode .input-group-text {
     color: #94a3b8 !important;
 }
 
-/* Dark Mode List Groups & Badges */
+body.dark-mode .filter-btn.active {
+    background-color: #1e88e5 !important;
+    color: #ffffff !important;
+    border-color: #1e88e5 !important;
+}
+
+/* ── Dark Mode List Groups & Badges ── */
 body.dark-mode .list-group-item {
     background-color: transparent !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-main) !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
 }
 
 body.dark-mode .badge-light {
     background-color: #334155 !important;
     color: #f1f5f9 !important;
     border-color: #475569 !important;
-}
-
-/* Dark Mode Public Pages (Index, Teachers, Book, Article, Video, Login, Register) */
-body.dark-mode .hero-section,
-body.dark-mode .top-nav,
-body.dark-mode .nav-container,
-body.dark-mode .stats-grid,
-body.dark-mode .book-card,
-body.dark-mode .article-card,
-body.dark-mode .teacher-card,
-body.dark-mode .video-card {
-    background-color: var(--bg-card) !important;
-    color: var(--text-main) !important;
-    border-color: var(--border-color) !important;
-}
-
-body.dark-mode .search-box input {
-    background-color: #0f172a !important;
-    color: #f8fafc !important;
-    border-color: #334155 !important;
 }
 
 /* ==========================================================================

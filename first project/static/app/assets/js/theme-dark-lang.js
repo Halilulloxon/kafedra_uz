@@ -1,16 +1,95 @@
 /* ==========================================================================
-   Kafedralar.uz — Global Dark Mode & 3-Language (UZ / RU / EN) Translation Engine
+   Kafedralar.uz — Universal Dark Mode & 3-Language (UZ / RU / EN) Translation Engine
    ========================================================================== */
 
 (function () {
-    // 1. Initial Theme Application (Instant)
+    // 1. Initial Theme Application (Runs immediately to avoid flash of white)
     var savedTheme = localStorage.getItem('app_theme') || localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark-mode');
         if (document.body) document.body.classList.add('dark-mode');
     }
 
-    // 2. Multilingual Dictionary
+    // 2. Comprehensive 3-Language Dictionary for All Pages
+    var phraseDict = {
+        // Nav & Common
+        "Bosh sahifa": { ru: "Главная", en: "Home" },
+        "O'qituvchilar": { ru: "Преподаватели", en: "Teachers" },
+        "Kitoblar": { ru: "Книги", en: "Books" },
+        "Maqolalar": { ru: "Статьи", en: "Articles" },
+        "Video darslar": { ru: "Видеоуроки", en: "Video Lessons" },
+        "Video Darslar": { ru: "Видеоуроки", en: "Video Lessons" },
+        "Video dars": { ru: "Видеоурок", en: "Video Lesson" },
+        "Kirish": { ru: "Войти", en: "Login" },
+        "Chiqish": { ru: "Выйти", en: "Logout" },
+        "Ro'yxatdan o'tish": { ru: "Регистрация", en: "Register" },
+        "Ro'yxatdan O'tish": { ru: "Регистрация", en: "Register" },
+        "Profil": { ru: "Профиль", en: "Profile" },
+        "O'quv ishlari": { ru: "Учебные работы", en: "Educational Works" },
+        "O'quv Ishlari": { ru: "Учебные работы", en: "Educational Works" },
+        "Ilmiy ishlar": { ru: "Научные работы", en: "Scientific Works" },
+        "Ilmiy Ishlar": { ru: "Научные работы", en: "Scientific Works" },
+        "Ilmiy maqolalar": { ru: "Научные статьи", en: "Scientific Articles" },
+        "Ilmiy Maqolalar": { ru: "Научные статьи", en: "Scientific Articles" },
+        "O'quv Kitoblari": { ru: "Учебные книги", en: "Textbooks" },
+        "O'qituvchi Profillari": { ru: "Профили преподавателей", en: "Teacher Profiles" },
+        "Profilni tahrirlash": { ru: "Редактировать профиль", en: "Edit Profile" },
+        "Tahrirlash": { ru: "Редактировать", en: "Edit" },
+        "O'chirish": { ru: "Удалить", en: "Delete" },
+        "Yangi qo'shish": { ru: "Добавить", en: "Add New" },
+        "Yuklab olish": { ru: "Скачать", en: "Download" },
+        "ZIP yuklab olish": { ru: "Скачать ZIP", en: "Download ZIP" },
+        "Qidirish": { ru: "Поиск", en: "Search" },
+        "Filtrlash": { ru: "Фильтровать", en: "Filter" },
+        "Saqlash": { ru: "Сохранить", en: "Save" },
+        "Bekor qilish": { ru: "Отмена", en: "Cancel" },
+        "Orqaga qaytish": { ru: "Назад", en: "Go Back" },
+        "Orqaga": { ru: "Назад", en: "Back" },
+        "Barchasi": { ru: "Все", en: "All" },
+        "Barcha": { ru: "Все", en: "All" },
+        "Dan": { ru: "От", en: "From" },
+        "Gacha": { ru: "До", en: "To" },
+        "Turi": { ru: "Тип", en: "Type" },
+        "Muallif": { ru: "Автор", en: "Author" },
+        "Fakultet": { ru: "Факультет", en: "Faculty" },
+        "Kafedra": { ru: "Кафедра", en: "Department" },
+        "Sana": { ru: "Дата", en: "Date" },
+        "Nomi": { ru: "Название", en: "Title" },
+        "Haqida": { ru: "Описание", en: "About" },
+        "Fayl": { ru: "Файл", en: "File" },
+        "Amallar": { ru: "Действия", en: "Actions" },
+        "T/R": { ru: "№", en: "No." },
+        "Betlar soni": { ru: "Количество страниц", en: "Pages count" },
+        "Kategoriya": { ru: "Категория", en: "Category" },
+        "Ko'rish →": { ru: "Смотреть →", en: "View →" },
+        "Tomosha qilish": { ru: "Смотреть", en: "Watch" },
+        "▶ Tomosha qilish": { ru: "▶ Смотреть", en: "▶ Watch" },
+        "⬇ Yuklab olish": { ru: "⬇ Скачать", en: "⬇ Download" },
+        "O'qituvchi Kabineti": { ru: "Кабинет преподавателя", en: "Teacher Cabinet" },
+        "Mudir paneli": { ru: "Панель зав. кафедрой", en: "Department Head Panel" },
+        "Dekan paneli": { ru: "Панель декана", en: "Dean Panel" },
+        "Prorektor paneli": { ru: "Панель проректора", en: "Vice-Rector Panel" },
+        "Tungi rejim": { ru: "Темная тема", en: "Dark mode" },
+        "Kunduzgi rejim": { ru: "Светлая тема", en: "Light mode" },
+        "Top Mualliflar": { ru: "Топ авторы", en: "Top Authors" },
+        "O'qituvchini Ko'rish": { ru: "Посмотреть", en: "View Teacher" },
+        "O'qituvchilarni Ko'rish": { ru: "Посмотреть преподавателей", en: "View Teachers" },
+        "O'qituvchi": { ru: "Преподаватель", en: "Teacher" },
+        "Video Dars": { ru: "Видеоурок", en: "Video Lesson" },
+        "Kitob": { ru: "Книга", en: "Book" },
+        "Maqola": { ru: "Статья", en: "Article" },
+        "Jami Ishlar": { ru: "Всего работ", en: "Total Works" },
+        "Bajarildi": { ru: "Выполнено", en: "Completed" },
+        "Jarayonda": { ru: "В процессе", en: "In progress" },
+        "Fayl yo'q": { ru: "Нет файла", en: "No file" },
+        "Parolni unutdingizmi?": { ru: "Забыли пароль?", en: "Forgot password?" },
+        "Eslab qolish": { ru: "Запомнить меня", en: "Remember me" },
+        "Tizimga kirish": { ru: "Войти в систему", en: "Sign in" },
+        "Yangi dars": { ru: "Новый урок", en: "New lesson" },
+        "🔥 SO'NGGI": { ru: "🔥 ПОСЛЕДНЕЕ", en: "🔥 LATEST" }
+    };
+
+    // Dictionary by translation key
     var translations = {
         uz: {
             theme_dark: "Tungi rejim",
@@ -20,48 +99,16 @@
             nav_books: "O'quv ishlari",
             nav_videos: "Video darslar",
             nav_teachers: "O'qituvchilar",
-            nav_library: "Kutubxona",
-            nav_public_articles: "Ommaviy Maqolalar",
-            nav_logout: "Chiqish",
             nav_login: "Kirish",
-            nav_register: "Ro'yxatdan o'tish",
-            btn_add: "Yangi qo'shish",
-            btn_delete: "O'chirish",
-            btn_edit: "Tahrirlash",
-            btn_download_zip: "ZIP yuklab olish",
-            btn_download: "Yuklab olish",
-            btn_filter: "Filtrlash",
-            btn_save: "Saqlash",
-            btn_cancel: "Bekor qilish",
-            btn_search: "Qidirish",
-            btn_back: "Orqaga qaytish",
-            lbl_from_date: "Dan",
-            lbl_to_date: "Gacha",
-            lbl_type: "Turi",
-            lbl_author: "Muallif",
-            lbl_faculty: "Fakultet",
-            lbl_department: "Kafedra",
-            lbl_all: "Barchasi",
-            th_tr: "T/R",
-            th_work_type: "Ilmiy ish turi",
-            th_title: "Nomi",
-            th_about: "Haqida",
-            th_author: "Muallif",
-            th_date: "Sana",
-            th_category: "Kategoriya",
-            th_file: "Fayl",
-            th_pages: "Betlar soni",
-            th_actions: "Amallar",
-            stat_faculties: "Fakultetlar (Dekanatlar)",
-            stat_departments: "Kafedralar soni",
-            stat_professors: "Professor-o'qituvchilar",
-            stat_total_works: "Jami Ishlar",
-            stat_scopus: "Scopus / WoS",
-            stat_oak: "OAK Maqolalar",
-            stat_textbooks: "O'quv ishlari",
-            status_done: "Bajarildi",
-            status_pending: "Jarayonda",
-            status_no_file: "Fayl yo'q"
+            nav_logout: "Chiqish",
+            profile_menu: "Profil",
+            edu_works_menu: "O'quv ishlari",
+            sci_works_menu: "Ilmiy ishlar",
+            video_lessons_menu: "Video darslar",
+            role_badge: "O'qituvchi Kabineti",
+            edit_profile: "Profilni tahrirlash",
+            dark_mode: "Tungi rejim",
+            light_mode: "Kunduzgi rejim"
         },
         ru: {
             theme_dark: "Темная тема",
@@ -71,48 +118,16 @@
             nav_books: "Учебные работы",
             nav_videos: "Видеоуроки",
             nav_teachers: "Преподаватели",
-            nav_library: "Библиотека",
-            nav_public_articles: "Публичные статьи",
-            nav_logout: "Выйти",
             nav_login: "Войти",
-            nav_register: "Регистрация",
-            btn_add: "Добавить",
-            btn_delete: "Удалить",
-            btn_edit: "Редактировать",
-            btn_download_zip: "Скачать ZIP",
-            btn_download: "Скачать",
-            btn_filter: "Фильтровать",
-            btn_save: "Сохранить",
-            btn_cancel: "Отмена",
-            btn_search: "Поиск",
-            btn_back: "Назад",
-            lbl_from_date: "От",
-            lbl_to_date: "До",
-            lbl_type: "Тип",
-            lbl_author: "Автор",
-            lbl_faculty: "Факультет",
-            lbl_department: "Кафедра",
-            lbl_all: "Все",
-            th_tr: "№",
-            th_work_type: "Тип работы",
-            th_title: "Название",
-            th_about: "Описание",
-            th_author: "Автор",
-            th_date: "Дата",
-            th_category: "Категория",
-            th_file: "Файл",
-            th_pages: "Страниц",
-            th_actions: "Действия",
-            stat_faculties: "Факультеты (Деканаты)",
-            stat_departments: "Кафедры",
-            stat_professors: "Преподаватели",
-            stat_total_works: "Всего работ",
-            stat_scopus: "Scopus / WoS",
-            stat_oak: "Статьи ВАК",
-            stat_textbooks: "Учебные пособия",
-            status_done: "Выполнено",
-            status_pending: "В процессе",
-            status_no_file: "Нет файла"
+            nav_logout: "Выйти",
+            profile_menu: "Профиль",
+            edu_works_menu: "Учебные работы",
+            sci_works_menu: "Научные работы",
+            video_lessons_menu: "Видеоуроки",
+            role_badge: "Кабинет преподавателя",
+            edit_profile: "Редактировать профиль",
+            dark_mode: "Темная тема",
+            light_mode: "Светлая тема"
         },
         en: {
             theme_dark: "Dark mode",
@@ -122,51 +137,20 @@
             nav_books: "Educational works",
             nav_videos: "Video lessons",
             nav_teachers: "Professors & Teachers",
-            nav_library: "Library",
-            nav_public_articles: "Public Articles",
-            nav_logout: "Logout",
             nav_login: "Login",
-            nav_register: "Register",
-            btn_add: "Add new",
-            btn_delete: "Delete",
-            btn_edit: "Edit",
-            btn_download_zip: "Download ZIP",
-            btn_download: "Download",
-            btn_filter: "Filter",
-            btn_save: "Save",
-            btn_cancel: "Cancel",
-            btn_search: "Search",
-            btn_back: "Go back",
-            lbl_from_date: "From",
-            lbl_to_date: "To",
-            lbl_type: "Type",
-            lbl_author: "Author",
-            lbl_faculty: "Faculty",
-            lbl_department: "Department",
-            lbl_all: "All",
-            th_tr: "No.",
-            th_work_type: "Work type",
-            th_title: "Title",
-            th_about: "About",
-            th_author: "Author",
-            th_date: "Date",
-            th_category: "Category",
-            th_file: "File",
-            th_pages: "Pages",
-            th_actions: "Actions",
-            stat_faculties: "Faculties (Deans)",
-            stat_departments: "Departments count",
-            stat_professors: "Professors & Teachers",
-            stat_total_works: "Total Works",
-            stat_scopus: "Scopus / WoS",
-            stat_oak: "National Articles",
-            stat_textbooks: "Textbooks & Guides",
-            status_done: "Completed",
-            status_pending: "In progress",
-            status_no_file: "No file"
+            nav_logout: "Logout",
+            profile_menu: "Profile",
+            edu_works_menu: "Educational works",
+            sci_works_menu: "Scientific works",
+            video_lessons_menu: "Video lessons",
+            role_badge: "Teacher Cabinet",
+            edit_profile: "Edit profile",
+            dark_mode: "Dark mode",
+            light_mode: "Light mode"
         }
     };
 
+    // 3. Toggle Dark / Light Mode
     window.toggleDarkMode = function () {
         var isDark = document.body.classList.toggle('dark-mode');
         document.documentElement.classList.toggle('dark-mode', isDark);
@@ -176,10 +160,10 @@
     };
 
     function updateToggleButtons() {
-        var isDark = document.body.classList.contains('dark-mode');
+        var isDark = document.body.classList.contains('dark-mode') || document.documentElement.classList.contains('dark-mode');
         var curLang = localStorage.getItem('app_lang') || 'uz';
         var t = translations[curLang] || translations.uz;
-        var label = isDark ? (t.theme_light || 'Kunduzgi') : (t.theme_dark || 'Tungi');
+        var label = isDark ? (t.theme_light || 'Kunduzgi rejim') : (t.theme_dark || 'Tungi rejim');
         var icon = isDark ? '☀️' : '🌙';
 
         document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
@@ -190,43 +174,68 @@
         });
     }
 
+    // 4. Translate Entire DOM to Selected Language
     window.changeLanguage = function (lang) {
         if (!translations[lang]) lang = 'uz';
         localStorage.setItem('app_lang', lang);
 
-        document.querySelectorAll('.lang-select, .global-lang-select').forEach(function (sel) {
+        // Update all select inputs
+        document.querySelectorAll('.lang-select, #langSwitcher, .global-lang-select').forEach(function (sel) {
             sel.value = lang;
         });
 
-        var t = translations[lang];
+        var t = translations[lang] || translations.uz;
 
-        // 1. Translate elements with data-i18n
+        // A. Elements with data-i18n
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
             var key = el.getAttribute('data-i18n');
             if (t[key]) {
-                el.innerText = t[key];
+                el.textContent = t[key];
             }
         });
 
-        // 2. Translate table headers & common text
-        document.querySelectorAll('table thead th').forEach(function (th) {
-            var txt = th.innerText.trim();
-            if (txt === 'T/R' || txt === '№' || txt === 'No.') th.innerText = t.th_tr;
-            else if (txt.indexOf('turi') !== -1 || txt.indexOf('Тип') !== -1 || txt.indexOf('type') !== -1) th.innerText = t.th_work_type;
-            else if (txt === 'Nomi' || txt === 'Название' || txt === 'Title') th.innerText = t.th_title;
-            else if (txt === 'Haqida' || txt === 'Описание' || txt === 'About') th.innerText = t.th_about;
-            else if (txt === 'Muallif' || txt === 'Автор' || txt === 'Author') th.innerText = t.th_author;
-            else if (txt === 'Sana' || txt === 'Дата' || txt === 'Date') th.innerText = t.th_date;
-            else if (txt === 'Kategoriya' || txt === 'Категория' || txt === 'Category') th.innerText = t.th_category;
-            else if (txt === 'Fayl' || txt === 'Файл' || txt === 'File') th.innerText = t.th_file;
+        // B. Translate text nodes using phraseDict
+        var textElements = document.querySelectorAll('a, button, span, p, h1, h2, h3, h4, h5, h6, th, td, label, div.stat-label, div.new-badge, div.hero-badge');
+        textElements.forEach(function (el) {
+            // Ignore containers that have complex child elements
+            if (el.children.length > 2) return;
+
+            var rawText = (el.dataset.i18nOrig !== undefined) ? el.dataset.i18nOrig : el.innerText.trim();
+            if (!el.dataset.i18nOrig && rawText) {
+                el.dataset.i18nOrig = rawText;
+            }
+
+            var orig = el.dataset.i18nOrig;
+            if (orig && phraseDict[orig]) {
+                if (lang === 'uz') {
+                    el.innerText = orig;
+                } else if (phraseDict[orig][lang]) {
+                    el.innerText = phraseDict[orig][lang];
+                }
+            }
+        });
+
+        // C. Translate Input Placeholders
+        document.querySelectorAll('input[placeholder]').forEach(function (inp) {
+            if (!inp.dataset.origPh) {
+                inp.dataset.origPh = inp.getAttribute('placeholder');
+            }
+            var origPh = inp.dataset.origPh;
+            if (origPh) {
+                if (origPh.indexOf('Qidirish') !== -1 || origPh.indexOf('qidir') !== -1) {
+                    inp.setAttribute('placeholder', lang === 'ru' ? 'Поиск...' : (lang === 'en' ? 'Search...' : origPh));
+                } else if (origPh.indexOf('Video') !== -1) {
+                    inp.setAttribute('placeholder', lang === 'ru' ? 'Название видео или ключевое слово...' : (lang === 'en' ? 'Video title or keyword...' : origPh));
+                }
+            }
         });
 
         updateToggleButtons();
     };
 
-    // 3. Inject Floating Controls if not present on page
+    // 5. Initialize on Page Load
     function initGlobalControls() {
-        var hasNavbarToggle = document.getElementById('themeToggleBtn');
+        var hasNavbarToggle = document.getElementById('themeToggleBtn') || document.querySelector('.theme-toggle-btn');
         if (!hasNavbarToggle && !document.querySelector('.global-floating-controls')) {
             var floatingDiv = document.createElement('div');
             floatingDiv.className = 'global-floating-controls';
@@ -245,6 +254,7 @@
 
         var savedTheme = localStorage.getItem('app_theme') || localStorage.getItem('theme');
         if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
             document.body.classList.add('dark-mode');
         }
 
@@ -258,3 +268,4 @@
         initGlobalControls();
     }
 })();
+

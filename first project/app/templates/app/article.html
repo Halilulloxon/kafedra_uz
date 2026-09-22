@@ -25,6 +25,16 @@
       <li><a href="{% url 'video' %}">Video darslar</a></li>
       <li><a href="{% url 'login' %}">Kirish</a></li>
   </ul>
+  <div class="nav-controls">
+      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
+          🌙 <span class="d-none d-md-inline">Tungi rejim</span>
+      </button>
+      <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
+          <option value="uz">🇺🇿 UZ</option>
+          <option value="ru">🇷🇺 RU</option>
+          <option value="en">🇬🇧 EN</option>
+      </select>
+  </div>
 </nav>
 
 <div class="page-header">
