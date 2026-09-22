@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 from .models import Foydalanuvchilar, Kafedralar, oquvIshlari, ilmiy_ishlari, Dekanatlar, video_darslar, KafedraTalablari
 
 # --- Site Header & Title Configuration ---
@@ -9,12 +10,26 @@ admin.site.site_title = "Kafedralar.uz Admin"
 admin.site.index_title = "Tizim ma'lumotlarini boshqarish paneli"
 
 
+def make_edit_button(obj):
+    url = reverse(f'admin:{obj._meta.app_label}_{obj._meta.model_name}_change', args=[obj.pk])
+    return format_html(
+        '<a href="{}" class="admin-edit-btn">'
+        '<i class="fas fa-edit"></i> Tahrirlash'
+        '</a>',
+        url
+    )
+
+
 class FoydalanuvchilarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name_display', 'login_f', 'gmail', 'role_badge', 'kafedra', 'fakulteti', 'accepted_status')
+    list_display = ('id', 'full_name_display', 'login_f', 'gmail', 'role_badge', 'kafedra', 'fakulteti', 'accepted_status', 'tahrirlash_tugmasi')
     search_fields = ('ism', 'familiya', 'sharifi', 'login_f', 'gmail')
     list_filter = ('foydalanuvchi_rol', 'accepted', 'kafedra', 'fakulteti')
     list_per_page = 25
     actions = ['tasdiqlash', 'bekor_qilish']
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
     @admin.display(description="F.I.SH")
     def full_name_display(self, obj):
@@ -53,11 +68,15 @@ class FoydalanuvchilarAdmin(admin.ModelAdmin):
 
 
 class oquvIshlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'betlar_soni', 'file_preview', 'public_badge')
+    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'betlar_soni', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
     search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
     list_filter = ('turi', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
     @admin.display(description="Fayl")
     def file_preview(self, obj):
@@ -73,11 +92,15 @@ class oquvIshlariAdmin(admin.ModelAdmin):
 
 
 class ilmiy_ishlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'kategoriya', 'file_preview', 'public_badge')
+    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'kategoriya', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
     search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
     list_filter = ('turi', 'kategoriya', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
     @admin.display(description="Fayl")
     def file_preview(self, obj):
@@ -93,11 +116,15 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
 
 
 class video_darslarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'muallif', 'sana', 'video_preview', 'public_badge')
+    list_display = ('id', 'nomi', 'muallif', 'sana', 'video_preview', 'public_badge', 'tahrirlash_tugmasi')
     search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
     list_filter = ('sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
     @admin.display(description="Video")
     def video_preview(self, obj):
@@ -113,11 +140,15 @@ class video_darslarAdmin(admin.ModelAdmin):
 
 
 class KafedraTalablariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'sarlavha', 'kafedra', 'mudir', 'ish_turi', 'talab_miqdori', 'muddati', 'status_badge')
+    list_display = ('id', 'sarlavha', 'kafedra', 'mudir', 'ish_turi', 'talab_miqdori', 'muddati', 'status_badge', 'tahrirlash_tugmasi')
     search_fields = ('sarlavha', 'kafedra__nomi', 'mudir__ism', 'mudir__familiya')
     list_filter = ('ish_turi', 'faol', 'kafedra')
     date_hierarchy = 'muddati'
     list_per_page = 25
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
     @admin.display(description="Faollik")
     def status_badge(self, obj):
@@ -127,17 +158,25 @@ class KafedraTalablariAdmin(admin.ModelAdmin):
 
 
 class KafedralarAdmin(admin.ModelAdmin):
-    list_display = ('nomi', 'mudir', 'fakultet')
+    list_display = ('id', 'nomi', 'mudir', 'fakultet', 'tahrirlash_tugmasi')
     search_fields = ('nomi', 'mudir__ism', 'mudir__familiya', 'fakultet__nomi')
     list_filter = ('fakultet',)
     list_per_page = 25
 
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
+
 
 class DekanatlarAdmin(admin.ModelAdmin):
-    list_display = ('nomi', 'dekan')
+    list_display = ('id', 'nomi', 'dekan', 'tahrirlash_tugmasi')
     search_fields = ('nomi', 'dekan__ism', 'dekan__familiya')
     list_filter = ('nomi',)
     list_per_page = 25
+
+    @admin.display(description="Amallar")
+    def tahrirlash_tugmasi(self, obj):
+        return make_edit_button(obj)
 
 
 # --- Register ---
