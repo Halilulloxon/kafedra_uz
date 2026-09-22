@@ -445,18 +445,101 @@ body.dark-mode .global-lang-select {
     color: #f8fafc;
 }
 
+/* ==========================================================================
+   Card, Layout Spacing & Mobile Responsive Optimizations
+   ========================================================================== */
+
+/* Universal Responsive Table Wrapper */
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+    margin-bottom: 0 !important;
+}
+
+/* Card Spacing & Polish */
+.card {
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 20px !important;
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 1.25rem !important;
+}
+
+/* Form Inputs & Filter Spacing */
+.form-control-sm,
+.custom-select-sm {
+    height: 38px !important;
+    padding: 6px 12px !important;
+    font-size: 13.5px !important;
+    border-radius: 8px !important;
+}
+
+.form-row {
+    margin-right: -6px !important;
+    margin-left: -6px !important;
+}
+
+.form-row > [class*="col-"] {
+    padding-right: 6px !important;
+    padding-left: 6px !important;
+    margin-bottom: 10px !important;
+}
+
+.form-row label {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    margin-bottom: 5px !important;
+    display: inline-block !important;
+}
+
+/* Table Padding & Spacing */
+.table {
+    margin-bottom: 0 !important;
+    width: 100% !important;
+}
+
+.table th {
+    padding: 14px 16px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    border-top: none !important;
+}
+
+.table td {
+    padding: 14px 16px !important;
+    font-size: 13.5px !important;
+    vertical-align: middle !important;
+}
+
+/* Flexible Action Bar */
+.action-bar-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
 /* Media Queries for Tablets & Phones */
 @media (max-width: 991.98px) {
     .content-header-title {
-        font-size: 1.4rem !important;
+        font-size: 1.35rem !important;
     }
     .main-menu.menu-fixed {
         position: fixed;
         z-index: 1032;
     }
     .header-navbar .navbar-container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
     .header-navbar .navbar-nav.ml-auto {
         gap: 6px;
@@ -471,19 +554,19 @@ body.dark-mode .global-lang-select {
 
 @media (max-width: 768px) {
     .app-content {
-        padding: 10px !important;
+        padding: 12px 10px !important;
     }
     .content-wrapper {
-        padding: 0 !important;
+        padding: 14px 10px !important;
+    }
+    .card {
+        margin-bottom: 16px !important;
     }
     .card-body {
-        padding: 14px !important;
-    }
-    .form-row > div {
-        margin-bottom: 8px;
+        padding: 14px 12px !important;
     }
     .stat-card h2 {
-        font-size: 1.6rem !important;
+        font-size: 1.5rem !important;
     }
     .stat-card span {
         font-size: 0.85rem !important;
@@ -500,16 +583,19 @@ body.dark-mode .global-lang-select {
 }
 
 @media (max-width: 575.98px) {
+    .content-wrapper {
+        padding: 10px 6px !important;
+    }
     .navbar-brand .brand-text {
         font-size: 1.1rem !important;
     }
     .btn-sm {
-        padding: 0.35rem 0.6rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.82rem !important;
     }
     .table th, .table td {
-        padding: 8px 6px !important;
-        font-size: 12px !important;
+        padding: 10px 10px !important;
+        font-size: 12.5px !important;
     }
     .dropdown-user-link .user-name {
         display: none !important;
@@ -517,17 +603,17 @@ body.dark-mode .global-lang-select {
     .theme-toggle-btn {
         width: 34px;
         height: 34px;
-        padding: 0;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     .theme-toggle-btn span {
         display: none !important;
     }
     .lang-select {
-        padding: 4px 6px;
-        font-size: 12px;
+        padding: 4px 6px !important;
+        font-size: 12px !important;
     }
 }
