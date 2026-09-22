@@ -364,6 +364,8 @@ def ilmiy_ishlari4(request, user_id):
     fakultet_id = request.GET.get('fakultet')
     kafedra_id = request.GET.get('kafedra')
     turi_filter = request.GET.get('turi')
+    from_date = request.GET.get('from')
+    to_date = request.GET.get('to')
     
     qs = ilmiy.objects.all()
     if fakultet_id:
@@ -372,20 +374,25 @@ def ilmiy_ishlari4(request, user_id):
         qs = qs.filter(muallif__kafedra_id=kafedra_id)
     if turi_filter:
         qs = qs.filter(turi=turi_filter)
+    if from_date:
+        qs = qs.filter(sana__gte=from_date)
+    if to_date:
+        qs = qs.filter(sana__lte=to_date)
         
     fakultetlar = Dekanatlar.objects.all()
     kafedralar = Kafedralar.objects.all()
+    if fakultet_id:
+        kafedralar = kafedralar.filter(fakultet_id=fakultet_id)
     turlar = ilmiy.objects.values_list('turi', flat=True).distinct()
     
-    return render(request, 'app/ilmiy_ishlar3.html', {
+    return render(request, 'app/ilmiy_ishlar4.html', {
         'title': 'Universitet Ilmiy Ishlari',
         'year': datetime.now().year,
-        'maqola': qs.order_by('-sana')[:150],
+        'maqola': qs.order_by('-sana')[:300],
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'fakultetlar': fakultetlar,
         'turi': turlar,
-        'ish_muallifi': []
     })
 
 def oquv_ishlari4(request, user_id):
@@ -393,6 +400,8 @@ def oquv_ishlari4(request, user_id):
     fakultet_id = request.GET.get('fakultet')
     kafedra_id = request.GET.get('kafedra')
     turi_filter = request.GET.get('turi')
+    from_date = request.GET.get('from')
+    to_date = request.GET.get('to')
     
     qs = oquvIshlari.objects.all()
     if fakultet_id:
@@ -401,20 +410,25 @@ def oquv_ishlari4(request, user_id):
         qs = qs.filter(muallif__kafedra_id=kafedra_id)
     if turi_filter:
         qs = qs.filter(turi=turi_filter)
+    if from_date:
+        qs = qs.filter(sana__gte=from_date)
+    if to_date:
+        qs = qs.filter(sana__lte=to_date)
         
     fakultetlar = Dekanatlar.objects.all()
     kafedralar = Kafedralar.objects.all()
+    if fakultet_id:
+        kafedralar = kafedralar.filter(fakultet_id=fakultet_id)
     turlar = oquvIshlari.objects.values_list('turi', flat=True).distinct()
     
-    return render(request, 'app/o`quv_ishlari3.html', {
+    return render(request, 'app/o`quv_ishlari4.html', {
         'title': 'Universitet O`quv Ishlari',
         'year': datetime.now().year,
-        'maqola': qs.order_by('-sana')[:150],
+        'maqola': qs.order_by('-sana')[:300],
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'fakultetlar': fakultetlar,
         'turi': turlar,
-        'ish_muallifi': []
     })
 
 def oquv_ishlari(request, user_id):

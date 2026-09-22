@@ -85,7 +85,7 @@
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-lg-none mr-auto">
                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="la la-bars la-3x"></i>
+                            <i class="fas fa-bars font-medium-3"></i>
                         </a>
                     </li>
                     <li class="nav-item mr-auto">
@@ -96,7 +96,7 @@
                     </li>
                     <li class="nav-item d-none d-lg-block nav-toggle">
                         <a class="nav-link modern-nav-toggle pr-0">
-                            <i class="la la-angle-right" style="font-size:20px; color:#fff; margin-right:15px;"></i>
+                            <i class="fas fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
                         </a>
                     </li>
                 </ul>
@@ -106,8 +106,8 @@
                 <div class="collapse navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
-                            <span class="badge badge-pill badge-danger font-medium-1 px-2 py-1 mt-1">
-                                <i class="la la-shield"></i> <span data-i18n="prorektor_badge">Prorektor boshqaruvi</span>
+                            <span class="badge badge-pill badge-danger font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                                <i class="fas fa-shield-alt mr-1"></i> <span data-i18n="prorektor_badge">Prorektor boshqaruvi</span>
                             </span>
                         </li>
                     </ul>
@@ -136,11 +136,11 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
-                                    <i class="la la-edit"></i> <span data-i18n="edit_profile">Tahrirlash</span>
+                                    <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Tahrirlash</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                    <i class="la la-lock"></i> <span data-i18n="logout">Chiqish</span>
+                                    <i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
                                 </a>
                             </div>
                         </li>
