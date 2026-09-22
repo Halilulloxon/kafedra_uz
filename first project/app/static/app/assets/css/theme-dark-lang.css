@@ -949,3 +949,92 @@ body.dark-mode .password-wrapper .toggle-password:hover {
     color: #f1f5f9 !important;
 }
 
+/* ── Teachers & Teacher Profile Light/Dark Theme Support ── */
+body:not(.dark-mode) .teachers-grid .t-card,
+body:not(.dark-mode) .t-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+body:not(.dark-mode) .t-card .t-name {
+    color: #ffffff !important;
+}
+body:not(.dark-mode) .t-card .t-card-body {
+    background: #ffffff !important;
+    color: #1e293b !important;
+}
+body:not(.dark-mode) .t-stats {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .summary-bar {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .sum-item {
+    border-right-color: #e2e8f0 !important;
+}
+body:not(.dark-mode) .filter-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #334155 !important;
+}
+body:not(.dark-mode) .filter-btn.active {
+    background: #1e88e5 !important;
+    border-color: #1e88e5 !important;
+    color: #ffffff !important;
+}
+body:not(.dark-mode) .search-form input {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+}
+body:not(.dark-mode) .page-header {
+    background: linear-gradient(180deg, rgba(30, 136, 229, 0.06) 0%, transparent 100%) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+body:not(.dark-mode) .page-header h1 {
+    color: #0f172a !important;
+}
+body:not(.dark-mode) .page-header p {
+    color: #64748b !important;
+}
+
+body.dark-mode .teachers-grid .t-card,
+body.dark-mode .t-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+body.dark-mode .t-card .t-card-body {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+body.dark-mode .t-stats {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+body.dark-mode .summary-bar {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body.dark-mode .sum-item {
+    border-right-color: #334155 !important;
+}
+body.dark-mode .filter-btn {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+body.dark-mode .filter-btn.active {
+    background: #1e88e5 !important;
+    border-color: #1e88e5 !important;
+    color: #ffffff !important;
+}
+body.dark-mode .search-form input {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+
