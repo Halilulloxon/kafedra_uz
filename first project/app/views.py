@@ -96,8 +96,8 @@ def home1(request):
     foydalanuvchi = get_current_user(request)
     if not foydalanuvchi:
         return redirect('login')
-    maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='maqola').count()
-    scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='scopus').count()
+    maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='maqola').count()
+    scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='scopus').count()
     oquv_soni= oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
     ilmiy_soni= ilmiy.objects.filter(muallif_id=foydalanuvchi.id).count()
     jami= oquv_soni+ilmiy_soni
@@ -174,8 +174,8 @@ def home2(request):
         return redirect('login')
     
     if foydalanuvchi.kafedra:
-        maqolalar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi='maqola').count()
-        scopuslar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi='scopus').count()
+        maqolalar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi__iexact='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi__iexact='scopus').count()
         oquv_soni = oquvIshlari.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
         ilmiy_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
         talablar_soni = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra).count()
@@ -208,8 +208,8 @@ def home3(request):
         return redirect('login')
     
     if foydalanuvchi.fakulteti:
-        maqolalar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi='maqola').count()
-        scopuslar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi='scopus').count()
+        maqolalar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi__iexact='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi__iexact='scopus').count()
         oquv_soni = oquvIshlari.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
         ilmiy_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
     else:
@@ -241,9 +241,9 @@ def home4(request):
     kafedralar_soni = Kafedralar.objects.count()
     oqituvchilar_soni = Foydalanuvchilar.objects.count()
     
-    maqolalar_soni = ilmiy.objects.filter(turi='maqola').count()
-    scopuslar_soni = ilmiy.objects.filter(turi='scopus').count()
-    tezislar_soni = ilmiy.objects.filter(turi='Tezis').count()
+    maqolalar_soni = ilmiy.objects.filter(turi__iexact='maqola').count()
+    scopuslar_soni = ilmiy.objects.filter(turi__iexact='scopus').count()
+    tezislar_soni = ilmiy.objects.filter(turi__iexact='tezis').count()
     
     oquv_soni = oquvIshlari.objects.count()
     ilmiy_soni = ilmiy.objects.count()
@@ -486,8 +486,8 @@ def profile(request, user_id):
     
     assert isinstance(request, HttpRequest)
     foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='maqola').count()
-    scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi='scopus').count()
+    maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='maqola').count()
+    scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='scopus').count()
     oquv_soni= oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
     ilmiy_soni= ilmiy.objects.filter(muallif_id=foydalanuvchi.id).count() 
     jami=oquv_soni+ilmiy_soni
@@ -1600,12 +1600,11 @@ def registratsiya(request):
     })
 def article(request):
     foydalanuvchi = get_current_user(request)
-    maqolalar=ilmiy.objects.filter(turi='maqola', foreveryone=True).union(ilmiy.objects.filter(turi='scopus', foreveryone=True))
+    maqolalar = ilmiy.objects.filter(foreveryone=True).order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
         maqola_soni=Count(
             'ilmiy_ishlari',
             filter=Q(
-                ilmiy_ishlari__turi__in=['maqola', 'scopus'],
                 ilmiy_ishlari__foreveryone=True
             )
         )
@@ -1623,14 +1622,13 @@ def search_article(request):
     foydalanuvchi = get_current_user(request)
     query = request.GET.get('q', '')
     maqolalar = ilmiy.objects.filter(
-        Q(turi='maqola', foreveryone=True) | Q(turi='scopus', foreveryone=True),
+        Q(foreveryone=True),
         Q(nomi__icontains=query) | Q(muallif__ism__icontains=query) | Q(muallif__familiya__icontains=query) | Q(muallif__sharifi__icontains=query) | Q(ish_mualliflari__icontains=query) | Q(haqida__icontains=query) | Q(muallif__kafedra__nomi__icontains=query)
-    ).distinct()
+    ).distinct().order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
         maqola_soni=Count(
             'ilmiy_ishlari',
             filter=Q(
-                ilmiy_ishlari__turi__in=['maqola', 'scopus'],
                 ilmiy_ishlari__foreveryone=True
             )
         )
@@ -1639,12 +1637,11 @@ def search_article(request):
 
 def book(request):
     foydalanuvchi = get_current_user(request)
-    kitoblar=oquvIshlari.objects.filter(foreveryone=True)
+    kitoblar = oquvIshlari.objects.filter(foreveryone=True).order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
         kitob_soni=Count(
             'oquvishlari',
             filter=Q(
-                oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
                 oquvishlari__foreveryone=True
             ))
     ).order_by('-kitob_soni')[:5]
@@ -1661,14 +1658,13 @@ def search_book(request):
     foydalanuvchi = get_current_user(request)
     query = request.GET.get('q','')
     kitoblar = oquvIshlari.objects.filter(
-        Q(turi='darslik', foreveryone=True) | Q(turi='O`quv qo`llanma', foreveryone=True),
+        Q(foreveryone=True),
         Q(nomi__icontains=query) | Q(muallif__ism__icontains=query) | Q(muallif__familiya__icontains=query) | Q(muallif__sharifi__icontains=query) | Q(ish_mualliflari__icontains=query) | Q(haqida__icontains=query) | Q(muallif__kafedra__nomi__icontains=query)
-    ).distinct()
+    ).distinct().order_by('-sana')
     top_mualliflar = Foydalanuvchilar.objects.annotate(
         kitob_soni=Count(
             'oquvishlari',
             filter=Q(
-                oquvishlari__turi__in=['darslik', 'O`quv qo`llanma'],
                 oquvishlari__foreveryone=True
             )
         )
