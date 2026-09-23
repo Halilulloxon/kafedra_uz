@@ -493,54 +493,76 @@ def ilmiy_ishlari(request, user_id):
         }
     )
 def profile(request, user_id):
-    
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='maqola').count()
-    scopuslar_soni=ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='scopus').count()
-    oquv_soni= oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
-    ilmiy_soni= ilmiy.objects.filter(muallif_id=foydalanuvchi.id).count() 
-    jami=oquv_soni+ilmiy_soni
-    yanvar_o=oquvIshlari.objects.filter(sana__month=1, muallif_id=foydalanuvchi.id).count()
-    fevral_o=oquvIshlari.objects.filter(sana__month=2, muallif_id=foydalanuvchi.id).count()
-    mart_o=oquvIshlari.objects.filter(sana__month=3, muallif_id=foydalanuvchi.id).count()
-    aprel_o=oquvIshlari.objects.filter(sana__month=4, muallif_id=foydalanuvchi.id).count()
-    may_o=oquvIshlari.objects.filter(sana__month=5, muallif_id=foydalanuvchi.id).count()
-    iyun_o=oquvIshlari.objects.filter(sana__month=6, muallif_id=foydalanuvchi.id).count()
-    iyul_o=oquvIshlari.objects.filter(sana__month=7, muallif_id=foydalanuvchi.id).count()
-    avgust_o=oquvIshlari.objects.filter(sana__month=8, muallif_id=foydalanuvchi.id).count()
-    sentabr_o=oquvIshlari.objects.filter(sana__month=9, muallif_id=foydalanuvchi.id).count()
-    oktabr_o=oquvIshlari.objects.filter(sana__month=10, muallif_id=foydalanuvchi.id).count()
-    noyabr_o=oquvIshlari.objects.filter(sana__month=11, muallif_id=foydalanuvchi.id).count()
-    dekabr_o=oquvIshlari.objects.filter(sana__month=12, muallif_id=foydalanuvchi.id).count()
-    yanvar_i=ilmiy.objects.filter(sana__month=1, muallif_id=foydalanuvchi.id).count()
-    fevral_i=ilmiy.objects.filter(sana__month=2, muallif_id=foydalanuvchi.id).count()
-    mart_i=ilmiy.objects.filter(sana__month=3, muallif_id=foydalanuvchi.id).count()
-    aprel_i=ilmiy.objects.filter(sana__month=4, muallif_id=foydalanuvchi.id).count()
-    may_i=ilmiy.objects.filter(sana__month=5, muallif_id=foydalanuvchi.id).count()
-    iyun_i=ilmiy.objects.filter(sana__month=6, muallif_id=foydalanuvchi.id).count()
-    iyul_i=ilmiy.objects.filter(sana__month=7, muallif_id=foydalanuvchi.id).count()
-    avgust_i=ilmiy.objects.filter(sana__month=8, muallif_id=foydalanuvchi.id).count()
-    sentabr_i=ilmiy.objects.filter(sana__month=9, muallif_id=foydalanuvchi.id).count()
-    oktabr_i=ilmiy.objects.filter(sana__month=10, muallif_id=foydalanuvchi.id).count()
-    noyabr_i=ilmiy.objects.filter(sana__month=11, muallif_id=foydalanuvchi.id).count()
-    dekabr_i=ilmiy.objects.filter(sana__month=12, muallif_id=foydalanuvchi.id).count()
+    foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
+    maqolalar_soni = ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='maqola').count()
+    scopuslar_soni = ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='scopus').count()
+    oquv_soni = oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
+    ilmiy_soni = ilmiy.objects.filter(muallif_id=foydalanuvchi.id).count() 
+    jami = oquv_soni + ilmiy_soni
+    yanvar_o = oquvIshlari.objects.filter(sana__month=1, muallif_id=foydalanuvchi.id).count()
+    fevral_o = oquvIshlari.objects.filter(sana__month=2, muallif_id=foydalanuvchi.id).count()
+    mart_o = oquvIshlari.objects.filter(sana__month=3, muallif_id=foydalanuvchi.id).count()
+    aprel_o = oquvIshlari.objects.filter(sana__month=4, muallif_id=foydalanuvchi.id).count()
+    may_o = oquvIshlari.objects.filter(sana__month=5, muallif_id=foydalanuvchi.id).count()
+    iyun_o = oquvIshlari.objects.filter(sana__month=6, muallif_id=foydalanuvchi.id).count()
+    iyul_o = oquvIshlari.objects.filter(sana__month=7, muallif_id=foydalanuvchi.id).count()
+    avgust_o = oquvIshlari.objects.filter(sana__month=8, muallif_id=foydalanuvchi.id).count()
+    sentabr_o = oquvIshlari.objects.filter(sana__month=9, muallif_id=foydalanuvchi.id).count()
+    oktabr_o = oquvIshlari.objects.filter(sana__month=10, muallif_id=foydalanuvchi.id).count()
+    noyabr_o = oquvIshlari.objects.filter(sana__month=11, muallif_id=foydalanuvchi.id).count()
+    dekabr_o = oquvIshlari.objects.filter(sana__month=12, muallif_id=foydalanuvchi.id).count()
+    yanvar_i = ilmiy.objects.filter(sana__month=1, muallif_id=foydalanuvchi.id).count()
+    fevral_i = ilmiy.objects.filter(sana__month=2, muallif_id=foydalanuvchi.id).count()
+    mart_i = ilmiy.objects.filter(sana__month=3, muallif_id=foydalanuvchi.id).count()
+    aprel_i = ilmiy.objects.filter(sana__month=4, muallif_id=foydalanuvchi.id).count()
+    may_i = ilmiy.objects.filter(sana__month=5, muallif_id=foydalanuvchi.id).count()
+    iyun_i = ilmiy.objects.filter(sana__month=6, muallif_id=foydalanuvchi.id).count()
+    iyul_i = ilmiy.objects.filter(sana__month=7, muallif_id=foydalanuvchi.id).count()
+    avgust_i = ilmiy.objects.filter(sana__month=8, muallif_id=foydalanuvchi.id).count()
+    sentabr_i = ilmiy.objects.filter(sana__month=9, muallif_id=foydalanuvchi.id).count()
+    oktabr_i = ilmiy.objects.filter(sana__month=10, muallif_id=foydalanuvchi.id).count()
+    noyabr_i = ilmiy.objects.filter(sana__month=11, muallif_id=foydalanuvchi.id).count()
+    dekabr_i = ilmiy.objects.filter(sana__month=12, muallif_id=foydalanuvchi.id).count()
+
+    # Kafedra talablari va o'qituvchining bajarish foizi
+    talablar = []
+    if foydalanuvchi.kafedra:
+        raw_talablar = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra, faol=True)
+        for t in raw_talablar:
+            if t.ish_turi == 'Scopus':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='scopus').count()
+            elif t.ish_turi == 'Maqola':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='maqola').count()
+            elif t.ish_turi == 'Tezis':
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi, turi__iexact='tezis').count()
+            elif t.ish_turi in ['Darslik', "O`quv qo`llanma", 'Monografiya', 'Uslubiy ko`rsatma']:
+                bajarilgan = oquvIshlari.objects.filter(muallif=foydalanuvchi, turi__iexact=t.ish_turi).count()
+            else:
+                bajarilgan = ilmiy.objects.filter(muallif=foydalanuvchi).count() + oquvIshlari.objects.filter(muallif=foydalanuvchi).count()
+            
+            foiz = min(100, int((bajarilgan / t.talab_miqdori) * 100)) if t.talab_miqdori > 0 else 100
+            talablar.append({
+                'obj': t,
+                'bajarilgan': bajarilgan,
+                'foiz': foiz,
+                'holat': 'Bajarildi' if foiz >= 100 else 'Jarayonda'
+            })
+
     return render(
         request,
         'app/profil.html',
         {
-            'foydalanuvchi':foydalanuvchi,
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
-            'maqolalar_soni':maqolalar_soni,
-            'scopuslar_soni':scopuslar_soni,
-            'oquv_soni':oquv_soni,
-            'jami':jami,
-            'oy_o':[yanvar_o, fevral_o, mart_o, aprel_o, may_o, iyun_o, iyul_o, avgust_o, sentabr_o, oktabr_o, noyabr_o, dekabr_o],
-            'oy_i':[yanvar_i, fevral_i, mart_i, aprel_i, may_i, iyun_i, iyul_i, avgust_i, sentabr_i, oktabr_i, noyabr_i, dekabr_i],
-            
-           
+            'foydalanuvchi': foydalanuvchi,
+            'title': 'O\'qituvchi Paneli',
+            'year': datetime.now().year,
+            'maqolalar_soni': maqolalar_soni,
+            'scopuslar_soni': scopuslar_soni,
+            'oquv_soni': oquv_soni,
+            'jami': jami,
+            'oy_o': [yanvar_o, fevral_o, mart_o, aprel_o, may_o, iyun_o, iyul_o, avgust_o, sentabr_o, oktabr_o, noyabr_o, dekabr_o],
+            'oy_i': [yanvar_i, fevral_i, mart_i, aprel_i, may_i, iyun_i, iyul_i, avgust_i, sentabr_i, oktabr_i, noyabr_i, dekabr_i],
+            'talablar': talablar,
         }
     )
 def qoshish(request, user_id):
@@ -986,57 +1008,57 @@ def tahrirlash_ilmiy(request, i_id, t_id, user_id):
 
 def profile2(request, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=0
-    scopuslar_soni=0
-    oquv_soni=0
-    ilmiy_soni=0
-    for muallif in Foydalanuvchilar.objects.filter(kafedra = foydalanuvchi.kafedra):
-        maqolalar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='maqola').count()
-        scopuslar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='scopus').count()
-        oquv_soni+= oquvIshlari.objects.filter(muallif_id=muallif.id).count()
-        ilmiy_soni+= ilmiy.objects.filter(muallif_id=muallif.id).count()
-    jami=oquv_soni+ilmiy_soni
+    foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
+    if foydalanuvchi.kafedra:
+        maqolalar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi__iexact='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra, turi__iexact='scopus').count()
+        oquv_soni = oquvIshlari.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
+        ilmiy_soni = ilmiy.objects.filter(muallif__kafedra=foydalanuvchi.kafedra).count()
+        talablar_soni = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra).count()
+        oqituvchilar_soni = Foydalanuvchilar.objects.filter(kafedra=foydalanuvchi.kafedra).count()
+    else:
+        maqolalar_soni = scopuslar_soni = oquv_soni = ilmiy_soni = talablar_soni = oqituvchilar_soni = 0
+    
+    jami = oquv_soni + ilmiy_soni
     return render(
         request,
         'app/profil2.html',
         {
-            'foydalanuvchi':foydalanuvchi,
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
-            'maqolalar_soni':maqolalar_soni,
-            'scopuslar_soni':scopuslar_soni,
-            'oquv_soni':oquv_soni,
-            'jami':jami,
+            'foydalanuvchi': foydalanuvchi,
+            'title': 'Kafedra Mudiri Paneli',
+            'year': datetime.now().year,
+            'maqolalar_soni': maqolalar_soni,
+            'scopuslar_soni': scopuslar_soni,
+            'oquv_soni': oquv_soni,
+            'jami': jami,
+            'talablar_soni': talablar_soni,
+            'oqituvchilar_soni': oqituvchilar_soni,
         }
     )
+
 def profile3(request, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    maqolalar_soni=0
-    scopuslar_soni=0
-    oquv_soni=0
-    ilmiy_soni=0
-    for kafedra_f in Kafedralar.objects.filter(fakultet=foydalanuvchi.fakulteti):
-        for muallif in Foydalanuvchilar.objects.filter(kafedra=kafedra_f):
-            maqolalar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='maqola').count()
-            scopuslar_soni+=ilmiy.objects.filter(muallif_id=muallif.id, turi='scopus').count()
-            oquv_soni+= oquvIshlari.objects.filter(muallif_id=muallif.id).count()
-            ilmiy_soni+= ilmiy.objects.filter(muallif_id=muallif.id).count()
-    jami=oquv_soni+ilmiy_soni
+    foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
+    if foydalanuvchi.fakulteti:
+        maqolalar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi__iexact='maqola').count()
+        scopuslar_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti, turi__iexact='scopus').count()
+        oquv_soni = oquvIshlari.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
+        ilmiy_soni = ilmiy.objects.filter(muallif__fakulteti=foydalanuvchi.fakulteti).count()
+    else:
+        maqolalar_soni = scopuslar_soni = oquv_soni = ilmiy_soni = 0
+    
+    jami = oquv_soni + ilmiy_soni
     return render(
         request,
         'app/profil3.html',
         {
-            'foydalanuvchi':foydalanuvchi,
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
-            'maqolalar_soni':maqolalar_soni,
-            'scopuslar_soni':scopuslar_soni,
-            'oquv_soni':oquv_soni,
-            'jami':jami,
+            'foydalanuvchi': foydalanuvchi,
+            'title': 'Dekan Paneli',
+            'year': datetime.now().year,
+            'maqolalar_soni': maqolalar_soni,
+            'scopuslar_soni': scopuslar_soni,
+            'oquv_soni': oquv_soni,
+            'jami': jami,
         }
     )
 from django.db.models import Min
