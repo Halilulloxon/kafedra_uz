@@ -1378,34 +1378,34 @@ div.card.stat-card.bg-gradient-x-danger {
     color: #ffffff !important;
 }
 
-.stat-card {
+.stat-card.card[class*="bg-gradient-"],
+.card[class*="bg-gradient-"] {
     border-radius: 14px !important;
     overflow: hidden !important;
     transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
-.stat-card:hover {
+.stat-card.card[class*="bg-gradient-"]:hover,
+.card[class*="bg-gradient-"]:hover {
     transform: translateY(-4px) !important;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
 }
 
-.stat-card .card-body,
 .card[class*="bg-gradient-"] .card-body {
     background: transparent !important;
     background-color: transparent !important;
     padding: 1.5rem !important;
 }
 
-.stat-card.bg-gradient-x-info *,
-.stat-card.bg-gradient-x-warning *,
-.stat-card.bg-gradient-x-success *,
-.stat-card.bg-gradient-x-danger *,
-.stat-card.bg-gradient-x-primary *,
-.card[class*="bg-gradient-"] * {
+.card[class*="bg-gradient-"] *,
+.card.bg-gradient-x-info *,
+.card.bg-gradient-x-warning *,
+.card.bg-gradient-x-success *,
+.card.bg-gradient-x-danger *,
+.card.bg-gradient-x-primary * {
     color: #ffffff !important;
 }
 
-.stat-card h2, 
 .card[class*="bg-gradient-"] h2 {
     font-size: 2.2rem !important;
     font-weight: 800 !important;
@@ -1413,18 +1413,115 @@ div.card.stat-card.bg-gradient-x-danger {
     color: #ffffff !important;
 }
 
-.stat-card span, 
 .card[class*="bg-gradient-"] span {
     font-size: 0.95rem !important;
     font-weight: 500 !important;
     color: rgba(255, 255, 255, 0.95) !important;
 }
 
-.stat-card i, 
-.card[class*="bg-gradient-"] i {
+.card[class*="bg-gradient-"] i,
+.card[class*="bg-gradient-"] .font-large-2 {
     font-size: 2.5rem !important;
     color: #ffffff !important;
     opacity: 0.9 !important;
+}
+
+/* ── Profile Details & Non-Gradient Cards Contrast (Light & Dark) ── */
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) .card-title,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h1,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h2,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h3,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h4,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h5,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) h6,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) strong {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) .text-muted,
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) .list-group-item .text-muted {
+    color: #64748b !important;
+}
+
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) .list-group-item {
+    color: #1e293b !important;
+    border-color: #f1f5f9 !important;
+}
+
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) i.text-primary {
+    color: #2563eb !important;
+}
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) i.text-success {
+    color: #16a34a !important;
+}
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) i.text-warning {
+    color: #d97706 !important;
+}
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) i.text-danger {
+    color: #dc2626 !important;
+}
+body:not(.dark-mode) .card:not([class*="bg-gradient-"]) i.text-info {
+    color: #0284c7 !important;
+}
+
+/* ── ApexCharts Diagram Visual Contrast (Light & Dark) ── */
+body:not(.dark-mode) .apexcharts-canvas text,
+body:not(.dark-mode) .apexcharts-text,
+body:not(.dark-mode) .apexcharts-text tspan,
+body:not(.dark-mode) .apexcharts-legend-text,
+body:not(.dark-mode) .apexcharts-title-text,
+body:not(.dark-mode) .apexcharts-subtitle-text,
+body:not(.dark-mode) .apexcharts-xaxis-label,
+body:not(.dark-mode) .apexcharts-yaxis-label,
+body:not(.dark-mode) .apexcharts-datalabel {
+    fill: #334155 !important;
+    color: #334155 !important;
+}
+
+body:not(.dark-mode) .apexcharts-tooltip {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+body:not(.dark-mode) .apexcharts-tooltip * {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .apexcharts-gridline,
+body:not(.dark-mode) .apexcharts-xcrosshairs,
+body:not(.dark-mode) .apexcharts-ycrosshairs {
+    stroke: #e2e8f0 !important;
+}
+
+body.dark-mode .apexcharts-canvas text,
+body.dark-mode .apexcharts-text,
+body.dark-mode .apexcharts-text tspan,
+body.dark-mode .apexcharts-legend-text,
+body.dark-mode .apexcharts-title-text,
+body.dark-mode .apexcharts-subtitle-text,
+body.dark-mode .apexcharts-xaxis-label,
+body.dark-mode .apexcharts-yaxis-label,
+body.dark-mode .apexcharts-datalabel {
+    fill: #cbd5e1 !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .apexcharts-tooltip {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .apexcharts-tooltip * {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .apexcharts-gridline,
+body.dark-mode .apexcharts-xcrosshairs,
+body.dark-mode .apexcharts-ycrosshairs {
+    stroke: #334155 !important;
 }
 
 /* ==========================================================================
@@ -1652,29 +1749,26 @@ div.card.stat-card.bg-gradient-x-danger {
 /* ── 2. Stat Cards & Profile Details on Mobile (<= 767.98px) ── */
 @media (max-width: 767.98px) {
     /* Stat Cards scaling & polish */
-    .stat-card {
+    .card[class*="bg-gradient-"] {
         margin-bottom: 12px !important;
         border-radius: 12px !important;
     }
 
-    .stat-card .card-body,
     .card[class*="bg-gradient-"] .card-body {
         padding: 1rem 1.15rem !important;
     }
 
-    .stat-card h2,
     .card[class*="bg-gradient-"] h2 {
         font-size: 1.65rem !important;
         font-weight: 800 !important;
     }
 
-    .stat-card span,
     .card[class*="bg-gradient-"] span {
         font-size: 0.82rem !important;
     }
 
-    .stat-card i,
-    .card[class*="bg-gradient-"] i {
+    .card[class*="bg-gradient-"] i,
+    .card[class*="bg-gradient-"] .font-large-2 {
         font-size: 1.85rem !important;
     }
 
