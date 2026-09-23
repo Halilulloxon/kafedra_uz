@@ -1239,92 +1239,265 @@ body.dark-mode .password-wrapper .toggle-password:hover {
     color: #f1f5f9 !important;
 }
 
-/* ── Teachers & Teacher Profile Light/Dark Theme Support ── */
-body:not(.dark-mode) .teachers-grid .t-card,
-body:not(.dark-mode) .t-card {
-    background: #ffffff !important;
-    border-color: #e2e8f0 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-}
-body:not(.dark-mode) .t-card .t-name {
-    color: #ffffff !important;
-}
-body:not(.dark-mode) .t-card .t-card-body {
-    background: #ffffff !important;
+/* ── Teachers, Video, Books & Public Pages Theme Support ── */
+
+/* Light Mode */
+body:not(.dark-mode) {
+    background-color: #f8fafc !important;
     color: #1e293b !important;
 }
-body:not(.dark-mode) .t-stats {
-    background: #f8fafc !important;
-    border-color: #e2e8f0 !important;
-}
-body:not(.dark-mode) .summary-bar {
-    background: #ffffff !important;
-    border-color: #e2e8f0 !important;
-}
-body:not(.dark-mode) .sum-item {
-    border-right-color: #e2e8f0 !important;
-}
-body:not(.dark-mode) .filter-btn {
-    background: #ffffff !important;
-    border-color: #cbd5e1 !important;
-    color: #334155 !important;
-}
-body:not(.dark-mode) .filter-btn.active {
-    background: #1e88e5 !important;
-    border-color: #1e88e5 !important;
-    color: #ffffff !important;
-}
-body:not(.dark-mode) .search-form input {
-    background: #ffffff !important;
-    border-color: #cbd5e1 !important;
-    color: #1e293b !important;
-}
+
 body:not(.dark-mode) .page-header {
-    background: linear-gradient(180deg, rgba(30, 136, 229, 0.06) 0%, transparent 100%) !important;
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, #f8fafc 100%) !important;
     border-bottom: 1px solid #e2e8f0 !important;
 }
-body:not(.dark-mode) .page-header h1 {
+
+body:not(.dark-mode) .page-header h1,
+body:not(.dark-mode) .page-header .page-title,
+body:not(.dark-mode) .section-title,
+body:not(.dark-mode) .featured-info h2,
+body:not(.dark-mode) .video-title,
+body:not(.dark-mode) .work-title {
     color: #0f172a !important;
 }
-body:not(.dark-mode) .page-header p {
+
+body:not(.dark-mode) .page-header p,
+body:not(.dark-mode) .section-sub,
+body:not(.dark-mode) .t-bio,
+body:not(.dark-mode) .work-desc,
+body:not(.dark-mode) .featured-info p {
+    color: #475569 !important;
+}
+
+body:not(.dark-mode) .summary-bar {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+}
+
+body:not(.dark-mode) .sum-item {
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+body:not(.dark-mode) .sum-num {
+    color: #2563eb !important;
+}
+
+body:not(.dark-mode) .sum-label {
     color: #64748b !important;
 }
 
-body.dark-mode .teachers-grid .t-card,
-body.dark-mode .t-card {
-    background: #1e293b !important;
-    border-color: #334155 !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+body:not(.dark-mode) .filter-btn,
+body:not(.dark-mode) .cat-pill,
+body:not(.dark-mode) .tab-btn {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
 }
-body.dark-mode .t-card .t-card-body {
-    background: #1e293b !important;
-    color: #f1f5f9 !important;
+
+body:not(.dark-mode) .filter-btn:hover,
+body:not(.dark-mode) .cat-pill:hover,
+body:not(.dark-mode) .tab-btn:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
 }
-body.dark-mode .t-stats {
-    background: #0f172a !important;
-    border-color: #334155 !important;
-}
-body.dark-mode .summary-bar {
-    background: #1e293b !important;
-    border-color: #334155 !important;
-}
-body.dark-mode .sum-item {
-    border-right-color: #334155 !important;
-}
-body.dark-mode .filter-btn {
-    background: #1e293b !important;
-    border-color: #334155 !important;
-    color: #cbd5e1 !important;
-}
-body.dark-mode .filter-btn.active {
-    background: #1e88e5 !important;
-    border-color: #1e88e5 !important;
+
+body:not(.dark-mode) .filter-btn.active,
+body:not(.dark-mode) .cat-pill.active,
+body:not(.dark-mode) .tab-btn.active {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
     color: #ffffff !important;
 }
-body.dark-mode .search-form input {
-    background: #0f172a !important;
-    border-color: #334155 !important;
+
+body:not(.dark-mode) .search-form input,
+body:not(.dark-mode) .search-box input {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .search-form input::placeholder,
+body:not(.dark-mode) .search-box input::placeholder {
+    color: #94a3b8 !important;
+}
+
+body:not(.dark-mode) .search-form button,
+body:not(.dark-mode) .search-box button {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+body:not(.dark-mode) .t-card,
+body:not(.dark-mode) .video-card,
+body:not(.dark-mode) .featured-card,
+body:not(.dark-mode) .work-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    color: #1e293b !important;
+}
+
+body:not(.dark-mode) .t-card:hover,
+body:not(.dark-mode) .video-card:hover,
+body:not(.dark-mode) .featured-card:hover,
+body:not(.dark-mode) .work-card:hover {
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.12) !important;
+    border-color: #93c5fd !important;
+}
+
+body:not(.dark-mode) .t-card .t-name {
+    color: #ffffff !important;
+}
+
+body:not(.dark-mode) .t-card .t-card-body,
+body:not(.dark-mode) .video-body {
+    background: #ffffff !important;
+    color: #1e293b !important;
+}
+
+body:not(.dark-mode) .t-email,
+body:not(.dark-mode) .video-author {
+    color: #2563eb !important;
+}
+
+body:not(.dark-mode) .t-stats {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body:not(.dark-mode) .t-stat-item strong {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .t-stat-item span {
+    color: #64748b !important;
+}
+
+body:not(.dark-mode) .t-btn {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    border: 1px solid #bfdbfe !important;
+}
+
+body:not(.dark-mode) .t-card:hover .t-btn {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+body:not(.dark-mode) .video-dept,
+body:not(.dark-mode) .video-meta span,
+body:not(.dark-mode) .featured-meta span,
+body:not(.dark-mode) .work-meta span {
+    color: #64748b !important;
+}
+
+body:not(.dark-mode) .watch-btn {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #0d0f14 !important;
+    color: #e8eaf0 !important;
+}
+
+body.dark-mode .page-header {
+    background: linear-gradient(180deg, rgba(79, 142, 247, 0.06) 0%, transparent 100%) !important;
+    border-bottom: 1px solid #2a3045 !important;
+}
+
+body.dark-mode .page-header h1,
+body.dark-mode .page-header .page-title,
+body.dark-mode .section-title,
+body.dark-mode .featured-info h2,
+body.dark-mode .video-title,
+body.dark-mode .work-title {
     color: #f8fafc !important;
+}
+
+body.dark-mode .page-header p,
+body.dark-mode .section-sub,
+body.dark-mode .t-bio,
+body.dark-mode .work-desc,
+body.dark-mode .featured-info p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .summary-bar {
+    background: #161a23 !important;
+    border: 1px solid #2a3045 !important;
+}
+
+body.dark-mode .sum-item {
+    border-right: 1px solid #2a3045 !important;
+}
+
+body.dark-mode .sum-num {
+    color: #4f8ef7 !important;
+}
+
+body.dark-mode .sum-label {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .filter-btn,
+body.dark-mode .cat-pill,
+body.dark-mode .tab-btn {
+    background: #161a23 !important;
+    border: 1px solid #2a3045 !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .filter-btn.active,
+body.dark-mode .cat-pill.active,
+body.dark-mode .tab-btn.active {
+    background: #4f8ef7 !important;
+    border-color: #4f8ef7 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .search-form input,
+body.dark-mode .search-box input {
+    background: #161a23 !important;
+    border: 1px solid #2a3045 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .search-form button,
+body.dark-mode .search-box button {
+    background: #4f8ef7 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .t-card,
+body.dark-mode .video-card,
+body.dark-mode .featured-card,
+body.dark-mode .work-card {
+    background: #161a23 !important;
+    border: 1px solid #2a3045 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .t-card .t-card-body,
+body.dark-mode .video-body {
+    background: #161a23 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .t-stats {
+    background: #0d0f14 !important;
+    border: 1px solid #2a3045 !important;
+}
+
+body.dark-mode .t-stat-item strong {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .t-stat-item span {
+    color: #94a3b8 !important;
 }
 
 /* ── Stat Cards & Gradient Backgrounds (Light & Dark) ── */
