@@ -1,0 +1,203 @@
+# Kafedralar.uz — Django admin panelining tarjimasiz qatorlari.
+# Bu fayl qo'lda yuritiladi; .mo ni yangilash: scripts/tarjima.py
+msgid ""
+msgstr ""
+"Project-Id-Version: kafedralar.uz\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uz\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Added {name} “{object}”."
+msgstr "{name} \"{object}\" qo'shildi."
+
+msgid "Added."
+msgstr "Qo'shildi."
+
+msgid "Changed {fields} for {name} “{object}”."
+msgstr "{name} \"{object}\" da {fields} o'zgartirildi."
+
+msgid "Changed {fields}."
+msgstr "{fields} o'zgartirildi."
+
+msgid "Deleted {name} “{object}”."
+msgstr "{name} \"{object}\" o'chirildi."
+
+msgid "No fields changed."
+msgstr "Hech qanday maydon o'zgarmadi."
+
+msgid "Hold down “Control”, or “Command” on a Mac, to select more than one."
+msgstr "Bir nechtasini tanlash uchun Ctrl (Mac'da Command) tugmasini bosib turing."
+
+msgid "The {name} “{obj}” was added successfully."
+msgstr "{name} \"{obj}\" muvaffaqiyatli qo'shildi."
+
+msgid "You may edit it again below."
+msgstr "Quyida uni yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was added successfully. You may add another {name} below."
+msgstr "{name} \"{obj}\" qo'shildi. Quyida yana {name} qo'shishingiz mumkin."
+
+msgid "The {name} “{obj}” was changed successfully. You may edit it again below."
+msgstr "{name} \"{obj}\" o'zgartirildi. Quyida uni yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was added successfully. You may edit it again below."
+msgstr "{name} \"{obj}\" qo'shildi. Quyida uni yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was changed successfully. You may add another {name} below."
+msgstr "{name} \"{obj}\" o'zgartirildi. Quyida yana {name} qo'shishingiz mumkin."
+
+msgid "Items must be selected in order to perform actions on them. No items have been changed."
+msgstr "Amal bajarish uchun avval yozuvlarni belgilang. Hech narsa o'zgarmadi."
+
+msgid "No action selected."
+msgstr "Amal tanlanmadi."
+
+msgid "%(name)s with ID “%(key)s” doesn’t exist. Perhaps it was deleted?"
+msgstr "\"%(key)s\" raqamli %(name)s topilmadi. Ehtimol, u o'chirilgan."
+
+msgid "0 of %(cnt)s selected"
+msgstr "%(cnt)s tadan 0 tasi tanlandi"
+
+msgid "Change history: %s"
+msgstr "O'zgarishlar tarixi: %s"
+
+msgid "Django site admin"
+msgstr "Kafedralar.uz boshqaruvi"
+
+msgid "Django administration"
+msgstr "Kafedralar.uz boshqaruvi"
+
+msgid "Site administration"
+msgstr "Boshqaruv paneli"
+
+msgid "Log in"
+msgstr "Kirish"
+
+msgid "%(app)s administration"
+msgstr "%(app)s bo'limi"
+
+msgid "Page not found"
+msgstr "Sahifa topilmadi"
+
+msgid "We’re sorry, but the requested page could not be found."
+msgstr "Kechirasiz, so'ralgan sahifa topilmadi."
+
+msgid "Home"
+msgstr "Bosh sahifa"
+
+msgid "Go"
+msgstr "Bajarish"
+
+msgid "Click here to select the objects across all pages"
+msgstr "Barcha sahifalardagi yozuvlarni tanlash uchun shu yerni bosing"
+
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr "Barcha %(total_count)s ta %(module_name)s tanlansin"
+
+msgid "Clear selection"
+msgstr "Tanlovni bekor qilish"
+
+msgid "Models in the %(name)s application"
+msgstr "%(name)s bo'limidagi ma'lumotlar"
+
+msgid "You don’t have permission to view or edit anything."
+msgstr "Sizda ko'rish yoki tahrirlash huquqi yo'q."
+
+msgid "First, enter a username and password. Then, you’ll be able to edit more user options."
+msgstr "Avval login va parolni kiriting. Keyin qolgan sozlamalarni tahrirlaysiz."
+
+msgid "Please correct the error below."
+msgstr "Quyidagi xatoni to'g'rilang."
+
+msgid "Please correct the errors below."
+msgstr "Quyidagi xatolarni to'g'rilang."
+
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr "<strong>%(username)s</strong> uchun yangi parol kiriting."
+
+msgid "History"
+msgstr "Tarix"
+
+msgid "Clear all filters"
+msgstr "Filtrlarni tozalash"
+
+msgid "Sorting priority: %(priority_number)s"
+msgstr "Saralash tartibi: %(priority_number)s"
+
+msgid "Toggle sorting"
+msgstr "Saralash tartibini almashtirish"
+
+msgid "Objects"
+msgstr "Yozuvlar"
+
+msgid "Yes, I’m sure"
+msgstr "Ha, o'chirilsin"
+
+msgid "No, take me back"
+msgstr "Yo'q, ortga qaytaring"
+
+msgid "Delete multiple objects"
+msgstr "Bir nechta yozuvni o'chirish"
+
+msgid "Are you sure you want to delete the selected %(objects_name)s? All of the following objects and their related items will be deleted:"
+msgstr "Tanlangan %(objects_name)s o'chirilsinmi? Quyidagi yozuvlar va ularga bog'liq ma'lumotlar ham o'chib ketadi:"
+
+msgid "None available"
+msgstr "Hozircha yo'q"
+
+msgid "Unknown content"
+msgstr "Noma'lum ma'lumot"
+
+msgid "You are authenticated as %(username)s, but are not authorized to access this page. Would you like to login to a different account?"
+msgstr "Siz %(username)s sifatida kirgansiz, lekin bu sahifaga ruxsatingiz yo'q. Boshqa hisob bilan kirasizmi?"
+
+msgid "Forgotten your password or username?"
+msgstr "Parol yoki loginni unutdingizmi?"
+
+msgid "Start typing to filter…"
+msgstr "Qidirish uchun yozing..."
+
+msgid "Filter navigation items"
+msgstr "Bo'limlarni filtrlash"
+
+msgid "Date/time"
+msgstr "Sana va vaqt"
+
+msgid "User"
+msgstr "Foydalanuvchi"
+
+msgid "Action"
+msgstr "Amal"
+
+msgid "This object doesn’t have a change history. It probably wasn’t added via this admin site."
+msgstr "Bu yozuvning o'zgarishlar tarixi yo'q. Ehtimol, u admin panel orqali qo'shilmagan."
+
+msgid "Show all"
+msgstr "Hammasini ko'rsatish"
+
+msgid "Popup closing…"
+msgstr "Oyna yopilmoqda..."
+
+msgid "%(full_result_count)s total"
+msgstr "jami %(full_result_count)s ta"
+
+msgid "Select %s to change"
+msgstr "%s ro'yxati"
+
+msgid "Select %s to view"
+msgstr "%s ro'yxati"
+
+msgid "user"
+msgstr "admin hisobi"
+
+msgid "users"
+msgstr "admin hisoblari"
+
+msgid "group"
+msgstr "guruh"
+
+msgid "groups"
+msgstr "guruhlar"

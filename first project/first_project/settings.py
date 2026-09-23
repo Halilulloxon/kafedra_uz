@@ -140,8 +140,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+# Admin paneli va Django xabarlari o'zbek tilida chiqadi
+LANGUAGE_CODE = 'uz'
+
+# Django'ning o'zbekcha tarjimasi to'liq emas — yetishmaganlari
+# "locale/uz" dan olinadi (yangilash: scripts/tarjima.py)
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+
+# Sana formatlari: <input type="date"> ISO ko'rinishida yuboradi
+FORMAT_MODULE_PATH = ['first_project.formats']
+TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

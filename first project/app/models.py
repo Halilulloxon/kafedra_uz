@@ -10,32 +10,34 @@ class Foydalanuvchilar(models.Model):
         ('kafedra mudiri', 'Kafedra mudiri'),
         ('oqituvchi', 'Oqituvchi'),
     )
-    foydalanuvchi_rol = models.CharField(max_length=50, choices=ROLES)
+    foydalanuvchi_rol = models.CharField("Lavozim", max_length=50, choices=ROLES)
     kafedra = models.ForeignKey(
         'Kafedralar',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name='foydalanuvchilari'
+        related_name='foydalanuvchilari',
+        verbose_name="Kafedra"
     )
     fakulteti = models.ForeignKey(
         'Dekanatlar',
         on_delete = models.CASCADE,
         null=True,
         blank=True,
-        related_name='fakulteti'
+        related_name='fakulteti',
+        verbose_name="Fakultet"
     )
-    ism = models.CharField(max_length=250)
-    familiya = models.CharField(max_length=250)
-    sharifi = models.CharField(max_length=250)
-    ilmiy_daraja= models.CharField(max_length=250, default='Bakalavr', blank=True)
-    gmail= models.EmailField(max_length=250, null=True)
-    haqida= models.TextField(null=True, blank=True)
-    tugulgan_sana = models.DateField()
-    login_f=models.CharField(max_length=250)
-    parol=models.CharField(max_length=250)
-    image=models.ImageField(upload_to='foydalanuvchilar/', null=True, blank=True)
-    accepted=models.BooleanField(default=False)
+    ism = models.CharField("Ism", max_length=250)
+    familiya = models.CharField("Familiya", max_length=250)
+    sharifi = models.CharField("Otasining ismi", max_length=250)
+    ilmiy_daraja= models.CharField("Ilmiy daraja", max_length=250, default='Bakalavr', blank=True)
+    gmail= models.EmailField("Email", max_length=250, null=True)
+    haqida= models.TextField("Qisqacha ma'lumot", null=True, blank=True)
+    tugulgan_sana = models.DateField("Tug'ilgan sana")
+    login_f=models.CharField("Login", max_length=250)
+    parol=models.CharField("Parol (xeshlangan)", max_length=250)
+    image=models.ImageField("Profil rasmi", upload_to='foydalanuvchilar/', null=True, blank=True)
+    accepted=models.BooleanField("Tasdiqlangan", default=False)
     created=models.BooleanField(default=True,editable=False)
 
     @property
@@ -47,29 +49,40 @@ class Foydalanuvchilar(models.Model):
                 pass
         return '/static/app/app-assets/images/portrait/small/avatar-s-11.png'
 
+    class Meta:
+        verbose_name = "Foydalanuvchi"
+        verbose_name_plural = "Foydalanuvchilar"
+
     def __str__(self):
         return f"{self.ism} {self.familiya} {self.sharifi}"
 
 
 class Kafedralar(models.Model):
-    nomi = models.CharField(max_length=250)
+    nomi = models.CharField("Kafedra nomi", max_length=250)
     fakultet= models.ForeignKey('Dekanatlar',
                                 on_delete=models.SET_NULL,
                                 related_name='fakultet',
                                 null= True,
-                                blank=True)
+                                blank=True,
+                                verbose_name="Fakultet")
     mudir = models.ForeignKey(
         'Foydalanuvchilar',
         on_delete=models.SET_NULL,
         related_name='kafedra_mudiri',
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Kafedra mudiri"
     )
     oqituvchilar = models.ManyToManyField(
         'Foydalanuvchilar',
         related_name='kafedra_oqituvchilari',
-        blank=True
+        blank=True,
+        verbose_name="O'qituvchilar"
     )
+    class Meta:
+        verbose_name = "Kafedra"
+        verbose_name_plural = "Kafedralar"
+
     def __str__(self):
         return self.nomi
     def save(self, *args, **kwargs):
@@ -80,19 +93,25 @@ class Kafedralar(models.Model):
 
 
 class Dekanatlar(models.Model):
-    nomi = models.CharField(max_length=250)
+    nomi = models.CharField("Fakultet nomi", max_length=250)
     dekan = models.ForeignKey(
         'Foydalanuvchilar',
         on_delete=models.SET_NULL,
         related_name='dekan',
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Dekan"
     )
     kafedralar = models.ManyToManyField(
         Kafedralar,
         related_name='dekanat_kafedralari',
-        blank=True
+        blank=True,
+        verbose_name="Kafedralar"
     )
+
+    class Meta:
+        verbose_name = "Fakultet"
+        verbose_name_plural = "Fakultetlar"
 
     def __str__(self):
         return self.nomi
@@ -106,19 +125,20 @@ class Dekanatlar(models.Model):
 class ilmiy_ishlari(models.Model):
     i_id = models.IntegerField(editable=False, unique=True, null=True, blank=True)
     TURLAR = ('Scopus', 'Maqola', 'Tezis', 'EHM guvohnomalar', 'patent')
-    turi = models.CharField(max_length=250, choices=[(t, t) for t in TURLAR])
-    nomi = models.CharField(max_length=250)
-    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE)
-    ish_mualliflari= models.TextField(null = True)
-    sana = models.DateField()
-    haqida = models.TextField(null=True, blank=True)
+    turi = models.CharField("Ish turi", max_length=250, choices=[(t, t) for t in TURLAR])
+    nomi = models.CharField("Ish nomi", max_length=250)
+    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, verbose_name="Muallif")
+    ish_mualliflari= models.TextField("Hammualliflar", null = True)
+    sana = models.DateField("Sana")
+    haqida = models.TextField("Izoh", null=True, blank=True)
     kategoriya = models.CharField(
         max_length=250,
         choices=[('Xalqaro', 'Xalqaro'), ('Respublika', 'Respublika')],
-        null=True
+        null=True,
+        verbose_name="Kategoriya"
     )
-    fayl = models.FileField(upload_to='ilmiy_ishlari/')
-    foreveryone= models.BooleanField(default=False)
+    fayl = models.FileField("Fayl", upload_to='ilmiy_ishlari/')
+    foreveryone= models.BooleanField("Hamma ko'ra oladi", default=False)
 
     @property
     def get_fayl_url(self):
@@ -135,6 +155,10 @@ class ilmiy_ishlari(models.Model):
             self.i_id = (last.i_id + 1) if last else 1
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "Ilmiy ish"
+        verbose_name_plural = "Ilmiy ishlar"
+
     def __str__(self):
         return f"{self.i_id}. {self.nomi}"
 
@@ -142,16 +166,16 @@ class ilmiy_ishlari(models.Model):
 class oquvIshlari(models.Model):
     o_id = models.IntegerField(editable=False, unique=True, null=True, blank=True)
     TURLAR = ('Uslubiy ko`rsatma', 'O`quv qo`llanma', 'Darslik', 'Monografiya')
-    turi = models.CharField(max_length=250, choices=[(t, t) for t in TURLAR])
-    nomi = models.CharField(max_length=250)
-    haqida = models.TextField(null=True, blank=True)
-    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE)
-    sana = models.DateField()
-    betlar_soni = models.IntegerField()
-    ish_mualliflari= models.TextField(null = True)
-    fayl = models.FileField(upload_to='oquv_ishlari/')
-    image = models.ImageField(upload_to='oquv_ishlari_images/', null=True, blank=True)
-    foreveryone= models.BooleanField(default=False)
+    turi = models.CharField("Ish turi", max_length=250, choices=[(t, t) for t in TURLAR])
+    nomi = models.CharField("Ish nomi", max_length=250)
+    haqida = models.TextField("Izoh", null=True, blank=True)
+    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, verbose_name="Muallif")
+    sana = models.DateField("Sana")
+    betlar_soni = models.IntegerField("Betlar soni")
+    ish_mualliflari= models.TextField("Hammualliflar", null = True)
+    fayl = models.FileField("Fayl", upload_to='oquv_ishlari/')
+    image = models.ImageField("Muqova rasmi", upload_to='oquv_ishlari_images/', null=True, blank=True)
+    foreveryone= models.BooleanField("Hamma ko'ra oladi", default=False)
 
     @property
     def get_fayl_url(self):
@@ -177,16 +201,20 @@ class oquvIshlari(models.Model):
             self.o_id = (last.o_id + 1) if last else 1
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "O'quv ishi"
+        verbose_name_plural = "O'quv ishlari"
+
     def __str__(self):
         return self.nomi
 
 class video_darslar(models.Model):
-    nomi = models.CharField(max_length=250)
-    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE)
-    haqida = models.TextField(blank=True, null=True)
-    video = models.FileField(upload_to='video_darslar/')
-    sana = models.DateField(null=True)
-    foreveryone= models.BooleanField(default=False)
+    nomi = models.CharField("Dars nomi", max_length=250)
+    muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, verbose_name="Muallif")
+    haqida = models.TextField("Izoh", blank=True, null=True)
+    video = models.FileField("Video fayl", upload_to='video_darslar/')
+    sana = models.DateField("Sana", null=True)
+    foreveryone= models.BooleanField("Hamma ko'ra oladi", default=False)
 
     @property
     def get_video_url(self):
@@ -196,6 +224,10 @@ class video_darslar(models.Model):
             except Exception:
                 pass
         return ''
+
+    class Meta:
+        verbose_name = "Video dars"
+        verbose_name_plural = "Video darslar"
 
     def __str__(self):
         return self.nomi
@@ -230,18 +262,20 @@ class KafedraTalablari(models.Model):
         ('EHM guvohnomalar', 'EHM / Patent'),
         ('Boshqa', 'Boshqa vazifa'),
     )
-    kafedra = models.ForeignKey(Kafedralar, on_delete=models.CASCADE, related_name='talablar')
-    mudir = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, related_name='yuklagan_talablari')
-    sarlavha = models.CharField(max_length=300)
-    ish_turi = models.CharField(max_length=100, choices=ISH_TURLARI, default='Maqola')
-    talab_miqdori = models.PositiveIntegerField(default=1, help_text="Har bir o'qituvchidan talab qilinadigan soni")
-    muddati = models.DateField(null=True, blank=True)
-    tavsif = models.TextField(blank=True, null=True)
-    faol = models.BooleanField(default=True)
-    yaratilgan_sana = models.DateTimeField(auto_now_add=True, null=True)
+    kafedra = models.ForeignKey(Kafedralar, on_delete=models.CASCADE, related_name='talablar', verbose_name="Kafedra")
+    mudir = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, related_name='yuklagan_talablari', verbose_name="Kim qo'ygan")
+    sarlavha = models.CharField("Sarlavha", max_length=300)
+    ish_turi = models.CharField("Ish turi", max_length=100, choices=ISH_TURLARI, default='Maqola')
+    talab_miqdori = models.PositiveIntegerField("Talab miqdori", default=1, help_text="Har bir o'qituvchidan talab qilinadigan soni")
+    muddati = models.DateField("Muddati", null=True, blank=True)
+    tavsif = models.TextField("Tavsif", blank=True, null=True)
+    faol = models.BooleanField("Faol", default=True)
+    yaratilgan_sana = models.DateTimeField("Yaratilgan sana", auto_now_add=True, null=True)
 
     class Meta:
         ordering = ['-yaratilgan_sana']
+        verbose_name = "Kafedra talabi"
+        verbose_name_plural = "Kafedra talablari"
 
     def __str__(self):
         return f"{self.kafedra.nomi} - {self.sarlavha}"
