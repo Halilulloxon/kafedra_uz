@@ -1410,8 +1410,19 @@ def index(request):
     foydalanuvchi = get_current_user(request)
     oqituvchilar_soni=Foydalanuvchilar.objects.filter(foydalanuvchi_rol='oqituvchi').count()
     video_darslar_soni=videolar.objects.filter(foreveryone=True).count()
-    maqolalar_soni=ilmiy.objects.filter(turi='maqola', foreveryone=True).count()+ilmiy.objects.filter(turi='scopus', foreveryone=True).count()
+    # Turi katta-kichik harfda saqlanishi mumkin, shuning uchun iexact
+    maqolalar_soni=ilmiy.objects.filter(turi__iexact='maqola', foreveryone=True).count()+ilmiy.objects.filter(turi__iexact='scopus', foreveryone=True).count()
     kitoblar_soni=oquvIshlari.objects.filter(foreveryone=True).count()
+
+    # Bosh sahifadagi "so'nggi qo'shilganlar" bo'limlari
+    songgi_kitoblar = oquvIshlari.objects.filter(foreveryone=True).select_related('muallif').order_by('-sana')[:4]
+    songgi_videolar = videolar.objects.filter(foreveryone=True).select_related('muallif').order_by('-sana')[:3]
+    faol_oqituvchilar = Foydalanuvchilar.objects.filter(
+        foydalanuvchi_rol='oqituvchi'
+    ).annotate(
+        ishlar_soni=Count('ilmiy_ishlari', filter=Q(ilmiy_ishlari__foreveryone=True), distinct=True)
+    ).order_by('-ishlar_soni')[:4]
+
     return render(
         request,
         'app/index.html',
@@ -1424,6 +1435,9 @@ def index(request):
             'video_darslar_soni':video_darslar_soni,
             'maqolalar_soni':maqolalar_soni,
             'kitoblar_soni':kitoblar_soni,
+            'songgi_kitoblar': songgi_kitoblar,
+            'songgi_videolar': songgi_videolar,
+            'faol_oqituvchilar': faol_oqituvchilar,
         }
     )
 def teachers(request):

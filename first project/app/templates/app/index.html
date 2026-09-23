@@ -3,68 +3,212 @@
 
 {% block title %}Kafedralar.uz — Universitet Bilim Markazi{% endblock %}
 
-{% block content %}
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">🎓 Universitet Bilim Markazi</div>
-    <h1>Bilim va <span>Ilm</span><br />Bir Joyda</h1>
-    <p>O'qituvchilarning kitoblari, video darslari va ilmiy maqolalarini bir platformada toping. Ta'limni yangi bosqichga olib chiqing.</p>
-    <div class="hero-btns">
-      <a href="{% url 'teachers' %}" class="btn-primary">O'qituvchilarni Ko'rish</a>
-      <!--<a href="" class="btn-outline">Video Darslar</a>-->
-    </div>
-    <div class="stats-row">
-      <div class="stat">
-          <div class="stat-num">{{oqituvchilar_soni}}+</div>
-        <div class="stat-label">O'qituvchi</div>
-      </div>
-      <div class="stat">
-          <div class="stat-num">{{video_darslar_soni}}+</div>
-        <div class="stat-label">Video Dars</div>
-      </div>
-      <div class="stat">
-          <div class="stat-num">{{kitoblar_soni}}+</div>
-        <div class="stat-label">Kitob</div>
-      </div>
-      <div class="stat">
-          <div class="stat-num">{{maqolalar_soni}}+</div>
-        <div class="stat-label">Maqola</div>
-      </div>
-    </div>
-  </div>
-</section>
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923v">
+<link rel="stylesheet" href="{% static 'app/assets/css/home-page.css' %}?v=20260923v">
+{% endblock %}
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="section-tag">Platforma imkoniyatlari</div>
-  <h2 class="section-title">Nima taklif qilamiz?</h2>
-  <p class="section-sub">Universitet o'qituvchilari tomonidan tayyorlangan sifatli ta'lim materiallari.</p>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">📹</div>
-      <h3>Video Darslar</h3>
-      <p>O'qituvchilar tomonidan yozilgan professional video darsliklarni tomosha qiling.</p>
-      <a href="{% url 'video' %}" class="feature-link">Ko'rish →</a>
+{% block content %}
+<div class="pp-page">
+    <div class="pp-inner">
+
+        <!-- ── Hero ── -->
+        <section class="hp-hero">
+            <div class="hp-hero-inner">
+                <span class="hp-badge">🎓 Universitet Bilim Markazi</span>
+                <h1>Bilim va <span>ilm</span><br>bir joyda</h1>
+                <p>O'qituvchilarning kitoblari, video darslari va ilmiy maqolalari — hammasi bitta platformada.
+                   Qidiring, o'qing va yuklab oling.</p>
+                <div class="hp-hero-btns">
+                    <a href="{% url 'teachers' %}" class="hp-btn hp-btn-primary">
+                        <i class="fas fa-users"></i> O'qituvchilarni ko'rish
+                    </a>
+                    <a href="{% url 'video' %}" class="hp-btn hp-btn-ghost">
+                        <i class="fas fa-play"></i> Video darslar
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Statistika ── -->
+        <div class="hp-stats">
+            <div class="hp-stat">
+                <div class="hp-stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div>
+                    <div class="hp-stat-num">{{ oqituvchilar_soni }}</div>
+                    <div class="hp-stat-label">O'qituvchi</div>
+                </div>
+            </div>
+            <div class="hp-stat">
+                <div class="hp-stat-icon"><i class="fas fa-video"></i></div>
+                <div>
+                    <div class="hp-stat-num">{{ video_darslar_soni }}</div>
+                    <div class="hp-stat-label">Video dars</div>
+                </div>
+            </div>
+            <div class="hp-stat">
+                <div class="hp-stat-icon"><i class="fas fa-book"></i></div>
+                <div>
+                    <div class="hp-stat-num">{{ kitoblar_soni }}</div>
+                    <div class="hp-stat-label">Kitob va qo'llanma</div>
+                </div>
+            </div>
+            <div class="hp-stat">
+                <div class="hp-stat-icon"><i class="fas fa-file-alt"></i></div>
+                <div>
+                    <div class="hp-stat-num">{{ maqolalar_soni }}</div>
+                    <div class="hp-stat-label">Ilmiy maqola</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Imkoniyatlar ── -->
+        <section class="hp-section">
+            <div class="hp-section-head">
+                <div>
+                    <h2>Nima taklif qilamiz?</h2>
+                    <p>Universitet o'qituvchilari tayyorlagan sifatli ta'lim materiallari.</p>
+                </div>
+            </div>
+
+            <div class="hp-features">
+                <a href="{% url 'video' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-video"></i></div>
+                    <h3>Video darslar</h3>
+                    <p>O'qituvchilar tayyorlagan video darsliklarni tomosha qiling va yuklab oling.</p>
+                    <span class="hp-feature-link">Ko'rish →</span>
+                </a>
+                <a href="{% url 'book' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-book"></i></div>
+                    <h3>Kitoblar</h3>
+                    <p>Darsliklar, o'quv qo'llanmalar va monografiyalar bitta kutubxonada.</p>
+                    <span class="hp-feature-link">Ko'rish →</span>
+                </a>
+                <a href="{% url 'article' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>Ilmiy maqolalar</h3>
+                    <p>Scopus, OAK maqolalari, tezislar va tadqiqot ishlari.</p>
+                    <span class="hp-feature-link">Ko'rish →</span>
+                </a>
+                <a href="{% url 'teachers' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-user-graduate"></i></div>
+                    <h3>O'qituvchi profillari</h3>
+                    <p>Har bir o'qituvchining profili va u yozgan barcha materiallar.</p>
+                    <span class="hp-feature-link">Ko'rish →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── So'nggi kitoblar ── -->
+        {% if songgi_kitoblar %}
+        <section class="hp-section">
+            <div class="hp-section-head">
+                <div>
+                    <h2>So'nggi kitoblar</h2>
+                    <p>Yaqinda qo'shilgan darslik va qo'llanmalar.</p>
+                </div>
+                <a href="{% url 'book' %}" class="hp-more">Barchasi <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="pp-grid">
+                {% for kitob in songgi_kitoblar %}
+                <article class="pp-card">
+                    <div class="pp-cover">
+                        {% if kitob.image %}
+                        <img src="{{ kitob.get_image_url }}" alt="{{ kitob.nomi }}">
+                        {% else %}
+                        <i class="fas fa-book-open"></i>
+                        {% endif %}
+                        <span class="pp-cover-tag">{{ kitob.sana|date:"Y" }}</span>
+                    </div>
+                    <div class="pp-card-body">
+                        <h3 class="pp-card-title">{{ kitob.nomi }}</h3>
+                        <div class="pp-meta">
+                            <span class="pp-badge">{{ kitob.turi }}</span>
+                            {% if kitob.betlar_soni %}<span>{{ kitob.betlar_soni }} bet</span>{% endif %}
+                        </div>
+                        <div class="pp-card-actions">
+                            <a href="{{ kitob.get_fayl_url }}" target="_blank" class="read-btn">
+                                <i class="fas fa-book-reader"></i> <span data-i18n="read">O'qish</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- ── So'nggi video darslar ── -->
+        {% if songgi_videolar %}
+        <section class="hp-section">
+            <div class="hp-section-head">
+                <div>
+                    <h2>So'nggi video darslar</h2>
+                    <p>Yangi joylangan darsliklar.</p>
+                </div>
+                <a href="{% url 'video' %}" class="hp-more">Barchasi <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="hp-videos">
+                {% for vid in songgi_videolar %}
+                <a class="hp-video" href="{% url 'serve_video' vid.id %}" target="_blank">
+                    <div class="hp-video-thumb">
+                        <i class="fas fa-film"></i>
+                        <span class="hp-video-play"><i class="fas fa-play"></i></span>
+                    </div>
+                    <div class="hp-video-body">
+                        <h4>{{ vid.nomi }}</h4>
+                        <div class="pp-meta">
+                            <span class="pp-badge">{{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
+                            <span>{{ vid.sana|date:"d.m.Y" }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- ── Faol o'qituvchilar ── -->
+        {% if faol_oqituvchilar %}
+        <section class="hp-section">
+            <div class="hp-section-head">
+                <div>
+                    <h2>Faol o'qituvchilar</h2>
+                    <p>Eng ko'p ilmiy ish joylagan o'qituvchilar.</p>
+                </div>
+                <a href="{% url 'teachers' %}" class="hp-more">Barchasi <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="hp-teachers">
+                {% for oqituvchi in faol_oqituvchilar %}
+                <a class="hp-teacher" href="{% url 'teacher1' id=oqituvchi.id %}">
+                    <div class="hp-teacher-ava">
+                        {% if oqituvchi.image %}<img src="{{ oqituvchi.get_image_url }}" alt="{{ oqituvchi }}">{% else %}👨‍🎓{% endif %}
+                    </div>
+                    <h4>{{ oqituvchi.ism }} {{ oqituvchi.familiya }}</h4>
+                    <span>{{ oqituvchi.kafedra|default:"Kafedra ko'rsatilmagan" }}</span>
+                    <span class="pp-badge">{{ oqituvchi.ishlar_soni }} ta ilmiy ish</span>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- ── Chaqiriq ── -->
+        {% if not foydalanuvchi %}
+        <section class="hp-cta">
+            <div>
+                <h2>Siz ham o'z ishlaringizni joylang</h2>
+                <p>Ro'yxatdan o'ting va kitob, maqola hamda video darslaringizni platformaga qo'shing.</p>
+            </div>
+            <a href="{% url 'registratsiya' %}" class="hp-btn hp-btn-primary">
+                <i class="fas fa-user-plus"></i> Ro'yxatdan o'tish
+            </a>
+        </section>
+        {% endif %}
+
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">📚</div>
-      <h3>Kitoblar</h3>
-      <p>Darsliklar, qo'llanmalar va monografiyalarni yuklab oling va o'qing.</p>
-      <a href="{% url 'book' %}" class="feature-link">Ko'rish →</a>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📝</div>
-      <h3>Ilmiy Maqolalar</h3>
-      <p>Tasdiqlangan ilmiy maqolalar va tadqiqot ishlarini o'qing.</p>
-      <a href="{% url 'article' %}" class="feature-link">Ko'rish →</a>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">👨‍🏫</div>
-      <h3>O'qituvchi Profillari</h3>
-      <p>Har bir o'qituvchining profili va ular yozgan barcha materiallar.</p>
-      <a href="{% url 'teachers' %}" class="feature-link">Ko'rish →</a>
-    </div>
-  </div>
-</section>
+</div>
 {% endblock %}
