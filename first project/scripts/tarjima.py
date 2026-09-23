@@ -117,6 +117,9 @@ QOSHIMCHA = {
     "users": "admin hisoblari",
     "group": "guruh",
     "groups": "guruhlar",
+    # Kirish formasidagi xato xabari "username" so'zini ishlatadi
+    "username": "login",
+    "password": "parol",
 }
 
 

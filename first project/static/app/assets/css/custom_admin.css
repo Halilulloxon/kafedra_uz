@@ -1001,3 +1001,319 @@ html[data-theme="dark"] .kx-stat-muhim .kx-stat-son {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Admin paneliga kirish sahifasi
+   ══════════════════════════════════════════════════════════════════ */
+body.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px;
+    background: radial-gradient(120% 90% at 15% 10%, rgba(37, 99, 235, 0.16), transparent 60%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f172a 100%) !important;
+}
+
+body.login #header,
+body.login #nav-sidebar,
+body.login .breadcrumbs {
+    display: none !important;
+}
+
+body.login #container {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    background: transparent !important;
+    border: none !important;
+}
+
+body.login #main,
+body.login #content-start,
+body.login #content {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+.kx-login {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Chap panel ── */
+.kx-login-brand {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 38px 32px;
+    color: #ffffff;
+    background: linear-gradient(150deg, #0f2b52 0%, #1e3a8a 55%, #2563eb 100%);
+}
+
+.kx-login-brand::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -60px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.kx-login-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.kx-login-logo b {
+    color: #f59e0b;
+}
+
+.kx-login-emoji {
+    font-size: 26px;
+}
+
+.kx-login-brand h2 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: #ffffff !important;
+}
+
+.kx-login-brand p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.kx-login-points {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.kx-login-points li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.kx-login-points i {
+    color: #fbbf24;
+}
+
+/* ── O'ng panel: forma ── */
+.kx-login-form {
+    padding: 38px 34px;
+}
+
+.kx-login-form h1 {
+    margin: 0 0 4px !important;
+    font-size: 23px !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
+}
+
+.kx-login-sub {
+    margin: 0 0 20px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+}
+
+body.login .form-row {
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+body.login .form-row label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.kx-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.kx-input > i {
+    position: absolute;
+    left: 13px;
+    font-size: 13px;
+    color: var(--text-light);
+    pointer-events: none;
+}
+
+body.login .kx-input input[type="text"],
+body.login .kx-input input[type="password"] {
+    width: 100% !important;
+    min-height: 46px;
+    padding: 11px 42px !important;
+    border-radius: 11px !important;
+    border: 1px solid var(--input-border) !important;
+    background: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.login .kx-input input:focus {
+    outline: none;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+.kx-eye {
+    position: absolute;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.kx-eye:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+body.login .submit-row {
+    padding: 6px 0 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+}
+
+body.login .submit-row input[type="submit"] {
+    width: 100% !important;
+    min-height: 46px;
+    padding: 12px !important;
+    border-radius: 11px !important;
+    border: 0 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.32) !important;
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+
+body.login .submit-row input[type="submit"]:hover {
+    background: var(--primary-hover) !important;
+    transform: translateY(-2px);
+}
+
+body.login .errornote {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 16px !important;
+    padding: 11px 14px !important;
+    border-radius: 11px !important;
+    border: 1px solid rgba(239, 68, 68, 0.45) !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    color: #b91c1c !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+html[data-theme="dark"] body.login .errornote {
+    color: #fca5a5 !important;
+}
+
+body.login .errorlist {
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    list-style: none !important;
+    font-size: 12.5px;
+    color: var(--danger) !important;
+    background: transparent !important;
+}
+
+.kx-login-back {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+.kx-login-back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.kx-login-back a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767.98px) {
+    body.login {
+        padding: 14px;
+    }
+
+    .kx-login {
+        grid-template-columns: 1fr;
+    }
+
+    .kx-login-brand {
+        padding: 26px 24px;
+        gap: 12px;
+    }
+
+    .kx-login-brand h2 {
+        font-size: 21px;
+    }
+
+    .kx-login-points {
+        display: none;
+    }
+
+    .kx-login-form {
+        padding: 26px 22px;
+    }
+}

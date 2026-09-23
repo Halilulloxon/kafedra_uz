@@ -201,3 +201,9 @@ msgstr "guruh"
 
 msgid "groups"
 msgstr "guruhlar"
+
+msgid "username"
+msgstr "login"
+
+msgid "password"
+msgstr "parol"
