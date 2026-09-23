@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import posixpath
+import secrets
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -32,12 +33,31 @@ def env_list(name, default=''):
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+# Sukut bo'yicha o'chiq: .env unutilgan serverda xatoliklar sahifasi
+# sozlamalarni va so'rov ma'lumotlarini ko'rsatib qo'ymasin.
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-kafedralar-uz-dev-key-change-in-production')
+# Kalit faqat .env dan olinadi. Kodda zaxira kalit turmaydi — u ochiq
+# repozitoriyda yotgani uchun sessiyalarni soxtalashtirishga yo'l ochardi.
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured(
+            "DJANGO_SECRET_KEY \"first project/.env\" faylida ko'rsatilmagan. "
+            "Yangi kalit yaratish: "
+            "python -c \"import secrets; print(secrets.token_urlsafe(50))\""
+        )
+    # Lokal ish uchun vaqtinchalik kalit (server qayta ishga tushganda
+    # yangilanadi, ya'ni sessiyalar uziladi — .env ga o'z kalitingizni yozing).
+    SECRET_KEY = secrets.token_urlsafe(50)
 
-ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1') + ['*']
+# Faqat .env da sanab o'tilgan manzillar. Ilgari ro'yxatga '*' qo'shilardi,
+# ya'ni har qanday Host sarlavhasi qabul qilinardi.
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+if DEBUG:
+    # Lokal sinov: ngrok yoki telefondan IP orqali kirish uchun
+    ALLOWED_HOSTS.append('*')
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
