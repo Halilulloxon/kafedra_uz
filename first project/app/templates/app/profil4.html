@@ -264,8 +264,19 @@
 {% endblock %}
 
 {% block extra_js %}
+{{ fakultet_labels|json_script:"fakultet-nomlari" }}
+{{ fakultet_maqolalar|json_script:"fakultet-maqolalar" }}
+{{ fakultet_kitoblar|json_script:"fakultet-kitoblar" }}
+{{ oy_o|json_script:"oy-oquv" }}
+{{ oy_i|json_script:"oy-ilmiy" }}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
 <script>
+    // Ma'lumotlar sahifaga json_script orqali qo'yiladi — shunda nomdagi
+    // apostrof ("O'quv ishlari") skriptni buzmaydi.
+    function jsonOqi(id) {
+        var el = document.getElementById(id);
+        return el ? JSON.parse(el.textContent) : [];
+    }
         // Sahifaga xos tarjimalar. Umumiy theme-dark-lang.js buni o'z lug'atiga qo'shib oladi.
         window.pageTranslations = {
             uz: {
@@ -374,9 +385,9 @@
 
         // Mavzu almashtirish va tarjima umumiy theme-dark-lang.js faylida.
         document.addEventListener('DOMContentLoaded', function() {
-const facultyLabels = {{ fakultet_labels|safe }};
-            const facultyArticles = {{ fakultet_maqolalar|safe }};
-            const facultyBooks = {{ fakultet_kitoblar|safe }};
+            const facultyLabels = jsonOqi('fakultet-nomlari');
+            const facultyArticles = jsonOqi('fakultet-maqolalar');
+            const facultyBooks = jsonOqi('fakultet-kitoblar');
 
             const facultyChartOptions = {
                 chart: { type: 'bar', height: 350, toolbar: { show: true } },
@@ -409,8 +420,8 @@ const facultyLabels = {{ fakultet_labels|safe }};
             worksDonutChart.render();
             (window.__appCharts = window.__appCharts || []).push(worksDonutChart);
 
-            const monthlyO = {{ oy_o|safe }};
-            const monthlyI = {{ oy_i|safe }};
+            const monthlyO = jsonOqi('oy-oquv');
+            const monthlyI = jsonOqi('oy-ilmiy');
             const monthlyOptions = {
                 chart: { type: 'area', height: 300, toolbar: { show: false } },
                 series: [

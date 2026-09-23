@@ -204,8 +204,16 @@
 {% endblock %}
 
 {% block extra_js %}
+{{ oy_o|json_script:"oy-oquv" }}
+{{ oy_i|json_script:"oy-ilmiy" }}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
 <script>
+    // Ma'lumotlar sahifaga json_script orqali qo'yiladi — shunda nomdagi
+    // apostrof ("O'quv ishlari") skriptni buzmaydi.
+    function jsonOqi(id) {
+        var el = document.getElementById(id);
+        return el ? JSON.parse(el.textContent) : [];
+    }
         // Sahifaga xos tarjimalar. Umumiy theme-dark-lang.js buni o'z lug'atiga qo'shib oladi.
         window.pageTranslations = {
             uz: {
@@ -291,8 +299,8 @@
         // Mavzu almashtirish va tarjima umumiy theme-dark-lang.js faylida.
         document.addEventListener('DOMContentLoaded', function() {
             // Monthly Activity Chart
-            const monthlyO = {{ oy_o|safe }};
-            const monthlyI = {{ oy_i|safe }};
+            const monthlyO = jsonOqi('oy-oquv');
+            const monthlyI = jsonOqi('oy-ilmiy');
             const lineOptions = {
                 chart: { type: 'area', height: 320, toolbar: { show: false } },
                 series: [
