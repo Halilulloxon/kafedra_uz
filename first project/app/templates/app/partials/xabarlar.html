@@ -1,0 +1,21 @@
+{% comment %}
+Tizim xabarlari (messages). Ilgari hech bir shablon ularni chizmagani uchun
+"Ma'lumotlaringiz saqlandi" kabi xabarlar ko'rinmasdan yo'qolib ketardi.
+Sahifa o'zi xabarni chizsa, {% block xabarlar %}{% endblock %} bilan
+bu blokni bo'sh qoldiradi.
+{% endcomment %}
+{% if messages %}
+<div class="xabarlar" role="status" aria-live="polite">
+    {% for xabar in messages %}
+    <div class="xabar xabar--{{ xabar.level_tag|default:'info' }}">
+        <i class="fas
+            {% if xabar.level_tag == 'success' %}fa-circle-check
+            {% elif xabar.level_tag == 'error' %}fa-circle-exclamation
+            {% elif xabar.level_tag == 'warning' %}fa-triangle-exclamation
+            {% else %}fa-circle-info{% endif %}" aria-hidden="true"></i>
+        <span class="xabar-matn">{{ xabar }}</span>
+        <button type="button" class="xabar-yop" aria-label="Yopish">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

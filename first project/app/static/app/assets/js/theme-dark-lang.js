@@ -706,3 +706,44 @@
     }
 })();
 
+
+/* ==========================================================================
+   Tizim xabarlari: yopish tugmasi va bir necha soniyadan keyin o'zi yo'qolishi
+   ========================================================================== */
+(function () {
+    var KUTISH = 6000;
+
+    function yop(xabar) {
+        if (!xabar || xabar.classList.contains('yopilmoqda')) return;
+        xabar.classList.add('yopilmoqda');
+        setTimeout(function () {
+            var idish = xabar.parentNode;
+            if (xabar.parentNode) xabar.parentNode.removeChild(xabar);
+            if (idish && !idish.children.length && idish.parentNode) {
+                idish.parentNode.removeChild(idish);
+            }
+        }, 220);
+    }
+
+    function boshla() {
+        var idish = document.querySelector('.xabarlar');
+        if (!idish) return;
+
+        idish.addEventListener('click', function (hodisa) {
+            var tugma = hodisa.target.closest('.xabar-yop');
+            if (tugma) yop(tugma.closest('.xabar'));
+        });
+
+        idish.querySelectorAll('.xabar').forEach(function (xabar) {
+            var soat = setTimeout(function () { yop(xabar); }, KUTISH);
+            // Sichqoncha ustida turganda o'qib ulgurish uchun kutamiz
+            xabar.addEventListener('mouseenter', function () { clearTimeout(soat); });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boshla);
+    } else {
+        boshla();
+    }
+})();

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'yangi/style.css' %}?v=20260924b" />
     <link rel="stylesheet" href="{% static 'yangi/pages.css' %}?v=20260924f" />
     <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260923">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260924n">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260924o">
 
     <link rel="stylesheet" href="{% static 'app/assets/css/pdf-modal.css' %}?v=20260923x">
 
@@ -21,12 +21,14 @@
 
 {% include "app/partials/navbar_public.html" %}
 
+{% block xabarlar %}{% include "app/partials/xabarlar.html" %}{% endblock %}
+
 {% block content %}{% endblock %}
 
 {% include "app/partials/footer.html" %}
 
 <script src="{% static 'yangi/main.js' %}?v=20260923"></script>
-<script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923s"></script>
+<script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260924a"></script>
 <script src="{% static 'app/assets/js/pdf-modal.js' %}?v=20260923x"></script>
 {% block extra_js %}{% endblock %}
 </body>

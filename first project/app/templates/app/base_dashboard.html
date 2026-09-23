@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}?v=20260924b">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260924n">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260924o">
 
     <link rel="stylesheet" href="{% static 'app/assets/css/pdf-modal.css' %}?v=20260923x">
 
@@ -34,6 +34,8 @@
 
     {% block sidebar %}{% include "app/partials/sidebar_dashboard.html" %}{% endblock %}
 
+    {% block xabarlar %}{% include "app/partials/xabarlar.html" %}{% endblock %}
+
     {% block content %}{% endblock %}
 
     {% include "app/partials/footer_dashboard.html" %}
@@ -43,6 +45,6 @@
     <script src="{% static 'app/app-assets/js/core/app.min.js' %}?v=20260923"></script>
     <script src="{% static 'app/assets/js/pdf-modal.js' %}?v=20260923x"></script>
     {% block extra_js %}{% endblock %}
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923s"></script>
+    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260924a"></script>
 </body>
 </html>
