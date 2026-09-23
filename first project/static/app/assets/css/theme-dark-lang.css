@@ -1888,24 +1888,99 @@ body.dark-mode .apexcharts-ycrosshairs {
     }
 
     /* Main Menu (Sidebar Drawer) on Mobile */
-    body.vertical-layout.vertical-menu-modern .main-menu {
+    html.loading .main-menu,
+    body .main-menu,
+    body.vertical-layout.vertical-menu-modern .main-menu,
+    body.vertical-layout.vertical-menu-modern.menu-expanded .main-menu,
+    body.vertical-layout.vertical-menu-modern.menu-collapsed .main-menu {
         position: fixed !important;
         top: 0 !important;
         bottom: 0 !important;
-        left: -280px !important;
-        width: 270px !important;
+        left: -300px !important;
+        width: 280px !important;
         height: 100vh !important;
-        z-index: 1050 !important;
+        z-index: 10050 !important;
         background: #1e293b !important;
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4) !important;
-        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.3s ease !important;
+        box-shadow: 6px 0 35px rgba(0, 0, 0, 0.6) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        transform: translate3d(0, 0, 0) !important;
+        transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    body.menu-open .main-menu,
+    .main-menu.is-mobile-open,
+    body.vertical-layout.vertical-menu-modern.menu-open .main-menu,
+    body.vertical-layout.vertical-menu-modern.menu-expanded .main-menu.expanded,
+    body.vertical-overlay-menu.menu-open .main-menu {
+        left: 0 !important;
+        transform: translate3d(0, 0, 0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
         display: block !important;
     }
 
-    body.vertical-layout.vertical-menu-modern.menu-open .main-menu,
-    body.vertical-layout.vertical-menu-modern.menu-expanded .main-menu.expanded {
-        left: 0 !important;
-        transform: translate3d(0, 0, 0) !important;
+    /* Menu Navigation Links inside Drawer on Mobile */
+    .main-menu .main-menu-content {
+        height: 100% !important;
+        padding-top: 24px !important;
+        padding-bottom: 30px !important;
+    }
+
+    .main-menu .navigation {
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    .main-menu .navigation > li {
+        width: 100% !important;
+        margin-bottom: 4px !important;
+        display: block !important;
+    }
+
+    .main-menu .navigation > li > a {
+        display: flex !important;
+        align-items: center !important;
+        padding: 14px 20px !important;
+        color: #f1f5f9 !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        transition: all 0.2s !important;
+        border-left: 4px solid transparent !important;
+    }
+
+    .main-menu .navigation > li > a i {
+        font-size: 1.35rem !important;
+        width: 32px !important;
+        margin-right: 12px !important;
+        color: #94a3b8 !important;
+        text-align: center !important;
+        flex-shrink: 0 !important;
+    }
+
+    .main-menu .navigation > li.active > a,
+    .main-menu .navigation > li > a:hover {
+        background: rgba(37, 99, 235, 0.25) !important;
+        color: #60a5fa !important;
+        border-left: 4px solid #2563eb !important;
+    }
+
+    .main-menu .navigation > li.active > a i,
+    .main-menu .navigation > li > a:hover i {
+        color: #60a5fa !important;
+    }
+
+    .main-menu .navigation > li > a .menu-title {
+        display: inline-block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        color: inherit !important;
+        font-size: 15px !important;
     }
 
     /* Dark Backdrop overlay when menu is open */
@@ -1915,9 +1990,9 @@ body.dark-mode .apexcharts-ycrosshairs {
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
-        background: rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(2px) !important;
-        z-index: 1040 !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 10040 !important;
         display: none;
     }
 

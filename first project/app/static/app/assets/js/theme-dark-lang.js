@@ -523,13 +523,25 @@
             var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main, .modern-nav-toggle');
             if (toggleBtn) {
                 e.preventDefault();
+                if (document.documentElement.classList.contains('loading')) {
+                    document.documentElement.classList.remove('loading');
+                }
                 var isOpen = document.body.classList.toggle('menu-open');
+                var mainMenus = document.querySelectorAll('.main-menu');
+                mainMenus.forEach(function(m) {
+                    if (isOpen) {
+                        m.classList.add('is-mobile-open');
+                    } else {
+                        m.classList.remove('is-mobile-open');
+                    }
+                });
                 var overlay = document.querySelector('.sidenav-overlay');
                 if (!overlay) {
                     overlay = document.createElement('div');
                     overlay.className = 'sidenav-overlay';
                     overlay.addEventListener('click', function() {
                         document.body.classList.remove('menu-open');
+                        mainMenus.forEach(function(m) { m.classList.remove('is-mobile-open'); });
                         overlay.style.display = 'none';
                     });
                     document.body.appendChild(overlay);
@@ -537,6 +549,11 @@
                 overlay.style.display = isOpen ? 'block' : 'none';
             }
         });
+        
+        // Remove loading class if still present
+        if (document.documentElement.classList.contains('loading')) {
+            document.documentElement.classList.remove('loading');
+        }
     }
 
     if (document.readyState === 'loading') {
