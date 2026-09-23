@@ -3,60 +3,177 @@
 
 {% block title %}Kitoblar — Kafedralar.uz{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923v">
+{% endblock %}
+
 {% block content %}
-<div class="page-header">
-        <div class="section-tag">Bilim xazinasi</div>
-        <h1>Kitoblar</h1>
-        <p>O'qituvchilarimiz tomonidan yozilgan {{kitoblar.count}}+ darslik, qo'llanma va monografiyalar.</p>
-    </div>
+<div class="pp-page">
+    <div class="pp-inner">
 
-    <div style="max-width:1200px; margin:0 auto; padding:60px 48px;">
+        <!-- ── Sarlavha ── -->
+        <header class="pp-hero">
+            <div>
+                <span class="pp-tag">Bilim xazinasi</span>
+                <h1>Kitoblar va qo'llanmalar</h1>
+                <p>O'qituvchilarimiz tomonidan yozilgan darslik, o'quv qo'llanma va monografiyalar.</p>
+            </div>
+            <div class="pp-stats">
+                <span class="pp-pill"><i class="fas fa-book"></i> {{ kitoblar|length }} ta kitob</span>
+                <span class="pp-pill"><i class="fas fa-user-graduate"></i> {{ top_mualliflar|length }} ta muallif</span>
+            </div>
+        </header>
 
-        <div class="filters">
-            <form method="GET" action="{% url 'search_book' %}" style="margin-bottom:32px;">
-                <div class="search-box">
-                    <input type="text"
-                           name="q"
-                           placeholder="Kitob sarlavhasi yoki kalit so'z..."
-                           value="{{ request.GET.q }}"
-                           style="width:100%; border-radius:12px;" />
-                </div>
-            </form>
+        <!-- ── Qidiruv va filtr ── -->
+        <div class="pp-toolbar">
+            <div class="pp-search">
+                <i class="fas fa-search"></i>
+                <form method="GET" action="{% url 'search_book' %}">
+                    <input type="text" name="q" id="ppSearch" value="{{ query|default:'' }}"
+                           placeholder="Kitob nomi yoki muallif..." autocomplete="off">
+                </form>
+            </div>
+
+            <div class="pp-chips">
+                <button type="button" class="pp-chip active" data-turi="all">Barchasi</button>
+                <button type="button" class="pp-chip" data-turi="darslik">Darslik</button>
+                <button type="button" class="pp-chip" data-turi="qo">O'quv qo'llanma</button>
+                <button type="button" class="pp-chip" data-turi="monografiya">Monografiya</button>
+                <button type="button" class="pp-chip" data-turi="uslubiy">Uslubiy ko'rsatma</button>
+            </div>
         </div>
 
-        <div class="books-shelf">
+        <p class="pp-result" id="ppResult"></p>
 
-            {% for kitob in kitoblar %}
-            <div class="book-card">
-                <div class="book-cover c2">
-                    <img src="{{ kitob.get_image_url }}" alt="{{ kitob.nomi }}" style="width:100%; height:100%; object-fit:cover;">
-                    <span class="book-badge badge-pop">POPULAR</span>
-                    <span class="book-year-tag">{{kitob.sana}}</span>
-                </div>
-                <div class="book-body">
-                    <h4>{{kitob.nomi}}</h4>
-                    <div class="book-author">{{kitob.ish_mualliflari}}</div>
-                    <div class="book-type-tag">{{kitob.turi}}</div>
-                    <div class="book-stats"><span>📄 {{kitob.betlar_soni}} bet</span><span></span></div>
-                    <div class="book-actions">
-                        <a href="{{ kitob.get_fayl_url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
-                            <span>📄</span>
-                            <span>O'qish</span>
-                            <span>→</span>
-                        </a>
+        <div class="pp-layout">
+            <!-- ── Kitoblar ── -->
+            <div>
+                <div class="pp-grid" id="ppGrid">
+                    {% for kitob in kitoblar %}
+                    <article class="pp-card" data-turi="{{ kitob.turi|lower }}"
+                             data-name="{{ kitob.nomi|lower }} {{ kitob.ish_mualliflari|lower }}">
+                        <div class="pp-cover">
+                            {% if kitob.image %}
+                            <img src="{{ kitob.get_image_url }}" alt="{{ kitob.nomi }}">
+                            {% else %}
+                            <i class="fas fa-book-open"></i>
+                            {% endif %}
+                            <span class="pp-cover-tag">{{ kitob.sana|date:"Y" }}</span>
+                        </div>
 
-                        <a href="{{ kitob.get_fayl_url }}" download class="download-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" y1="15" x2="12" y2="3" />
-                            </svg>
-                            Yuklab olish
-                        </a>
+                        <div class="pp-card-body">
+                            <h3 class="pp-card-title">{{ kitob.nomi }}</h3>
+
+                            <div class="pp-meta">
+                                <span class="pp-badge">{{ kitob.turi }}</span>
+                                {% if kitob.betlar_soni %}<span><i class="far fa-file-lines"></i> {{ kitob.betlar_soni }} bet</span>{% endif %}
+                            </div>
+
+                            <div class="pp-meta">
+                                <span><i class="fas fa-user-graduate"></i>
+                                    {% if kitob.ish_mualliflari %}{{ kitob.ish_mualliflari }}{% else %}{{ kitob.muallif }}{% endif %}
+                                </span>
+                            </div>
+
+                            <div class="pp-card-actions">
+                                <a href="{{ kitob.get_fayl_url }}" target="_blank" class="read-btn">
+                                    <i class="fas fa-book-reader"></i> <span data-i18n="read">O'qish</span>
+                                </a>
+                                <a href="{{ kitob.get_fayl_url }}" download class="download-btn">
+                                    <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="pp-empty" style="grid-column:1/-1;">
+                        <div class="pp-empty-icon"><i class="fas fa-book"></i></div>
+                        <strong>Kitoblar hali qo'shilmagan</strong>
+                        <span>Yangi darslik va qo'llanmalar joylanishi bilan shu yerda ko'rinadi.</span>
+                    </div>
+                    {% endfor %}
+
+                    <div class="pp-empty" id="ppNoResult" style="display:none; grid-column:1/-1;">
+                        <div class="pp-empty-icon"><i class="fas fa-search"></i></div>
+                        <strong>Natija topilmadi</strong>
+                        <span>Qidiruv so'zini yoki kitob turini o'zgartirib ko'ring.</span>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+
+            <!-- ── Yon panel ── -->
+            <aside class="pp-side">
+                <div class="pp-side-card">
+                    <h3><i class="fas fa-trophy"></i> Faol mualliflar</h3>
+                    {% for muallif in top_mualliflar %}
+                    <a class="pp-author" href="{% url 'teacher1' id=muallif.id %}">
+                        <div class="pp-author-ava">
+                            {% if muallif.image %}<img src="{{ muallif.get_image_url }}" alt="{{ muallif }}">{% else %}👨‍🎓{% endif %}
+                        </div>
+                        <div class="pp-author-info">
+                            <h5>{{ muallif.ism }} {{ muallif.familiya }}</h5>
+                            <span>{{ muallif.kafedra|default:"Kafedra ko'rsatilmagan" }}</span>
+                        </div>
+                        <span class="pp-author-count">{{ muallif.kitob_soni }}</span>
+                    </a>
+                    {% empty %}
+                    <p class="pp-text">Hozircha muallif yo'q.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="pp-side-card">
+                    <h3><i class="fas fa-lightbulb"></i> Bilib qo'ying</h3>
+                    <p class="pp-text">Bu yerda faqat mualliflar ommaviy deb belgilagan kitoblar ko'rsatiladi.
+                        O'z ishlaringizni joylash uchun tizimga kiring.</p>
+                </div>
+            </aside>
         </div>
+
     </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        var qidiruv = document.getElementById('ppSearch');
+        var kartochkalar = [].slice.call(document.querySelectorAll('.pp-card'));
+        var natijaYozuvi = document.getElementById('ppResult');
+        var natijaYoq = document.getElementById('ppNoResult');
+        var joriyTuri = 'all';
+
+        function filtrla() {
+            var matn = (qidiruv && qidiruv.value || '').trim().toLowerCase();
+            var korinadi = 0;
+
+            kartochkalar.forEach(function (karta) {
+                var turi = karta.dataset.turi || '';
+                var nomMos = !matn || (karta.dataset.name || '').indexOf(matn) !== -1;
+                var turMos = joriyTuri === 'all' || turi.indexOf(joriyTuri) !== -1;
+                var chiqsin = nomMos && turMos;
+                karta.style.display = chiqsin ? '' : 'none';
+                if (chiqsin) korinadi++;
+            });
+
+            if (natijaYoq) natijaYoq.style.display = (korinadi === 0 && kartochkalar.length) ? '' : 'none';
+            if (natijaYozuvi) {
+                natijaYozuvi.innerHTML = kartochkalar.length
+                    ? '<strong>' + korinadi + '</strong> ta kitob ko\'rsatilmoqda'
+                    : '';
+            }
+        }
+
+        document.querySelectorAll('.pp-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.pp-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                joriyTuri = chip.dataset.turi;
+                filtrla();
+            });
+        });
+
+        if (qidiruv) qidiruv.addEventListener('input', filtrla);
+        filtrla();
+    })();
+</script>
 {% endblock %}

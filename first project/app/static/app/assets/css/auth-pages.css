@@ -420,3 +420,16 @@ body.dark-mode .pp-alert-warning {
         grid-template-columns: 1fr;
     }
 }
+
+/* Kirish va ro'yxatdan o'tish kartochkasi ekran o'rtasida tursin.
+   "margin: auto" ishlatilgan: kontent baland bo'lsa ham tepasi kesilmaydi. */
+.pp-page.pp-center {
+    display: flex;
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.pp-page.pp-center > .pp-inner {
+    margin: auto;
+    width: 100%;
+}
