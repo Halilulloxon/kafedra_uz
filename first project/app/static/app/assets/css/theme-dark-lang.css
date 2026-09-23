@@ -3058,3 +3058,62 @@ body.dark-mode .lang-btn {
 .btn.btn-sm.btn-block {
     width: 100%;
 }
+
+/* Kartochka tugmalari bir xil rangda bo'lsin —
+   avval "Tomosha qilish" quyuq ko'k, "Yuklab olish" och ko'k edi. */
+.read-btn,
+.download-btn,
+.watch-btn,
+.btn-read,
+.btn-dl,
+.btn-view {
+    background: #2563eb !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 0 !important;
+}
+
+.read-btn:hover,
+.download-btn:hover,
+.watch-btn:hover,
+.btn-read:hover,
+.btn-dl:hover,
+.btn-view:hover {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+/* Ikkilamchi tugma (Iqtibos) — o'lchami bir xil, ko'rinishi yengilroq */
+.btn-cite {
+    background: transparent !important;
+    color: #2563eb !important;
+    border: 1px solid #2563eb !important;
+}
+
+.btn-cite:hover {
+    background: rgba(37, 99, 235, 0.1) !important;
+    color: #2563eb !important;
+}
+
+body.dark-mode .read-btn,
+body.dark-mode .download-btn,
+body.dark-mode .watch-btn,
+body.dark-mode .btn-read,
+body.dark-mode .btn-dl,
+body.dark-mode .btn-view {
+    background: #3b82f6 !important;
+}
+
+body.dark-mode .read-btn:hover,
+body.dark-mode .download-btn:hover,
+body.dark-mode .watch-btn:hover,
+body.dark-mode .btn-read:hover,
+body.dark-mode .btn-dl:hover,
+body.dark-mode .btn-view:hover {
+    background: #60a5fa !important;
+}
+
+body.dark-mode .btn-cite {
+    color: #93c5fd !important;
+    border-color: #3b82f6 !important;
+}
