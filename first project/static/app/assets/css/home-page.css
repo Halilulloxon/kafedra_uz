@@ -436,6 +436,75 @@ a.hp-tile-book:hover .hp-book-cover:nth-child(3) { transform: rotate(14deg) tran
     gap: 11px;
 }
 
+/* ── Imkoniyatlar kartochkalari ── */
+.hp-features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.hp-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 24px 22px;
+    border-radius: 20px;
+    text-decoration: none;
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border);
+    box-shadow: var(--pp-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.hp-feature:hover {
+    transform: translateY(-4px);
+    text-decoration: none;
+    border-color: var(--pp-accent);
+    box-shadow: var(--pp-shadow-lg);
+}
+
+.hp-feature-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 18px;
+    background: var(--pp-accent-soft);
+    color: var(--pp-accent);
+}
+
+.hp-feature h3 {
+    margin: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pp-text);
+}
+
+.hp-feature p {
+    margin: 0;
+    flex: 1 1 auto;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--pp-muted);
+}
+
+.hp-feature-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pp-accent);
+    transition: gap 0.2s ease;
+}
+
+.hp-feature:hover .hp-feature-link {
+    gap: 11px;
+}
+
 /* ── Chaqiriq bloki ── */
 .hp-cta {
     display: flex;
@@ -485,6 +554,10 @@ a.hp-tile-book:hover .hp-book-cover:nth-child(3) { transform: rotate(14deg) tran
 
 /* ── Moslashuvchanlik ── */
 @media (max-width: 991.98px) {
+    .hp-features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .hp-bento {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -501,6 +574,10 @@ a.hp-tile-book:hover .hp-book-cover:nth-child(3) { transform: rotate(14deg) tran
 }
 
 @media (max-width: 575.98px) {
+    .hp-features {
+        grid-template-columns: 1fr;
+    }
+
     .hp-bento {
         grid-template-columns: 1fr;
         gap: 14px;

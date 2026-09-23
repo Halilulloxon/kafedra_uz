@@ -5,7 +5,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260924b">
-<link rel="stylesheet" href="{% static 'app/assets/css/home-page.css' %}?v=20260924a">
+<link rel="stylesheet" href="{% static 'app/assets/css/home-page.css' %}?v=20260924e">
 {% endblock %}
 
 {% block content %}
@@ -126,6 +126,43 @@
             </section>
 
         </div>
+
+        <!-- ══ Imkoniyatlar ══ -->
+        <section class="hp-section hp-reveal">
+            <div class="hp-section-head">
+                <div>
+                    <h2>Nima taklif qilamiz?</h2>
+                    <p>Universitet o'qituvchilari tayyorlagan sifatli ta'lim materiallari.</p>
+                </div>
+            </div>
+
+            <div class="hp-features">
+                <a href="{% url 'video' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-video"></i></div>
+                    <h3>Video darslar</h3>
+                    <p>O'qituvchilar tayyorlagan video darsliklarni tomosha qiling va yuklab oling.</p>
+                    <span class="hp-feature-link">Ko'rish <i class="fas fa-arrow-right"></i></span>
+                </a>
+                <a href="{% url 'book' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-book"></i></div>
+                    <h3>Kitoblar</h3>
+                    <p>Darsliklar, o'quv qo'llanmalar va monografiyalar bitta kutubxonada.</p>
+                    <span class="hp-feature-link">Ko'rish <i class="fas fa-arrow-right"></i></span>
+                </a>
+                <a href="{% url 'article' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>Ilmiy maqolalar</h3>
+                    <p>Scopus, OAK maqolalari, tezislar va tadqiqot ishlari.</p>
+                    <span class="hp-feature-link">Ko'rish <i class="fas fa-arrow-right"></i></span>
+                </a>
+                <a href="{% url 'teachers' %}" class="hp-feature">
+                    <div class="hp-feature-icon"><i class="fas fa-user-graduate"></i></div>
+                    <h3>O'qituvchi profillari</h3>
+                    <p>Har bir o'qituvchining profili va u yozgan barcha materiallar.</p>
+                    <span class="hp-feature-link">Ko'rish <i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </section>
 
         <!-- ══ So'nggi kitoblar ══ -->
         {% if songgi_kitoblar %}
