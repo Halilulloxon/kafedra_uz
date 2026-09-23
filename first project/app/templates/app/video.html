@@ -4,7 +4,7 @@
 {% block title %}Video Darslar — Kafedralar.uz{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'app/assets/css/public-video.css' %}?v=20260924c">
+<link rel="stylesheet" href="{% static 'app/assets/css/public-video.css' %}?v=20260924d">
 {% endblock %}
 
 {% block content %}
@@ -45,48 +45,13 @@
 
         <p class="vp-result" id="vpResult"></p>
 
-        <!-- ── So'nggi dars ── -->
-        {% if videolar %}
-        {% with vid=videolar.0 %}
-        <section class="vp-featured">
-            <div class="vp-thumb" onclick="vpOpen(this)">
-                <video preload="metadata" crossorigin="anonymous" class="vp-video">
-                    <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
-                </video>
-                <canvas></canvas>
-                <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
-                <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
-                <span class="vp-duration">00:00</span>
-            </div>
-
-            <div class="vp-featured-info">
-                <span class="vp-badge">🔥 <span data-i18n="latest_lesson">So'nggi dars</span></span>
-                <h2>{{ vid.nomi }}</h2>
-                {% if vid.haqida %}<p>{{ vid.haqida }}</p>{% endif %}
-                <div class="vp-meta">
-                    <span class="vp-tag-soft"><i class="fas fa-user-graduate"></i> {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
-                    {% if vid.muallif.kafedra %}<span>{{ vid.muallif.kafedra }}</span>{% endif %}
-                    <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
-                </div>
-                <div class="vp-actions">
-                    <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">
-                        <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
-                    </a>
-                    <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
-                        <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-        {% endwith %}
-        {% endif %}
-
-        <!-- ── Barcha videolar ── -->
-        <h2 class="vp-section-title" data-i18n="all_video_lessons">Barcha video darslar</h2>
-
+        <!-- ── Barcha darslar. Birinchisi — eng so'nggisi — keng kartochka ── -->
         <div class="vp-grid" id="vpGrid">
             {% for vid in videolar %}
-            <article class="vp-card" data-teacher="{{ vid.muallif.id }}" data-name="{{ vid.nomi|lower }}">
+            <article class="vp-card{% if forloop.first %} vp-card-wide{% endif %}"
+                     data-teacher="{{ vid.muallif.id }}"
+                     data-name="{{ vid.nomi|lower }} {{ vid.muallif.ism|lower }} {{ vid.muallif.familiya|lower }}">
+
                 <div class="vp-thumb" onclick="vpOpen(this)">
                     <video preload="metadata" crossorigin="anonymous" class="vp-video">
                         <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
@@ -94,19 +59,29 @@
                     <canvas></canvas>
                     <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
                     <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
-                    <span class="vp-author-mini"><i class="fas fa-user-graduate"></i> {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
                     <span class="vp-duration">00:00</span>
                 </div>
 
                 <div class="vp-body">
+                    {% if forloop.first %}
+                    <span class="vp-badge">🔥 <span data-i18n="latest_lesson">So'nggi dars</span></span>
+                    {% endif %}
+
                     <h3 class="vp-card-title">{{ vid.nomi }}</h3>
+
                     <div class="vp-meta">
+                        <span class="vp-author">
+                            <img src="{{ vid.muallif.get_image_url }}" alt="" loading="lazy">
+                            {{ vid.muallif.ism }} {{ vid.muallif.familiya }}
+                        </span>
                         {% if vid.muallif.kafedra %}<span class="vp-tag-soft">{{ vid.muallif.kafedra }}</span>{% endif %}
                         <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
                     </div>
+
                     {% if vid.haqida %}<p class="vp-text">{{ vid.haqida }}</p>{% endif %}
+
                     <div class="vp-actions">
-                        <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">
+                        <a href="{% url 'serve_video' vid.id %}" class="watch-btn" onclick="return vpWatch(this)">
                             <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
                         </a>
                         <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
@@ -167,7 +142,7 @@
     // ── Videoni o'sha joyda ochish ──
     function vpOpen(wrap) {
         var video = wrap.querySelector('video');
-        ['canvas', '.vp-play', '.vp-duration', '.vp-author-mini', '.vp-thumb-empty'].forEach(function (sel) {
+        ['canvas', '.vp-play', '.vp-duration', '.vp-thumb-empty'].forEach(function (sel) {
             var el = wrap.querySelector(sel);
             if (el) el.style.display = 'none';
         });
@@ -175,6 +150,16 @@
         video.controls = true;
         video.currentTime = 0;
         video.play();
+    }
+
+    // "Tomosha qilish" tugmasi ham shu sahifada ochadi
+    function vpWatch(tugma) {
+        var karta = tugma.closest('.vp-card');
+        var wrap = karta ? karta.querySelector('.vp-thumb') : null;
+        if (!wrap) return true;          // ishlamasa, odatdagidek yangi oynada
+        vpOpen(wrap);
+        wrap.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return false;
     }
 
     // ── Qidiruv va o'qituvchi bo'yicha filtr ──
