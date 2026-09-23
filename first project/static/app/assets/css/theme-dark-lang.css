@@ -3136,3 +3136,220 @@ body.dark-mode .btn-cite {
     color: #93c5fd !important;
     border-color: #3b82f6 !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Kabinet formalari: qorong'i rejim va maydonlar ko'rinishi
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Vendor uslubi (bootstrap-extended) satr fonini oq qilib qo'yadi —
+   qorong'i rejimda yorug' yo'l-yo'l chiziqlar chiqib qolardi. */
+body.dark-mode form.striped-labels .form-group > div,
+body.dark-mode form.striped-rows .form-group > div,
+body.dark-mode form.form-bordered .form-group > div {
+    background-color: transparent !important;
+    border-left-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+body.dark-mode form.striped-labels .form-group:nth-child(even),
+body.dark-mode form.striped-rows .form-group:nth-child(even) {
+    background-color: rgba(148, 163, 184, 0.06) !important;
+}
+
+body.dark-mode form.form-bordered .form-group {
+    border-bottom-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+body.dark-mode form .form-section {
+    color: #e2e8f0 !important;
+    border-bottom-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+/* ── Maydonlar: bir xil balandlik, yumaloq burchak, aniq fokus ── */
+.form-control,
+select.form-control,
+textarea.form-control {
+    min-height: 44px;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+textarea.form-control {
+    min-height: 92px;
+}
+
+.form-control:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
+}
+
+body.dark-mode .form-control:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.28) !important;
+}
+
+/* Tanlov ro'yxati — o'z strelkasi bilan */
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px !important;
+}
+
+body.dark-mode select.form-control {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* ── Fayl tanlash ── */
+input[type="file"] {
+    width: 100%;
+    min-height: 44px;
+    padding: 6px 10px !important;
+    border-radius: 10px !important;
+    border: 1px dashed #cbd5e1 !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+    font-size: 13px !important;
+    cursor: pointer;
+}
+
+body.dark-mode input[type="file"] {
+    border-color: rgba(148, 163, 184, 0.35) !important;
+    background: rgba(148, 163, 184, 0.07) !important;
+    color: #cbd5e1 !important;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #1d4ed8;
+}
+
+body.dark-mode input[type="file"]::file-selector-button {
+    background: #3b82f6;
+}
+
+body.dark-mode input[type="file"]::file-selector-button:hover {
+    background: #60a5fa;
+}
+
+/* ── Belgilash katakchasi ── */
+form input[type="checkbox"],
+form input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    min-height: 0;
+    accent-color: #2563eb;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+body.dark-mode form input[type="checkbox"],
+body.dark-mode form input[type="radio"] {
+    accent-color: #3b82f6;
+}
+
+/* Katakcha "form-control" sinfini olgan joylarda cho'zilib ketmasin */
+input[type="checkbox"].form-control,
+input[type="checkbox"].form-control-file,
+input[type="radio"].form-control {
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Avtomatik to'ldirilgan maydon kulrang bo'lib qolmasin */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1e293b;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+    caret-color: #1e293b;
+}
+
+body.dark-mode input:-webkit-autofill,
+body.dark-mode input:-webkit-autofill:hover,
+body.dark-mode input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f1f5f9;
+    -webkit-box-shadow: 0 0 0 1000px #0f172a inset;
+    caret-color: #f1f5f9;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Kabinet yuqori menyusi: boshqaruv tugmalari bir xil o'lchamda
+   ══════════════════════════════════════════════════════════════════ */
+.header-navbar .navbar-container .nav.navbar-nav.ml-auto > li {
+    display: flex;
+    align-items: center;
+}
+
+.header-navbar .dropdown-user-link {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding: 0 6px 0 14px !important;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.header-navbar .dropdown-user-link:hover {
+    background: rgba(148, 163, 184, 0.16);
+    border-color: rgba(148, 163, 184, 0.28);
+}
+
+.header-navbar .dropdown-user-link .user-name {
+    margin-right: 0 !important;
+    font-size: 13.5px;
+}
+
+.header-navbar .dropdown-user-link img {
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+body:not(.dark-mode) .header-navbar .dropdown-user-link img {
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+/* Lavozim yorlig'i — quyuq emas, yumshoq ko'rinish */
+.header-navbar .navbar-nav .badge-pill {
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px !important;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: none !important;
+}
+
+@media (max-width: 991.98px) {
+    .header-navbar .dropdown-user-link {
+        padding: 0 4px !important;
+        gap: 0;
+    }
+
+    .header-navbar .dropdown-user-link .user-name {
+        display: none;
+    }
+}

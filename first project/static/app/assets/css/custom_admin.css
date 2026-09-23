@@ -1317,3 +1317,71 @@ body.login .errorlist {
         padding: 26px 22px;
     }
 }
+
+/* Avtomatik to'ldirilgan maydonlar (brauzer saqlagan login/parol)
+   kulrang bo'lib qolmasin — mavzuga mos rang beriladi. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--input-text) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
+    caret-color: var(--input-text);
+    transition: background-color 9999s ease-out;
+}
+
+/* Admin formalaridagi maydonlar ham bir xil ko'rinishda */
+#content .form-row input[type="text"],
+#content .form-row input[type="email"],
+#content .form-row input[type="url"],
+#content .form-row input[type="number"],
+#content .form-row input[type="password"],
+#content .form-row input[type="date"],
+#content .form-row select,
+#content .form-row textarea {
+    min-height: 42px;
+    padding: 9px 13px !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--input-border) !important;
+    background: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    font-size: 14px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#content .form-row input:focus,
+#content .form-row select:focus,
+#content .form-row textarea:focus {
+    outline: none;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+#content .form-row input[type="file"] {
+    padding: 7px 10px !important;
+    border-radius: 10px !important;
+    border: 1px dashed var(--input-border) !important;
+    background: var(--bg-filter) !important;
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+}
+
+#content .form-row input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 7px 15px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#content .form-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    vertical-align: middle;
+}
