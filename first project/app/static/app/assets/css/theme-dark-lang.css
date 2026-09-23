@@ -902,7 +902,7 @@ body.dark-mode .content-header-title {
 }
 
 /* Card Spacing & Polish */
-.card {
+.card:not([class*="bg-gradient-"]):not([class*="bg-primary"]):not([class*="bg-info"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-danger"]) {
     border-radius: 14px !important;
     border: 1px solid #e2e8f0 !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
@@ -911,7 +911,7 @@ body.dark-mode .content-header-title {
     overflow: hidden;
 }
 
-body.dark-mode .card {
+body.dark-mode .card:not([class*="bg-gradient-"]):not([class*="bg-primary"]):not([class*="bg-info"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-danger"]) {
     background: #1e293b !important;
     border-color: #334155 !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
@@ -1326,5 +1326,106 @@ body.dark-mode .search-form input {
     border-color: #334155 !important;
     color: #f8fafc !important;
 }
+
+/* ── Stat Cards & Gradient Backgrounds (Light & Dark) ── */
+.bg-gradient-x-primary,
+.bg-gradient-primary,
+div.card.bg-gradient-x-primary,
+div.card.stat-card.bg-gradient-x-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    background-color: #2563eb !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.bg-gradient-x-info,
+.bg-gradient-info,
+div.card.bg-gradient-x-info,
+div.card.stat-card.bg-gradient-x-info {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    background-color: #0284c7 !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.bg-gradient-x-warning,
+.bg-gradient-warning,
+div.card.bg-gradient-x-warning,
+div.card.stat-card.bg-gradient-x-warning {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%) !important;
+    background-color: #ea580c !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.bg-gradient-x-success,
+.bg-gradient-success,
+div.card.bg-gradient-x-success,
+div.card.stat-card.bg-gradient-x-success {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+    background-color: #16a34a !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.bg-gradient-x-danger,
+.bg-gradient-danger,
+div.card.bg-gradient-x-danger,
+div.card.stat-card.bg-gradient-x-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    background-color: #dc2626 !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.stat-card {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.stat-card .card-body,
+.card[class*="bg-gradient-"] .card-body {
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 1.5rem !important;
+}
+
+.stat-card.bg-gradient-x-info *,
+.stat-card.bg-gradient-x-warning *,
+.stat-card.bg-gradient-x-success *,
+.stat-card.bg-gradient-x-danger *,
+.stat-card.bg-gradient-x-primary *,
+.card[class*="bg-gradient-"] * {
+    color: #ffffff !important;
+}
+
+.stat-card h2, 
+.card[class*="bg-gradient-"] h2 {
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: #ffffff !important;
+}
+
+.stat-card span, 
+.card[class*="bg-gradient-"] span {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.stat-card i, 
+.card[class*="bg-gradient-"] i {
+    font-size: 2.5rem !important;
+    color: #ffffff !important;
+    opacity: 0.9 !important;
+}
+
 
 
