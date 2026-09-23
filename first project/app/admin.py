@@ -62,15 +62,15 @@ class FoydalanuvchilarAdmin(admin.ModelAdmin):
         bg, fg = colors.get(obj.foydalanuvchi_rol, ('#f1f5f9', '#475569'))
         label = obj.get_foydalanuvchi_rol_display() if hasattr(obj, 'get_foydalanuvchi_rol_display') else (obj.foydalanuvchi_rol or "Belgilanmagan")
         return format_html(
-            '<span style="background:{}; color:{}; padding:3px 8px; border-radius:12px; font-weight:600; font-size:11.5px;">{}</span>',
+            '<span style="background:{}; color:{}; padding:3px 10px; border-radius:12px; font-weight:600; font-size:11.5px; white-space:nowrap; display:inline-block;">{}</span>',
             bg, fg, label
         )
 
     @admin.display(description="Status")
     def accepted_status(self, obj):
         if obj.accepted:
-            return mark_safe('<span style="color:#16a34a; font-weight:700;"><i class="fas fa-check-circle"></i> Tasdiqlangan</span>')
-        return mark_safe('<span style="color:#dc2626; font-weight:700;"><i class="fas fa-clock"></i> Kutilmoqda</span>')
+            return mark_safe('<span style="color:#16a34a; font-weight:700; white-space:nowrap;"><i class="fas fa-check-circle"></i> Tasdiqlangan</span>')
+        return mark_safe('<span style="color:#dc2626; font-weight:700; white-space:nowrap;"><i class="fas fa-clock"></i> Kutilmoqda</span>')
 
     @admin.action(description="Tanlangan foydalanuvchilarni tasdiqlash")
     def tasdiqlash(self, request, queryset):
@@ -117,8 +117,8 @@ class oquvIshlariAdmin(admin.ModelAdmin):
     @admin.display(description="Ommaviylik")
     def public_badge(self, obj):
         if obj.foreveryone:
-            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
-        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Shaxsiy</span>')
 
 
 class ilmiy_ishlariAdmin(admin.ModelAdmin):
@@ -152,8 +152,8 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
     @admin.display(description="Ommaviylik")
     def public_badge(self, obj):
         if obj.foreveryone:
-            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
-        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Shaxsiy</span>')
 
 
 class video_darslarAdmin(admin.ModelAdmin):
@@ -176,8 +176,8 @@ class video_darslarAdmin(admin.ModelAdmin):
     @admin.display(description="Ommaviylik")
     def public_badge(self, obj):
         if obj.foreveryone:
-            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Ommaviy</span>')
-        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Shaxsiy</span>')
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Ommaviy</span>')
+        return mark_safe('<span style="background:#f1f5f9; color:#64748b; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Shaxsiy</span>')
 
 
 class KafedraTalablariAdmin(admin.ModelAdmin):
@@ -194,8 +194,8 @@ class KafedraTalablariAdmin(admin.ModelAdmin):
     @admin.display(description="Faollik")
     def status_badge(self, obj):
         if obj.faol:
-            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Faol</span>')
-        return mark_safe('<span style="background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">Nofaol</span>')
+            return mark_safe('<span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Faol</span>')
+        return mark_safe('<span style="background:#fee2e2; color:#b91c1c; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:600; white-space:nowrap; display:inline-block;">Nofaol</span>')
 
 
 class KafedralarAdmin(admin.ModelAdmin):

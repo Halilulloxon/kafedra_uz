@@ -1413,10 +1413,33 @@ body:not(.login) #content .form-row input[type="checkbox"] {
     gap: 18px;
 }
 
+/* Django'ning ba'zi versiyalarida (va eski keshlangan faylda) bu blok
+   "flex" bo'lib qoladi — shunda qidiruv qatori jadval yoniga tushib,
+   ustunlar bir harfdan qatorga bo'linib ketadi. Shuning uchun majburan
+   oddiy blok qilib qo'yamiz. */
 #changelist .changelist-form-container {
+    display: block !important;
     flex: 1 1 auto;
     min-width: 0;
     overflow-x: auto;
+}
+
+#changelist .changelist-form-container > div,
+#changelist .changelist-form-container > nav,
+#changelist .changelist-form-container > form,
+#changelist .changelist-form-container > p {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+}
+
+/* Jadval va sahifalash ham to'liq kenglikda */
+#changelist .results,
+#changelist .paginator,
+#changelist #toolbar,
+#changelist .actions {
+    width: 100% !important;
+    float: none !important;
 }
 
 #changelist #changelist-filter {
@@ -1619,9 +1642,72 @@ body:not(.login) #content .form-row input[type="checkbox"] {
     width: 52px;
 }
 
-/* Uzun matnlar ustunni cho'zib yubormasin */
+/* Uzun matnlar (masalan email) ustunni cho'zib yubormasin, lekin
+   oddiy so'zlar harflarga bo'linib ketmasin */
 #result_list td {
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+#result_list td a {
+    overflow-wrap: anywhere;
+}
+
+/* Asosiy ustunlarga joy beramiz — ism va ish nomi qisqarib
+   harflarga bo'linib ketmasin */
+#result_list th.column-full_name_display,
+#result_list td.field-full_name_display,
+#result_list th.column-nomi_display,
+#result_list td.field-nomi_display {
+    min-width: 200px;
+}
+
+#result_list th.column-joylashuv,
+#result_list td.field-joylashuv {
+    min-width: 150px;
+}
+
+#result_list td.field-full_name_display span,
+#result_list td.field-nomi_display span {
+    overflow-wrap: anywhere;
+}
+
+/* Tahrirlash tugmasi va yorliqlar qatorga bo'linmasin */
+#result_list .admin-edit-btn,
+#result_list td.field-tahrirlash_tugmasi,
+#result_list td.field-role_badge,
+#result_list td.field-accepted_status,
+#result_list td.field-public_badge,
+#result_list td.field-status_badge,
+#result_list td.field-sana,
+#result_list td.field-file_preview,
+#result_list td.field-video_preview {
+    white-space: nowrap;
+}
+
+/* Chap menyu biroz torroq — jadvalga ko'proq joy qoladi.
+   Django kontent kengligini menyu eniga qarab hisoblaydi (275+24),
+   shuning uchun o'sha hisobni ham yangilaymiz. */
+#nav-sidebar {
+    flex: 0 0 225px !important;
+    width: 225px !important;
+}
+
+.main.shifted > #nav-sidebar + .content {
+    max-width: calc(100% - 249px) !important;
+}
+
+#nav-sidebar .module th,
+#nav-sidebar .module td {
+    padding-left: 10px !important;
+    padding-right: 6px !important;
+    font-size: 12.5px !important;
+}
+
+/* Login kabi uzun bir bo'lak matnlar ustunni kengaytirib yubormasin */
+#result_list td.field-login_f {
+    max-width: 120px;
+    overflow-wrap: anywhere;
 }
 
 /* ── Sahifalash ── */
