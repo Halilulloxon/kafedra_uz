@@ -483,9 +483,44 @@
         var savedLang = localStorage.getItem('app_lang') || 'uz';
         changeLanguage(savedLang);
 
-        // Mobile drawer menu toggle handler
+        // Inject hamburger button for public nav if not already present
+        var publicNav = document.querySelector('nav:not(.header-navbar)');
+        if (publicNav && !document.getElementById('publicNavToggle')) {
+            var navControls = publicNav.querySelector('.nav-controls');
+            var hamburgerBtn = document.createElement('button');
+            hamburgerBtn.id = 'publicNavToggle';
+            hamburgerBtn.className = 'public-nav-toggle';
+            hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            hamburgerBtn.setAttribute('title', 'Menyu');
+            hamburgerBtn.setAttribute('aria-label', 'Menyu');
+            if (navControls) {
+                navControls.appendChild(hamburgerBtn);
+            } else {
+                publicNav.appendChild(hamburgerBtn);
+            }
+        }
+
+        // Global Mobile Navigation Click Handlers
         document.addEventListener('click', function(e) {
-            var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main');
+            // 1. Public Navbar Toggle (index, teachers, video, book, article, teacher1)
+            var pubToggle = e.target.closest('#publicNavToggle, .public-nav-toggle');
+            if (pubToggle) {
+                e.preventDefault();
+                var navUl = document.querySelector('nav:not(.header-navbar) ul');
+                if (navUl) {
+                    navUl.classList.toggle('nav-mobile-open');
+                }
+                return;
+            }
+
+            // Close public menu if clicked outside
+            var openNavUl = document.querySelector('nav:not(.header-navbar) ul.nav-mobile-open');
+            if (openNavUl && !e.target.closest('nav:not(.header-navbar)')) {
+                openNavUl.classList.remove('nav-mobile-open');
+            }
+
+            // 2. Cabinet / Dashboard Sidebar Drawer Toggle (profil, ilmiy_ishlar, oquv_ishlari, etc.)
+            var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main, .modern-nav-toggle');
             if (toggleBtn) {
                 e.preventDefault();
                 var isOpen = document.body.classList.toggle('menu-open');
