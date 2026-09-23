@@ -300,12 +300,123 @@ body.dark-mode .vp-page {
     background: rgba(8, 15, 30, 0.78);
 }
 
+/* ── Ikki ustun: chapda videolar, o'ngda yon panel ── */
+.vp-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+.vp-side {
+    position: sticky;
+    top: 84px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.vp-side-card {
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--vp-card);
+    border: 1px solid var(--vp-border);
+    box-shadow: var(--vp-shadow);
+}
+
+.vp-side-card h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--vp-text);
+}
+
+.vp-side-card h3 i {
+    margin-right: 6px;
+    color: var(--vp-accent);
+}
+
+/* Faol mualliflar ro'yxati */
+.vp-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--vp-border);
+    text-decoration: none;
+}
+
+.vp-top:last-child {
+    border-bottom: 0;
+}
+
+.vp-top:hover {
+    text-decoration: none;
+}
+
+.vp-top:hover .vp-top-info h5 {
+    color: var(--vp-accent);
+}
+
+.vp-top-ava {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    font-size: 18px;
+    background: var(--vp-accent-soft);
+    color: var(--vp-accent);
+}
+
+.vp-top-ava img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vp-top-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.vp-top-info h5 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--vp-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.vp-top-info span {
+    font-size: 12px;
+    color: var(--vp-muted);
+}
+
+.vp-top-count {
+    flex: 0 0 auto;
+    min-width: 30px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--vp-accent-soft);
+    color: var(--vp-accent);
+}
+
 /* ── Ro'yxat ── */
 .vp-grid {
     display: grid;
     gap: 22px;
-    /* Kartochka kamida 380px — keng ekranda qatoriga 3 ta tushadi */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+    /* Kartochka kamida 320px — yon panel yonida ham qatoriga 3 ta tushadi */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
 }
 
 .vp-card {
@@ -409,8 +520,11 @@ body.dark-mode .vp-page {
         min-height: 300px;
     }
 
-    /* Yolg'iz video bo'lsa butun qatorni egallaydi */
-    .vp-card-wide:only-child {
+    /* Yolg'iz video bo'lsa butun qatorni egallaydi.
+       (to'rda yashirin "natija topilmadi" bloki ham turadi, shuning uchun
+       :only-child emas, oxiridan ikkinchi bola deb tekshiramiz) */
+    .vp-card-wide:only-child,
+    .vp-card-wide:first-child:nth-last-child(2) {
         grid-column: 1 / -1;
     }
 
@@ -472,6 +586,16 @@ body.dark-mode .vp-page {
 }
 
 /* ── Moslashuvchanlik ── */
+@media (max-width: 991.98px) {
+    .vp-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .vp-side {
+        position: static;
+    }
+}
+
 @media (max-width: 767.98px) {
     .vp-page {
         padding: 18px 14px 36px;

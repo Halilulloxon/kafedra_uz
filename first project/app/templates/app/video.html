@@ -4,7 +4,7 @@
 {% block title %}Video Darslar — Kafedralar.uz{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'app/assets/css/public-video.css' %}?v=20260924d">
+<link rel="stylesheet" href="{% static 'app/assets/css/public-video.css' %}?v=20260924g">
 {% endblock %}
 
 {% block content %}
@@ -45,64 +45,93 @@
 
         <p class="vp-result" id="vpResult"></p>
 
-        <!-- ── Barcha darslar. Birinchisi — eng so'nggisi — keng kartochka ── -->
-        <div class="vp-grid" id="vpGrid">
-            {% for vid in videolar %}
-            <article class="vp-card{% if forloop.first %} vp-card-wide{% endif %}"
-                     data-teacher="{{ vid.muallif.id }}"
-                     data-name="{{ vid.nomi|lower }} {{ vid.muallif.ism|lower }} {{ vid.muallif.familiya|lower }}">
+        <div class="vp-layout">
+            <!-- ── Barcha darslar. Birinchisi — eng so'nggisi — keng kartochka ── -->
+            <div class="vp-grid" id="vpGrid">
+                {% for vid in videolar %}
+                <article class="vp-card{% if forloop.first %} vp-card-wide{% endif %}"
+                         data-teacher="{{ vid.muallif.id }}"
+                         data-name="{{ vid.nomi|lower }} {{ vid.muallif.ism|lower }} {{ vid.muallif.familiya|lower }}">
 
-                <div class="vp-thumb" onclick="vpOpen(this)">
-                    <video preload="metadata" crossorigin="anonymous" class="vp-video">
-                        <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
-                    </video>
-                    <canvas></canvas>
-                    <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
-                    <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
-                    <span class="vp-duration">00:00</span>
-                </div>
-
-                <div class="vp-body">
-                    {% if forloop.first %}
-                    <span class="vp-badge">🔥 <span data-i18n="latest_lesson">So'nggi dars</span></span>
-                    {% endif %}
-
-                    <h3 class="vp-card-title">{{ vid.nomi }}</h3>
-
-                    <div class="vp-meta">
-                        <span class="vp-author">
-                            <img src="{{ vid.muallif.get_image_url }}" alt="" loading="lazy">
-                            {{ vid.muallif.ism }} {{ vid.muallif.familiya }}
-                        </span>
-                        {% if vid.muallif.kafedra %}<span class="vp-tag-soft">{{ vid.muallif.kafedra }}</span>{% endif %}
-                        <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
+                    <div class="vp-thumb" onclick="vpOpen(this)">
+                        <video preload="metadata" crossorigin="anonymous" class="vp-video">
+                            <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
+                        </video>
+                        <canvas></canvas>
+                        <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
+                        <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
+                        <span class="vp-duration">00:00</span>
                     </div>
 
-                    {% if vid.haqida %}<p class="vp-text">{{ vid.haqida }}</p>{% endif %}
+                    <div class="vp-body">
+                        {% if forloop.first %}
+                        <span class="vp-badge">🔥 <span data-i18n="latest_lesson">So'nggi dars</span></span>
+                        {% endif %}
 
-                    <div class="vp-actions">
-                        <a href="{% url 'serve_video' vid.id %}" class="watch-btn" onclick="return vpWatch(this)">
-                            <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
-                        </a>
-                        <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
-                            <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
-                        </a>
+                        <h3 class="vp-card-title">{{ vid.nomi }}</h3>
+
+                        <div class="vp-meta">
+                            <span class="vp-author">
+                                <img src="{{ vid.muallif.get_image_url }}" alt="" loading="lazy">
+                                {{ vid.muallif.ism }} {{ vid.muallif.familiya }}
+                            </span>
+                            {% if vid.muallif.kafedra %}<span class="vp-tag-soft">{{ vid.muallif.kafedra }}</span>{% endif %}
+                            <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
+                        </div>
+
+                        {% if vid.haqida %}<p class="vp-text">{{ vid.haqida }}</p>{% endif %}
+
+                        <div class="vp-actions">
+                            <a href="{% url 'serve_video' vid.id %}" class="watch-btn" onclick="return vpWatch(this)">
+                                <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
+                            </a>
+                            <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
+                                <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
+                            </a>
+                        </div>
                     </div>
+                </article>
+                {% empty %}
+                <div class="vp-empty">
+                    <div class="vp-empty-icon"><i class="fas fa-video-slash"></i></div>
+                    <strong>Video darslar hali qo'shilmagan</strong>
+                    <span>Yangi darslar joylanishi bilan shu yerda ko'rinadi.</span>
                 </div>
-            </article>
-            {% empty %}
-            <div class="vp-empty">
-                <div class="vp-empty-icon"><i class="fas fa-video-slash"></i></div>
-                <strong>Video darslar hali qo'shilmagan</strong>
-                <span>Yangi darslar joylanishi bilan shu yerda ko'rinadi.</span>
-            </div>
-            {% endfor %}
+                {% endfor %}
 
-            <div class="vp-empty" id="vpNoResult" style="display:none;">
-                <div class="vp-empty-icon"><i class="fas fa-search"></i></div>
-                <strong>Natija topilmadi</strong>
-                <span>Qidiruv so'zini yoki o'qituvchini o'zgartirib ko'ring.</span>
+                <div class="vp-empty" id="vpNoResult" style="display:none;">
+                    <div class="vp-empty-icon"><i class="fas fa-search"></i></div>
+                    <strong>Natija topilmadi</strong>
+                    <span>Qidiruv so'zini yoki o'qituvchini o'zgartirib ko'ring.</span>
+                </div>
             </div>
+
+            <!-- ── Yon panel ── -->
+            <aside class="vp-side">
+                <div class="vp-side-card">
+                    <h3><i class="fas fa-trophy"></i> Faol mualliflar</h3>
+                    {% for muallif in top_mualliflar %}
+                    <a class="vp-top" href="{% url 'teacher1' id=muallif.id %}">
+                        <div class="vp-top-ava">
+                            {% if muallif.image %}<img src="{{ muallif.get_image_url }}" alt="{{ muallif }}">{% else %}👨‍🎓{% endif %}
+                        </div>
+                        <div class="vp-top-info">
+                            <h5>{{ muallif.ism }} {{ muallif.familiya }}</h5>
+                            <span>{{ muallif.kafedra|default:"Kafedra ko'rsatilmagan" }}</span>
+                        </div>
+                        <span class="vp-top-count">{{ muallif.video_soni }}</span>
+                    </a>
+                    {% empty %}
+                    <p class="vp-text">Hozircha muallif yo'q.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="vp-side-card">
+                    <h3><i class="fas fa-lightbulb"></i> Bilib qo'ying</h3>
+                    <p class="vp-text">Bu yerda faqat mualliflar ommaviy deb belgilagan video darslar
+                        ko'rsatiladi. O'z darslaringizni joylash uchun tizimga kiring.</p>
+                </div>
+            </aside>
         </div>
 
     </div>
