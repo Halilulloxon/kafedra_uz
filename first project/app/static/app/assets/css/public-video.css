@@ -1,0 +1,519 @@
+/* ==========================================================================
+   Kafedralar.uz — Video darslar sahifasi (/video/)
+   Ranglar o'zgaruvchilar orqali, shuning uchun yorug' va qorong'i rejim
+   bitta kod bilan ishlaydi.
+   ========================================================================== */
+
+.vp-page {
+    --vp-bg: #f5f7fb;
+    --vp-card: #ffffff;
+    --vp-text: #0f172a;
+    --vp-muted: #64748b;
+    --vp-border: #e2e8f0;
+    --vp-accent: #2563eb;
+    --vp-accent-soft: rgba(37, 99, 235, 0.1);
+    --vp-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+    --vp-shadow-lg: 0 14px 34px rgba(15, 23, 42, 0.14);
+
+    background: var(--vp-bg);
+    color: var(--vp-text);
+    padding: 28px 20px 48px;
+    min-height: 60vh;
+}
+
+body.dark-mode .vp-page {
+    --vp-bg: #0b1120;
+    --vp-card: #1e293b;
+    --vp-text: #f1f5f9;
+    --vp-muted: #94a3b8;
+    --vp-border: #334155;
+    --vp-accent: #3b82f6;
+    --vp-accent-soft: rgba(59, 130, 246, 0.16);
+    --vp-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    --vp-shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.5);
+}
+
+.vp-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* ── Sarlavha ── */
+.vp-hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.vp-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    margin-bottom: 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    background: var(--vp-accent-soft);
+    color: var(--vp-accent);
+}
+
+.vp-hero h1 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--vp-text);
+}
+
+.vp-hero p {
+    margin: 0;
+    max-width: 560px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--vp-muted);
+}
+
+.vp-hero-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.vp-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--vp-card);
+    border: 1px solid var(--vp-border);
+    color: var(--vp-text);
+    box-shadow: var(--vp-shadow);
+}
+
+.vp-pill i {
+    color: var(--vp-accent);
+}
+
+/* ── Filtr paneli ── */
+.vp-filters {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    background: var(--vp-card);
+    border: 1px solid var(--vp-border);
+    box-shadow: var(--vp-shadow);
+}
+
+.vp-search {
+    position: relative;
+    flex: 1 1 260px;
+    min-width: 220px;
+}
+
+.vp-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: var(--vp-muted);
+    pointer-events: none;
+}
+
+.vp-search input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px 0 38px;
+    border-radius: 10px;
+    border: 1px solid var(--vp-border);
+    background: var(--vp-bg);
+    color: var(--vp-text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vp-search input:focus {
+    border-color: var(--vp-accent);
+    box-shadow: 0 0 0 3px var(--vp-accent-soft);
+}
+
+.vp-chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+}
+
+.vp-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.vp-chips-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--vp-muted);
+    white-space: nowrap;
+}
+
+.vp-chip {
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--vp-border);
+    background: transparent;
+    color: var(--vp-muted);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.vp-chip:hover {
+    background: var(--vp-accent-soft);
+    color: var(--vp-accent);
+    border-color: transparent;
+}
+
+.vp-chip.active {
+    background: var(--vp-accent);
+    border-color: var(--vp-accent);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.vp-result {
+    margin: 0 0 24px 4px;
+    font-size: 13px;
+    color: var(--vp-muted);
+}
+
+.vp-result strong {
+    color: var(--vp-text);
+}
+
+/* ── So'nggi dars ── */
+.vp-featured {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 0;
+    overflow: hidden;
+    margin-bottom: 34px;
+    border-radius: 20px;
+    background: var(--vp-card);
+    border: 1px solid var(--vp-border);
+    box-shadow: var(--vp-shadow-lg);
+}
+
+.vp-featured-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px;
+}
+
+.vp-badge {
+    align-self: flex-start;
+    padding: 5px 13px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.vp-featured-info h2 {
+    margin: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    line-height: 1.25;
+    color: var(--vp-text);
+}
+
+.vp-featured-info p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--vp-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── Video rasmi ── */
+.vp-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0b1120;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.vp-thumb canvas,
+.vp-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.vp-thumb video {
+    display: none;
+}
+
+.vp-thumb video.active {
+    display: block;
+}
+
+.vp-thumb-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    color: rgba(255, 255, 255, 0.35);
+    background: linear-gradient(135deg, #0f2b52, #1e3a8a);
+}
+
+.vp-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 15, 30, 0.35);
+    transition: background 0.2s ease;
+}
+
+.vp-thumb:hover .vp-play {
+    background: rgba(8, 15, 30, 0.18);
+}
+
+.vp-play-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    color: #ffffff;
+    background: var(--vp-accent);
+    box-shadow: 0 10px 26px rgba(37, 99, 235, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.vp-thumb:hover .vp-play-btn {
+    transform: scale(1.08);
+}
+
+.vp-duration {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(8, 15, 30, 0.78);
+}
+
+.vp-author-mini {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(8, 15, 30, 0.72);
+}
+
+/* ── Ro'yxat ── */
+.vp-section-title {
+    margin: 0 0 18px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--vp-text);
+}
+
+.vp-grid {
+    display: grid;
+    gap: 22px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+
+.vp-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--vp-card);
+    border: 1px solid var(--vp-border);
+    box-shadow: var(--vp-shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--vp-shadow-lg);
+}
+
+.vp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1 1 auto;
+    padding: 16px;
+}
+
+.vp-card-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--vp-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.vp-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--vp-muted);
+}
+
+.vp-tag-soft {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: var(--vp-accent-soft);
+    color: var(--vp-accent);
+}
+
+.vp-text {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--vp-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.vp-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.vp-actions > * {
+    flex: 1 1 0;
+}
+
+/* ── Bo'sh holat ── */
+.vp-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 56px 20px;
+    border-radius: 16px;
+    border: 1px dashed var(--vp-border);
+    background: var(--vp-card);
+    color: var(--vp-muted);
+    text-align: center;
+}
+
+.vp-empty-icon {
+    font-size: 36px;
+    opacity: 0.7;
+}
+
+.vp-empty strong {
+    font-size: 15px;
+    color: var(--vp-text);
+}
+
+.vp-empty span {
+    font-size: 13.5px;
+}
+
+/* ── Moslashuvchanlik ── */
+@media (max-width: 991.98px) {
+    .vp-featured {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .vp-page {
+        padding: 18px 14px 36px;
+    }
+
+    .vp-hero h1 {
+        font-size: 25px;
+    }
+
+    .vp-hero-stats {
+        width: 100%;
+    }
+
+    .vp-filters {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .vp-chips {
+        width: 100%;
+    }
+
+    .vp-featured-info {
+        padding: 20px;
+    }
+
+    .vp-featured-info h2 {
+        font-size: 21px;
+    }
+
+    .vp-section-title {
+        font-size: 19px;
+    }
+
+    .vp-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+}

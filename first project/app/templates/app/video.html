@@ -1,703 +1,221 @@
 {% extends "app/base_public.html" %}
 {% load static %}
 
-{% block title %}Video Darslar — EduPortal{% endblock %}
+{% block title %}Video Darslar — Kafedralar.uz{% endblock %}
 
 {% block extra_head %}
-<style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        :root {
-            --bg: #0d0f14;
-            --surface: #161a23;
-            --surface2: #1e2330;
-            --border: #2a3045;
-            --accent: #4f8ef7;
-            --text: #e8eaf0;
-            --muted: #7a839a;
-        }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-        /* NAV */
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            height: 64px;
-            background: rgba(13,15,20,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-            .logo span {
-                color: var(--accent);
-            }
-        nav ul {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-        }
-            nav ul li a {
-                text-decoration: none;
-                color: var(--muted);
-                font-size: 0.88rem;
-                font-weight: 500;
-                padding: 6px 14px;
-                border-radius: 8px;
-                transition: all 0.2s;
-            }
-                nav ul li a:hover, nav ul li a.active {
-                    color: var(--text);
-                    background: var(--surface2);
-                }
-        /* PAGE HEADER */
-        .page-header {
-            text-align: center;
-            padding: 60px 40px 40px;
-            background: linear-gradient(180deg, rgba(79,142,247,0.06) 0%, transparent 100%);
-            border-bottom: 1px solid var(--border);
-        }
-        .section-tag {
-            display: inline-block;
-            background: rgba(79,142,247,0.12);
-            color: var(--accent);
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 5px 14px;
-            border-radius: 20px;
-            margin-bottom: 14px;
-            border: 1px solid rgba(79,142,247,0.2);
-        }
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.6rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-        .page-header p {
-            color: var(--muted);
-            font-size: 1rem;
-        }
-        /* MAIN */
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 48px 40px 80px;
-        }
-        /* FILTERS */
-        .filters {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-        .filter-label {
-            font-size: 0.82rem;
-            color: var(--muted);
-            font-weight: 500;
-        }
-        .filter-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 500;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-            .filter-btn:hover {
-                color: var(--text);
-                border-color: var(--accent);
-            }
-            .filter-btn.active {
-                background: var(--accent);
-                border-color: var(--accent);
-                color: #fff;
-            }
-        .search-box {
-            margin-left: auto;
-        }
-            .search-box input {
-                background: var(--surface);
-                border: 1px solid var(--border);
-                color: var(--text);
-                font-family: 'DM Sans', sans-serif;
-                font-size: 0.88rem;
-                padding: 8px 16px;
-                border-radius: 8px;
-                outline: none;
-                width: 220px;
-                transition: border-color 0.2s;
-            }
-                .search-box input:focus {
-                    border-color: var(--accent);
-                }
-                .search-box input::placeholder {
-                    color: var(--muted);
-                }
-        /* FEATURED */
-        .featured {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 48px;
-        }
-        .featured-thumb {
-            position: relative;
-            min-height: 300px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-            .featured-thumb video {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: none;
-            }
-            .featured-thumb canvas {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        .feat-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.35);
-            z-index: 1;
-        }
-        .play-big {
-            position: relative;
-            z-index: 3;
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: rgba(79,142,247,0.92);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 24px rgba(79,142,247,0.4);
-        }
-            .play-big:hover {
-                transform: scale(1.1);
-            }
-        .featured-label {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 4;
-            background: rgba(255,80,80,0.85);
-            color: #fff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-        .feat-duration {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            z-index: 4;
-            background: rgba(0,0,0,0.75);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-        .featured-info {
-            padding: 36px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .new-badge {
-            display: inline-block;
-            background: rgba(79,142,247,0.15);
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 14px;
-            border: 1px solid rgba(79,142,247,0.25);
-            width: fit-content;
-        }
-        .featured-info h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .featured-info p {
-            color: var(--muted);
-            font-size: 0.88rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-        .featured-meta {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-            .featured-meta span {
-                font-size: 0.8rem;
-                color: var(--muted);
-            }
-        .featured-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        /* SECTION TITLE */
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-        /* VIDEOS GRID */
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .video-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-            .video-card:hover {
-                border-color: var(--accent);
-                transform: translateY(-4px);
-            }
-        /* THUMBNAIL */
-        .video-thumb-wrap {
-            position: relative;
-            background: #111;
-            cursor: pointer;
-            height: 180px;
-            overflow: hidden;
-        }
-            .video-thumb-wrap video {
-                width: 100%;
-                height: 180px;
-                object-fit: cover;
-                display: none;
-            }
-            .video-thumb-wrap canvas {
-                width: 100%;
-                height: 180px;
-                display: block;
-            }
-        .thumb-placeholder {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #0a1628, #1a3a6b);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            z-index: 0;
-        }
-        .play-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.22);
-            transition: background 0.2s;
-        }
-        .video-thumb-wrap:hover .play-overlay {
-            background: rgba(0,0,0,0.48);
-        }
-        .play-overlay-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(79,142,247,0.92);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 20px rgba(79,142,247,0.45);
-            transition: transform 0.2s;
-        }
-        .video-thumb-wrap:hover .play-overlay-btn {
-            transform: scale(1.1);
-        }
-        .vid-duration {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            z-index: 4;
-            background: rgba(0,0,0,0.78);
-            color: #fff;
-            font-size: 0.72rem;
-            padding: 2px 7px;
-            border-radius: 4px;
-        }
-        .teacher-mini {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            z-index: 4;
-            background: rgba(0,0,0,0.65);
-            color: #fff;
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
-        .video-info {
-            padding: 14px 16px;
-        }
-        .vid-subject {
-            font-size: 0.75rem;
-            color: var(--accent);
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        .video-info h4 {
-            font-size: 0.92rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        .video-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-            .video-meta span {
-                font-size: 0.75rem;
-                color: var(--muted);
-            }
-        /* BUTTONS */
-        .watch-btn, .download-btn, .read-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 16px;
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            border: none;
-        }
-        .watch-btn {
-            background: var(--accent);
-            color: #fff;
-            width: 100%;
-            justify-content: center;
-        }
-            .watch-btn:hover {
-                background: #3a7de8;
-            }
-        .read-btn {
-            background: var(--surface2);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-            .read-btn:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-        .download-btn {
-            background: var(--accent);
-            color: #fff;
-        }
-            .download-btn:hover {
-                background: #3a7de8;
-            }
-        .empty-msg {
-            color: var(--muted);
-            padding: 40px;
-            text-align: center;
-            grid-column: 1/-1;
-        }
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 24px 40px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
-        @media (max-width: 768px) {
-            nav {
-                padding: 0 16px;
-            }
-                nav ul {
-                    display: none;
-                }
-            .main {
-                padding: 32px 16px 60px;
-            }
-            .featured {
-                grid-template-columns: 1fr;
-            }
-            .featured-thumb {
-                min-height: 200px;
-            }
-            .featured-info {
-                padding: 24px;
-            }
-        }
-    </style>
+<link rel="stylesheet" href="{% static 'app/assets/css/public-video.css' %}?v=20260923r">
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-        <div class="section-tag" data-i18n="edu_videos_tag">Ta'lim videolari</div>
-        <h1 data-i18n="video_lessons_title">Video Darslar</h1>
-        <p data-i18n="video_lessons_desc">O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.</p>
-    </div>
+<div class="vp-page">
+    <div class="vp-inner">
 
-    <div class="main">
+        <!-- ── Sarlavha ── -->
+        <header class="vp-hero">
+            <div>
+                <span class="vp-tag" data-i18n="edu_videos_tag">Ta'lim videolari</span>
+                <h1 data-i18n="video_lessons_title">Video Darslar</h1>
+                <p data-i18n="video_lessons_desc">O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.</p>
+            </div>
+            <div class="vp-hero-stats">
+                <span class="vp-pill"><i class="fas fa-video"></i> {{ videolar|length }} ta video</span>
+                <span class="vp-pill"><i class="fas fa-chalkboard-teacher"></i> {{ teachers|length }} ta o'qituvchi</span>
+            </div>
+        </header>
 
-        <!-- FILTERS -->
-        <div class="filters">
-            <span class="filter-label" data-i18n="teacher_filter">O'qituvchi:</span>
-            <button class="filter-btn active" data-teacher="all" data-i18n="all">Barchasi</button>
-            {% for teacher in teachers %}
-            <button class="filter-btn" data-teacher="{{ teacher.id }}">{{ teacher.ism }} {{ teacher.familiya }}</button>
-            {% endfor %}
-            <div class="search-box">
-                <form method="GET" action="{% url 'search_video' %}" class="m-0">
-                    <input type="text"
-                           id="videoSearch"
-                           name="q"
-                           placeholder="Video darsni qidirish..."
-                           value="{{ request.GET.q }}"
-                           style="width:100%; border-radius:10px;" />
+        <!-- ── Qidiruv va filtr ── -->
+        <div class="vp-filters">
+            <div class="vp-search">
+                <i class="fas fa-search"></i>
+                <form method="GET" action="{% url 'search_video' %}">
+                    <input type="text" name="q" value="{{ query|default:'' }}"
+                           placeholder="Video darsni qidirish..." id="vpSearch" autocomplete="off">
                 </form>
             </div>
+
+            <div class="vp-chips">
+                <span class="vp-chips-label" data-i18n="teacher_filter">O'qituvchi:</span>
+                <button type="button" class="vp-chip active" data-teacher="all" data-i18n="all">Barchasi</button>
+                {% for teacher in teachers %}
+                <button type="button" class="vp-chip" data-teacher="{{ teacher.id }}">{{ teacher.ism }} {{ teacher.familiya }}</button>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- FEATURED -->
+        <p class="vp-result" id="vpResult"></p>
+
+        <!-- ── So'nggi dars ── -->
         {% if videolar %}
         {% with vid=videolar.0 %}
-        <div class="featured">
-            <div class="featured-thumb">
-                <video id="featVid" preload="metadata" crossorigin="anonymous">
+        <section class="vp-featured">
+            <div class="vp-thumb" onclick="vpOpen(this)">
+                <video preload="metadata" crossorigin="anonymous" class="vp-video">
                     <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
                 </video>
-                <canvas id="featCanvas"></canvas>
-                <div class="feat-overlay" id="featOverlay"></div>
-                <div class="play-big" id="featPlayBtn" onclick="playFeatured()">▶</div>
-                <div class="featured-label">🔥 SO'NGGI</div>
-                <span class="feat-duration" id="featDuration">00:00:00</span>
+                <canvas></canvas>
+                <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
+                <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
+                <span class="vp-duration">00:00</span>
             </div>
-            <div class="featured-info">
-                <div class="new-badge">Yangi dars</div>
+
+            <div class="vp-featured-info">
+                <span class="vp-badge">🔥 <span data-i18n="latest_lesson">So'nggi dars</span></span>
                 <h2>{{ vid.nomi }}</h2>
-                <p>{{ vid.haqida }}</p>
-                <div class="featured-meta">
-                    <span>👨‍🎓 {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
+                {% if vid.haqida %}<p>{{ vid.haqida }}</p>{% endif %}
+                <div class="vp-meta">
+                    <span class="vp-tag-soft"><i class="fas fa-user-graduate"></i> {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
+                    {% if vid.muallif.kafedra %}<span>{{ vid.muallif.kafedra }}</span>{% endif %}
+                    <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
                 </div>
-                <div class="featured-actions">
-                    <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">▶ Tomosha qilish</a>
-                    <a href="{% url 'serve_video' vid.id %}" download class="download-btn">⬇ Yuklab olish</a>
+                <div class="vp-actions">
+                    <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">
+                        <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
+                    </a>
+                    <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
+                        <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
+                    </a>
                 </div>
             </div>
-        </div>
+        </section>
         {% endwith %}
         {% endif %}
 
-        <h2 class="section-title">Barcha Video Darslar</h2>
+        <!-- ── Barcha videolar ── -->
+        <h2 class="vp-section-title" data-i18n="all_video_lessons">Barcha video darslar</h2>
 
-        <!-- VIDEOS GRID -->
-        <div class="videos-grid" id="videosGrid">
+        <div class="vp-grid" id="vpGrid">
             {% for vid in videolar %}
-            <div class="video-card" data-teacher="{{ vid.muallif.id }}" data-name="{{ vid.nomi|lower }}">
-
-                <div class="video-thumb-wrap" onclick="openVideo(this)">
-                    <div class="thumb-placeholder">🎬</div>
-                    <video preload="metadata" crossorigin="anonymous" class="myVideo">
+            <article class="vp-card" data-teacher="{{ vid.muallif.id }}" data-name="{{ vid.nomi|lower }}">
+                <div class="vp-thumb" onclick="vpOpen(this)">
+                    <video preload="metadata" crossorigin="anonymous" class="vp-video">
                         <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
                     </video>
                     <canvas></canvas>
-                    <div class="play-overlay">
-                        <div class="play-overlay-btn">▶</div>
-                    </div>
-                    <div class="teacher-mini">👨‍🎓 {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</div>
-                    <span class="vid-duration">00:00:00</span>
+                    <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
+                    <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
+                    <span class="vp-author-mini"><i class="fas fa-user-graduate"></i> {{ vid.muallif.ism }} {{ vid.muallif.familiya }}</span>
+                    <span class="vp-duration">00:00</span>
                 </div>
 
-                <div class="video-info">
-                    <div class="vid-subject">{{ vid.muallif.kafedra }}</div>
-                    <h4>{{ vid.nomi }}</h4>
-                    <div class="video-meta">
-                        <span>{{ vid.haqida|truncatechars:50 }}</span>
+                <div class="vp-body">
+                    <h3 class="vp-card-title">{{ vid.nomi }}</h3>
+                    <div class="vp-meta">
+                        {% if vid.muallif.kafedra %}<span class="vp-tag-soft">{{ vid.muallif.kafedra }}</span>{% endif %}
+                        <span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span>
                     </div>
-                    <div class="featured-actions">
-                        <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">▶ Tomosha qilish</a>
-                        <a href="{% url 'serve_video' vid.id %}" download class="download-btn">⬇ Yuklab olish</a>
+                    {% if vid.haqida %}<p class="vp-text">{{ vid.haqida }}</p>{% endif %}
+                    <div class="vp-actions">
+                        <a href="{% url 'serve_video' vid.id %}" target="_blank" class="watch-btn">
+                            <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
+                        </a>
+                        <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
+                            <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
+                        </a>
                     </div>
                 </div>
-
-            </div>
+            </article>
             {% empty %}
-            <div class="empty-msg">Video darslar mavjud emas.</div>
+            <div class="vp-empty">
+                <div class="vp-empty-icon"><i class="fas fa-video-slash"></i></div>
+                <strong>Video darslar hali qo'shilmagan</strong>
+                <span>Yangi darslar joylanishi bilan shu yerda ko'rinadi.</span>
+            </div>
             {% endfor %}
-        </div>
 
-        <div id="noResults" style="display:none; text-align:center; padding:60px; color:var(--muted);">
-            <p style="font-size:1.1rem;">🔍 Natija topilmadi</p>
+            <div class="vp-empty" id="vpNoResult" style="display:none;">
+                <div class="vp-empty-icon"><i class="fas fa-search"></i></div>
+                <strong>Natija topilmadi</strong>
+                <span>Qidiruv so'zini yoki o'qituvchini o'zgartirib ko'ring.</span>
+            </div>
         </div>
 
     </div>
+</div>
+{% endblock %}
 
-    <script>
-        // ── Thumbnail: video 3-soniyasidagi kadrni canvasga chizish ──
-        function setupThumbnail(video, canvas, durationSpan, seekSec) {
-            video.addEventListener("loadedmetadata", function () {
-                // Davomiylik
-                if (durationSpan) {
-                    var d = video.duration;
-                    var h = String(Math.floor(d / 3600)).padStart(2, '0');
-                    var m = String(Math.floor((d % 3600) / 60)).padStart(2, '0');
-                    var s = String(Math.floor(d % 60)).padStart(2, '0');
-                    durationSpan.textContent = h + ':' + m + ':' + s;
-                }
-                // Seek qilamiz
-                video.currentTime = Math.min(seekSec, video.duration * 0.15);
-            }, { once: true });
+{% block extra_js %}
+<script>
+    // ── Video rasmi: metadata yuklangach birinchi kadrni canvasga chizamiz ──
+    function vpFormat(sekund) {
+        var s = Math.floor(sekund % 60), m = Math.floor((sekund % 3600) / 60), h = Math.floor(sekund / 3600);
+        var mm = String(m).padStart(2, '0'), ss = String(s).padStart(2, '0');
+        return h > 0 ? h + ':' + mm + ':' + ss : mm + ':' + ss;
+    }
 
-            video.addEventListener("seeked", function () {
-                if (canvas && video.videoWidth) {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-                    // Placeholder ni yashir
-                    var ph = video.parentElement && video.parentElement.querySelector('.thumb-placeholder');
-                    if (ph) ph.style.display = 'none';
-                }
-            }, { once: true });
-        }
+    document.querySelectorAll('.vp-video').forEach(function (video) {
+        var wrap = video.closest('.vp-thumb');
+        var canvas = wrap.querySelector('canvas');
+        var davomiylik = wrap.querySelector('.vp-duration');
 
-        document.addEventListener("DOMContentLoaded", function () {
+        video.addEventListener('loadedmetadata', function () {
+            if (davomiylik && isFinite(video.duration)) davomiylik.textContent = vpFormat(video.duration);
+            video.currentTime = Math.min(3, (video.duration || 10) * 0.15);
+        }, { once: true });
 
-            // Grid kartalari
-            document.querySelectorAll(".myVideo").forEach(function (video) {
-                var wrap = video.closest('.video-thumb-wrap');
-                var canvas = wrap.querySelector("canvas");
-                var span = wrap.querySelector(".vid-duration");
-                setupThumbnail(video, canvas, span, 3);
+        video.addEventListener('seeked', function () {
+            if (canvas && video.videoWidth) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                var bosh = wrap.querySelector('.vp-thumb-empty');
+                if (bosh) bosh.style.display = 'none';
+            }
+        }, { once: true });
+    });
+
+    // ── Videoni o'sha joyda ochish ──
+    function vpOpen(wrap) {
+        var video = wrap.querySelector('video');
+        ['canvas', '.vp-play', '.vp-duration', '.vp-author-mini', '.vp-thumb-empty'].forEach(function (sel) {
+            var el = wrap.querySelector(sel);
+            if (el) el.style.display = 'none';
+        });
+        video.classList.add('active');
+        video.controls = true;
+        video.currentTime = 0;
+        video.play();
+    }
+
+    // ── Qidiruv va o'qituvchi bo'yicha filtr ──
+    (function () {
+        var qidiruv = document.getElementById('vpSearch');
+        var kartochkalar = [].slice.call(document.querySelectorAll('.vp-card'));
+        var natijaYozuvi = document.getElementById('vpResult');
+        var natijaYoq = document.getElementById('vpNoResult');
+        var joriyOqituvchi = 'all';
+
+        function filtrla() {
+            var matn = (qidiruv && qidiruv.value || '').trim().toLowerCase();
+            var korinadi = 0;
+
+            kartochkalar.forEach(function (karta) {
+                var nomMos = !matn || (karta.dataset.name || '').indexOf(matn) !== -1;
+                var oqituvchiMos = joriyOqituvchi === 'all' || karta.dataset.teacher === joriyOqituvchi;
+                var chiqsin = nomMos && oqituvchiMos;
+                karta.style.display = chiqsin ? '' : 'none';
+                if (chiqsin) korinadi++;
             });
 
-            // Featured video
-            var featVid = document.getElementById('featVid');
-            var featCanvas = document.getElementById('featCanvas');
-            var featSpan = document.getElementById('featDuration');
-            if (featVid) setupThumbnail(featVid, featCanvas, featSpan, 3);
-        });
-
-        // ── Featured play/pause ──────────────────────────────────────
-        function playFeatured() {
-            var v = document.getElementById('featVid');
-            var canvas = document.getElementById('featCanvas');
-            var overlay = document.getElementById('featOverlay');
-            var btn = document.getElementById('featPlayBtn');
-
-            if (v.style.display === 'block') {
-                if (v.paused) { v.play(); btn.textContent = '⏸'; }
-                else { v.pause(); btn.textContent = '▶'; }
-            } else {
-                canvas.style.display = 'none';
-                overlay.style.display = 'none';
-                btn.style.display = 'none';
-                v.style.display = 'block';
-                v.controls = true;
-                v.currentTime = 0;
-                v.play();
+            if (natijaYoq) natijaYoq.style.display = (korinadi === 0 && kartochkalar.length) ? '' : 'none';
+            if (natijaYozuvi) {
+                natijaYozuvi.innerHTML = kartochkalar.length
+                    ? '<strong>' + korinadi + '</strong> ta video ko\'rsatilmoqda'
+                    : '';
             }
         }
 
-        // ── Grid video bosish ────────────────────────────────────────
-        function openVideo(wrap) {
-            var video = wrap.querySelector('video');
-            var canvas = wrap.querySelector('canvas');
-            var ph = wrap.querySelector('.thumb-placeholder');
-            var overlay = wrap.querySelector('.play-overlay');
-
-            if (canvas) canvas.style.display = 'none';
-            if (ph) ph.style.display = 'none';
-            if (overlay) overlay.style.display = 'none';
-
-            video.style.display = 'block';
-            video.controls = true;
-            video.currentTime = 0;
-            video.play();
-        }
-
-        // ── Filter ───────────────────────────────────────────────────
-        document.querySelectorAll('.filter-btn[data-teacher]').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.filter-btn[data-teacher]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                var teacher = btn.getAttribute('data-teacher');
-                document.querySelectorAll('.video-card').forEach(function (card) {
-                    card.style.display = (teacher === 'all' || card.getAttribute('data-teacher') === teacher) ? '' : 'none';
-                });
+        document.querySelectorAll('.vp-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.vp-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                joriyOqituvchi = chip.dataset.teacher;
+                filtrla();
             });
         });
 
-        // ── Search ───────────────────────────────────────────────────
-        document.getElementById('videoSearch').addEventListener('input', function () {
-            var q = this.value.toLowerCase().trim();
-            var any = false;
-            document.querySelectorAll('.video-card').forEach(function (card) {
-                var match = !q || card.getAttribute('data-name').includes(q);
-                card.style.display = match ? '' : 'none';
-                if (match) any = true;
-            });
-            document.getElementById('noResults').style.display = (!any && q) ? 'block' : 'none';
-        });
-    </script>
+        if (qidiruv) qidiruv.addEventListener('input', filtrla);
+        filtrla();
+    })();
+</script>
 {% endblock %}
