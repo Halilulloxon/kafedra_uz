@@ -1,255 +1,113 @@
-<!DOCTYPE html>
+{% extends "app/base_public.html" %}
 {% load static %}
-<!--
-Template Name: Modern Admin - Clean Bootstrap 4 Dashboard HTML Template
-Author: Kafedralar.uz
--->
-<html class="loading" lang="uz" data-textdirection="ltr">
-<!-- BEGIN: Head-->
 
-<head>
-    <!-- kafedra-theme-init: mavzu sahifa chizilishidan oldin qo'llanadi (oq ekran miltillamasligi uchun) -->
-    <script>
-    (function () {
-        try {
-            var t = localStorage.getItem('app_theme') || localStorage.getItem('theme');
-            if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                t = 'dark';
-            }
-            if (t !== 'dark') return;
-            document.documentElement.classList.add('dark-mode');
-            (function applyBody() {
-                if (document.body) { document.body.classList.add('dark-mode'); }
-                else { requestAnimationFrame(applyBody); }
-            })();
-        } catch (e) {}
-    })();
-    </script>
+{% block title %}Tizimga kirish — Kafedralar.uz{% endblock %}
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Modern Admin — moslashuvchan, kuchli va zamonaviy Bootstrap 4 admin panel shabloni.">
-    <meta name="keywords" content="admin shablon, boshqaruv paneli, bootstrap admin, web ilova">
-    <meta name="author" content="Kafedralar.uz">
-    <title>Fonli kirish sahifasi — Modern Admin</title>
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923r">
+<link rel="stylesheet" href="{% static 'app/assets/css/auth-pages.css' %}?v=20260923r">
+{% endblock %}
 
-    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
+{% block content %}
+<div class="pp-page">
+    <div class="pp-inner" style="max-width:940px;">
 
-    <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/icheck.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/forms/icheck/custom.css' %}">
-    <!-- END: Vendor CSS-->
-    <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
-    <!-- END: Theme CSS-->
-    <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/login-register.min.css' %}">
-    <!-- END: Page CSS-->
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
-    <!-- END: Custom CSS-->
+        <section class="pp-auth">
+            <!-- ── Chap panel ── -->
+            <div class="pp-auth-brand">
+                <div class="pp-auth-logo">
+                    <img src="{% static 'app/app-assets/images/logo/logo.png' %}" alt="Kafedralar.uz">
+                    Kafedralar.uz
+                </div>
+                <h2>Ilmiy va o'quv ishlaringiz bir joyda</h2>
+                <p>Hisobingizga kiring va nashrlaringizni, video darslaringizni hamda kafedra talablarini boshqaring.</p>
+                <ul class="pp-auth-points">
+                    <li><i class="fas fa-check-circle"></i> Ilmiy va o'quv ishlarini yuklash va tahrirlash</li>
+                    <li><i class="fas fa-check-circle"></i> Kafedra va fakultet bo'yicha hisobot</li>
+                    <li><i class="fas fa-check-circle"></i> Video darslar kutubxonasi</li>
+                </ul>
+            </div>
 
-    <style>
-        .alert {
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 6px;
-            color: #fff;
-        }
+            <!-- ── Forma ── -->
+            <div class="pp-auth-form">
+                <h1>Tizimga kirish</h1>
+                <p class="pp-sub">Login va parolingizni kiriting.</p>
 
-        .alert-error {
-            background: red;
-            text-align: center;
-        }
+                {% if messages %}
+                {% for message in messages %}
+                <div class="pp-alert pp-alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+                    <i class="fas {% if message.tags == 'error' %}fa-circle-exclamation{% elif message.tags == 'success' %}fa-circle-check{% else %}fa-circle-info{% endif %}"></i>
+                    <div>{{ message|safe }}</div>
+                </div>
+                {% endfor %}
+                {% endif %}
 
-        .alert-success {
-            background: #2ecc71;
-        }
+                {% if success %}
+                <div class="pp-alert pp-alert-success">
+                    <i class="fas fa-circle-check"></i>
+                    <div>{{ success }}</div>
+                </div>
+                {% endif %}
 
-        .alert-warning {
-            background: #f1c40f;
-            color: #000;
-        }
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
 
-        .alert-info {
-            background: #3498db;
-        }
-
-        /* Ko'z tugmasi stillari */
-        .password-wrapper {
-            position: relative;
-        }
-
-            .password-wrapper .toggle-password {
-                position: absolute;
-                right: 12px;
-                top: 50%;
-                transform: translateY(-50%);
-                cursor: pointer;
-                color: #aaa;
-                z-index: 10;
-                transition: color 0.2s;
-            }
-
-                .password-wrapper .toggle-password:hover {
-                    color: #555;
-                }
-
-            /* O'ng ikonka uchun inputga padding */
-            .password-wrapper input {
-                padding-right: 40px;
-            }
-    </style>
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260923q">
-</head>
-<!-- END: Head-->
-
-<body class="vertical-layout vertical-menu-modern 1-column bg-full-screen-image blank-page"
-      data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
-
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row"></div>
-            <div class="content-body">
-                <section class="row flexbox-container">
-                    <div class="col-12 d-flex align-items-center justify-content-center">
-                        <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
-                            <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
-                                <div class="card-header border-0">
-                                    <div class="card-title text-center">
-                                        <a href="{% url 'index' %}">
-                                            <img src="{% static 'app/app-assets/images/logo/logo-dark.png' %}" alt="sayt logotipi" style="width: 200px; height: 200px; object-fit: contain;">
-                                        </a>
-                                    </div>
-
-                                    {% if messages %}
-                                    <div class="messages">
-                                        {% for message in messages %}
-                                        <div class="alert alert-{{ message.tags }}">
-                                            {{ message|safe }}
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <a href="{% url 'index' %}" class="btn btn-sm btn-outline-secondary rounded-pill">
-                                                <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="nav_home">Bosh sahifa</span>
-                                            </a>
-                                            <div class="d-flex align-items-center" style="gap:8px;">
-                                                {% include "app/partials/lang_switcher.html" %}
-                                                <button id="themeToggleBtn" type="button" class="theme-toggle-btn theme-toggle-icon" data-label="off"
-                                                        onclick="toggleDarkMode()" title="Mavzuni almashtirish" aria-label="Mavzuni almashtirish">
-                                                    <i class="fas fa-moon"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <form class="form-horizontal" action="{% url 'login' %}" method="POST">
-                                            {% csrf_token %}
-
-                                            <!-- Login field -->
-                                            <fieldset class="form-group position-relative has-icon-left">
-                                                <input type="text"
-                                                       class="form-control"
-                                                       name="login_f"
-                                                       id="user-name"
-                                                       placeholder="Foydalanuvchi nomi"
-                                                       data-i18n-placeholder="username_placeholder"
-                                                       required>
-                                                <div class="form-control-position">
-                                                    <i class="fas fa-user"></i>
-                                                </div>
-                                            </fieldset>
-
-                                            <!-- Parol field — ko'z tugmasi bilan -->
-                                            <fieldset class="form-group position-relative has-icon-left">
-                                                <div class="password-wrapper">
-                                                    <input type="password"
-                                                           class="form-control"
-                                                           name="password"
-                                                           id="user-password"
-                                                           placeholder="Parolni kiriting"
-                                                           data-i18n-placeholder="password_placeholder"
-                                                           required>
-                                                    <div class="form-control-position">
-                                                        <i class="fas fa-lock"></i>
-                                                    </div>
-                                                    <span class="toggle-password" id="toggle-password" title="Parolni ko'rsat/yashir">
-                                                        <i class="fas fa-eye" id="toggle-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </fieldset>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 col-12 text-center text-sm-left pr-0">
-                                                    <fieldset>
-                                                        <input type="checkbox" id="remember-me" class="chk-remember">
-                                                        <label for="remember-me" data-i18n="remember_me"> Meni eslab qol</label>
-                                                    </fieldset>
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-outline-info btn-block shadow-sm">
-                                                <i class="fas fa-sign-in-alt mr-1"></i> <span data-i18n="login_btn">Kirish</span>
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
-                                        <span>
-                                            <a href="{% url 'registratsiya' %}" data-i18n="register_prompt">Yangi foydalanuvchimisiz?</a>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
+                    <div class="pp-field">
+                        <label for="login_f">Login <span class="pp-req">*</span></label>
+                        <div class="pp-input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="login_f" name="login_f" placeholder="Foydalanuvchi nomi"
+                                   required autofocus autocomplete="username">
                         </div>
                     </div>
-                </section>
+
+                    <div class="pp-field">
+                        <label for="password">Parol <span class="pp-req">*</span></label>
+                        <div class="pp-input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Parolingiz"
+                                   required autocomplete="current-password">
+                            <button type="button" class="pp-eye" onclick="ppToggleParol('password', this)"
+                                    aria-label="Parolni ko'rsatish">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pp-row-between">
+                        <label class="pp-check">
+                            <input type="checkbox" name="eslab_qol"> Meni eslab qol
+                        </label>
+                        <a href="{% url 'index' %}" style="color:inherit;">Bosh sahifaga qaytish</a>
+                    </div>
+
+                    <button type="submit" class="pp-submit">
+                        <i class="fas fa-right-to-bracket"></i> Kirish
+                    </button>
+                </form>
+
+                <p class="pp-auth-footer">
+                    Hisobingiz yo'qmi? <a href="{% url 'registratsiya' %}">Ro'yxatdan o'ting</a>
+                </p>
             </div>
-        </div>
+        </section>
+
     </div>
+</div>
+{% endblock %}
 
-    <!-- JS -->
-    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js' %}"></script>
-    <script src="{% static 'app/app-assets/vendors/js/forms/icheck/icheck.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/scripts/forms/form-login-register.min.js' %}"></script>
-
-    <!-- Parol ko'rsatish / yashirish -->
-    <script>
-        document.getElementById('toggle-password').addEventListener('click', function () {
-            const input = document.getElementById('user-password');
-            const icon = document.getElementById('toggle-icon');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');  // inkor belgisi
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');  // ko'z belgisi
-            }
-        });
-    </script>
-
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923q"></script>
-</body>
-</html>
+{% block extra_js %}
+<script>
+    function ppToggleParol(id, tugma) {
+        var maydon = document.getElementById(id);
+        var belgi = tugma.querySelector('i');
+        if (maydon.type === 'password') {
+            maydon.type = 'text';
+            belgi.className = 'fas fa-eye-slash';
+        } else {
+            maydon.type = 'password';
+            belgi.className = 'fas fa-eye';
+        }
+    }
+</script>
+{% endblock %}

@@ -1,218 +1,290 @@
+{% extends "app/base_public.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <!-- kafedra-theme-init: mavzu sahifa chizilishidan oldin qo'llanadi (oq ekran miltillamasligi uchun) -->
-    <script>
-    (function () {
-        try {
-            var t = localStorage.getItem('app_theme') || localStorage.getItem('theme');
-            if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                t = 'dark';
-            }
-            if (t !== 'dark') return;
-            document.documentElement.classList.add('dark-mode');
-            (function applyBody() {
-                if (document.body) { document.body.classList.add('dark-mode'); }
-                else { requestAnimationFrame(applyBody); }
-            })();
-        } catch (e) {}
-    })();
-    </script>
 
-    <meta charset="UTF-8">
-    <title>Ro'yxatdan O'tish</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260923q">
-</head>
+{% block title %}Ro'yxatdan o'tish — Kafedralar.uz{% endblock %}
 
-<body class="bg-light">
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923r">
+<link rel="stylesheet" href="{% static 'app/assets/css/auth-pages.css' %}?v=20260923r">
+{% endblock %}
 
-    <div class="container mt-5">
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center mb-4">Ro'yxatdan O'tish</h2>
+{% block content %}
+<div class="pp-page">
+    <div class="pp-inner" style="max-width:1040px;">
 
-            {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            {% if success %}
-            <div class="alert alert-success">{{ success }}</div>
-            {% endif %}
-
-            <form method="POST" enctype="multipart/form-data" class="row g-3">
-                {% csrf_token %}
-
-                <div class="col-md-4">
-                    <label class="form-label">Ism</label>
-                    <input type="text" name="ism" class="form-control" required>
+        <section class="pp-auth pp-auth-wide">
+            <!-- ── Chap panel ── -->
+            <div class="pp-auth-brand">
+                <div class="pp-auth-logo">
+                    <img src="{% static 'app/app-assets/images/logo/logo.png' %}" alt="Kafedralar.uz">
+                    Kafedralar.uz
                 </div>
+                <h2>Hamjamiyatga qo'shiling</h2>
+                <p>Ro'yxatdan o'ting va ilmiy ishlaringizni, darsliklaringizni hamda video darslaringizni bir joyda yuriting.</p>
+                <ul class="pp-auth-points">
+                    <li><i class="fas fa-check-circle"></i> Ma'lumotlaringiz kafedra va fakultetga bog'lanadi</li>
+                    <li><i class="fas fa-check-circle"></i> Ishlaringizni ommaviy yoki yopiq qilib belgilaysiz</li>
+                    <li><i class="fas fa-check-circle"></i> Hisobingiz administrator tasdig'idan keyin faollashadi</li>
+                </ul>
+            </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Familiya</label>
-                    <input type="text" name="familiya" class="form-control" required>
+            <!-- ── Forma ── -->
+            <div class="pp-auth-form">
+                <h1>Ro'yxatdan o'tish</h1>
+                <p class="pp-sub">Yulduzcha bilan belgilangan maydonlar majburiy.</p>
+
+                {% if error %}
+                <div class="pp-alert pp-alert-error">
+                    <i class="fas fa-circle-exclamation"></i>
+                    <div>{{ error }}</div>
                 </div>
+                {% endif %}
 
-                <div class="col-md-4">
-                    <label class="form-label">Otasining ismi</label>
-                    <input type="text" name="otasining_ismi" class="form-control">
+                {% if success %}
+                <div class="pp-alert pp-alert-success">
+                    <i class="fas fa-circle-check"></i>
+                    <div>{{ success }}</div>
                 </div>
+                {% endif %}
 
-                <div class="col-md-4">
-                    <label class="form-label">Tug`ulgan sana</label>
-                    <input type="date" name="tugulgan_sana" class="form-control">
-                </div>
+                <form method="POST" enctype="multipart/form-data" id="ppRegForm">
+                    {% csrf_token %}
 
-                <div class="col-md-6">
-                    <label class="form-label">Ilmiy daraja</label>
-                    <input type="text" name="ilmiy_daraja" class="form-control">
-                </div>
+                    <div class="pp-form-section">Shaxsiy ma'lumotlar</div>
 
-                <!-- Dynamic foydalanuvchi roli -->
-                <div class="col-md-6">
-                    <label class="form-label">Foydalanuvchi roli</label>
-                    <select class="form-select" name="foydalanuvchi_rol" required>
-                        <option value="">Tanlang...</option>
-                        {% for key, label in foydalanuvchi_rollari %}
-                        <option value="{{ key }}">{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                    <div class="pp-grid-3">
+                        <div class="pp-field">
+                            <label for="ism">Ism <span class="pp-req">*</span></label>
+                            <input type="text" id="ism" name="ism" required>
+                        </div>
+                        <div class="pp-field">
+                            <label for="familiya">Familiya <span class="pp-req">*</span></label>
+                            <input type="text" id="familiya" name="familiya" required>
+                        </div>
+                        <div class="pp-field">
+                            <label for="otasining_ismi">Otasining ismi</label>
+                            <input type="text" id="otasining_ismi" name="otasining_ismi">
+                        </div>
+                    </div>
 
-                <!-- Fakultet -->
-                <div class="col-md-6">
-                    <label class="form-label">Fakultet</label>
-                    <select class="form-select" id="fakultet-select" name="fakultet" required>
-                        <option value="">Tanlang...</option>
-                        {% for f in fakultetlar %}
-                        <option value="{{ f.id }}">{{ f.nomi }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                    <div class="pp-grid-3">
+                        <div class="pp-field">
+                            <label for="tugulgan_sana">Tug'ilgan sana</label>
+                            <input type="date" id="tugulgan_sana" name="tugulgan_sana">
+                        </div>
+                        <div class="pp-field">
+                            <label for="ilmiy_daraja">Ilmiy daraja</label>
+                            <input type="text" id="ilmiy_daraja" name="ilmiy_daraja" placeholder="Masalan: PhD, Bakalavr">
+                        </div>
+                        <div class="pp-field">
+                            <label for="gmail">Email <span class="pp-req">*</span></label>
+                            <div class="pp-input-wrap">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="gmail" name="gmail" placeholder="ism@gmail.com" required>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Kafedra -->
-                <div class="col-md-6">
-                    <label class="form-label">Kafedra</label>
-                    <select class="form-select" id="kafedra-select" name="kafedra" required>
-                        <option value="">Avval fakultetni tanlang</option>
-                    </select>
-                </div>
+                    <div class="pp-field">
+                        <label for="image">Profil rasmi</label>
+                        <div class="pp-file">
+                            <div class="pp-file-preview" id="ppPreview"><i class="fas fa-user"></i></div>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
+                    </div>
 
-                <div class="col-12">
-                    <label class="form-label">Gmail</label>
-                    <input type="email" name="gmail" class="form-control" required>
-                </div>
+                    <div class="pp-form-section">Ish joyi</div>
 
-                <div class="col-12">
-                    <label class="form-label">O'zingiz haqingizda</label>
-                    <textarea name="haqida" class="form-control" rows="3"></textarea>
-                </div>
+                    <div class="pp-grid-3">
+                        <div class="pp-field">
+                            <label for="foydalanuvchi_rol">Lavozim <span class="pp-req">*</span></label>
+                            <select id="foydalanuvchi_rol" name="foydalanuvchi_rol" required>
+                                <option value="">Tanlang...</option>
+                                {% for key, label in foydalanuvchi_rollari %}
+                                <option value="{{ key }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="pp-field">
+                            <label for="fakultet-select">Fakultet <span class="pp-req">*</span></label>
+                            <select id="fakultet-select" name="fakultet" required>
+                                <option value="">Tanlang...</option>
+                                {% for f in fakultetlar %}
+                                <option value="{{ f.id }}">{{ f.nomi }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="pp-field">
+                            <label for="kafedra-select">Kafedra <span class="pp-req">*</span></label>
+                            <select id="kafedra-select" name="kafedra" required>
+                                <option value="">Avval fakultetni tanlang</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <div class="col-12">
-                    <label class="form-label">Rasm yuklash</label>
-                    <input type="file" name="image" class="form-control" accept="image/*">
-                </div>
+                    <div class="pp-field">
+                        <label for="haqida">O'zingiz haqingizda</label>
+                        <textarea id="haqida" name="haqida" rows="3"
+                                  placeholder="Qisqacha: yo'nalishingiz, tajribangiz, qiziqishlaringiz"></textarea>
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Login</label>
-                    <input type="text" name="login_f" class="form-control" required>
-                </div>
+                    <div class="pp-form-section">Hisob ma'lumotlari</div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Parol</label>
-                    <input type="password" id="parol" name="parol" class="form-control" required>
-                    <div id="parolHelp" class="form-text text-danger"></div>
-                </div>
+                    <div class="pp-field">
+                        <label for="login_f">Login <span class="pp-req">*</span></label>
+                        <div class="pp-input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="login_f" name="login_f" placeholder="Tizimga kirish uchun nom"
+                                   required autocomplete="username">
+                        </div>
+                    </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Parolni tasdiqlang</label>
-                    <input type="password" id="parol_tasdiq" name="parolni_tasdiqlang" class="form-control" required>
-                    <div id="parolMatchHelp" class="form-text text-danger"></div>
-                </div>
+                    <div class="pp-grid-2">
+                        <div class="pp-field">
+                            <label for="parol">Parol <span class="pp-req">*</span></label>
+                            <div class="pp-input-wrap">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="parol" name="parol" required autocomplete="new-password">
+                                <button type="button" class="pp-eye" onclick="ppToggleParol('parol', this)"
+                                        aria-label="Parolni ko'rsatish"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <div class="pp-help" id="ppParolHelp">Kamida 6 ta belgi.</div>
+                        </div>
 
-                <script>
-                    const parolInput = document.getElementById('parol');
-                    const parolTasdiqInput = document.getElementById('parol_tasdiq');
-                    const parolHelp = document.getElementById('parolHelp');
-                    const parolMatchHelp = document.getElementById('parolMatchHelp');
+                        <div class="pp-field">
+                            <label for="parol_tasdiq">Parolni tasdiqlang <span class="pp-req">*</span></label>
+                            <div class="pp-input-wrap">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="parol_tasdiq" name="parolni_tasdiqlang" required
+                                       autocomplete="new-password">
+                                <button type="button" class="pp-eye" onclick="ppToggleParol('parol_tasdiq', this)"
+                                        aria-label="Parolni ko'rsatish"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <div class="pp-help" id="ppMatchHelp"></div>
+                        </div>
+                    </div>
 
-                    function checkPasswordStrength(password) {
-                        const minLength = 8;
-                        const upperCase = /[A-Z]/;
-                        const lowerCase = /[a-z]/;
-                        const number = /[0-9]/;
-                        const specialChar = /[!@#$%^&*()_+[\]{};':"\\|,.<>/?-]/;
+                    <div class="pp-alert pp-alert-info">
+                        <i class="fas fa-circle-info"></i>
+                        <div>Ro'yxatdan o'tgach, hisobingiz administrator tomonidan tasdiqlanadi. Shundan keyin tizimga kira olasiz.</div>
+                    </div>
 
-                        if (password.length < minLength) {
-                            return `Parol kamida ${minLength} belgidan iborat bo'lishi kerak.`;
-                        }
-                        if (!upperCase.test(password)) return "Parol katta harfni o'z ichiga olishi kerak (A-Z).";
-                        if (!lowerCase.test(password)) return "Parol kichik harfni o'z ichiga olishi kerak (a-z).";
-                        if (!number.test(password)) return "Parol raqamni o'z ichiga olishi kerak (0-9).";
-                        if (!specialChar.test(password)) return "Parol maxsus belgini o'z ichiga olishi kerak (!@#$...).";
+                    <button type="submit" class="pp-submit" id="ppRegSubmit">
+                        <i class="fas fa-user-plus"></i> Ro'yxatdan o'tish
+                    </button>
+                </form>
 
-                        return ""; // hammasi yaxshi
-                    }
+                <p class="pp-auth-footer">
+                    Hisobingiz bormi? <a href="{% url 'login' %}">Tizimga kiring</a>
+                </p>
+            </div>
+        </section>
 
-                    // Parol kuchini tekshirish
-                    parolInput.addEventListener('input', function () {
-                        const errorMsg = checkPasswordStrength(parolInput.value);
-                        parolHelp.textContent = errorMsg;
-                    });
-
-                    // Parolni tasdiqlash
-                    parolTasdiqInput.addEventListener('input', function () {
-                        if (parolTasdiqInput.value !== parolInput.value) {
-                            parolMatchHelp.textContent = "Parollar mos kelmayapti!";
-                        } else {
-                            parolMatchHelp.textContent = "";
-                        }
-                    });
-
-                    // Formani yuborishdan oldin tekshirish
-                    document.querySelector('form').addEventListener('submit', function (e) {
-                        const errorMsg = checkPasswordStrength(parolInput.value);
-                        if (errorMsg) {
-                            e.preventDefault();
-                            parolHelp.textContent = errorMsg;
-                            parolInput.focus();
-                        } else if (parolInput.value !== parolTasdiqInput.value) {
-                            e.preventDefault();
-                            parolMatchHelp.textContent = "Parollar mos kelmayapti!";
-                            parolTasdiqInput.focus();
-                        }
-                    });
-                </script>
-
-
-                <div class="col-12 text-center mt-3">
-                    <button class="btn btn-primary px-5">Ro'yxatdan O'tish</button>
-                </div>
-            </form>
-        </div>
     </div>
+</div>
+{% endblock %}
 
-    <script>
-        document.getElementById('fakultet-select').addEventListener('change', function () {
-            let fakultetID = this.value;
-            let kafedraSelect = document.getElementById('kafedra-select');
-            kafedraSelect.innerHTML = '<option value="">Yuklanmoqda...</option>';
+{% block extra_js %}
+<script>
+    function ppToggleParol(id, tugma) {
+        var maydon = document.getElementById(id);
+        var belgi = tugma.querySelector('i');
+        if (maydon.type === 'password') {
+            maydon.type = 'text';
+            belgi.className = 'fas fa-eye-slash';
+        } else {
+            maydon.type = 'password';
+            belgi.className = 'fas fa-eye';
+        }
+    }
 
-            if (fakultetID) {
-                fetch(`/get-kafedralar/${fakultetID}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        kafedraSelect.innerHTML = '<option value="">Tanlang...</option>';
-                        data.kafedralar.forEach(k => {
-                            kafedraSelect.innerHTML += `<option value="${k.id}">${k.nomi}</option>`;
-                        });
-                    });
-            } else {
-                kafedraSelect.innerHTML = '<option value="">Avval fakultetni tanlang</option>';
+    // ── Fakultet tanlanganda kafedralar yuklanadi ──
+    (function () {
+        var fakultet = document.getElementById('fakultet-select');
+        var kafedra = document.getElementById('kafedra-select');
+        if (!fakultet || !kafedra) return;
+
+        fakultet.addEventListener('change', function () {
+            var id = fakultet.value;
+            kafedra.innerHTML = '<option value="">Yuklanmoqda...</option>';
+
+            if (!id) {
+                kafedra.innerHTML = '<option value="">Avval fakultetni tanlang</option>';
+                return;
             }
-        });
-    </script>
 
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923q"></script>
-</body>
-</html>
+            fetch('/get-kafedralar/' + id + '/')
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    var royxat = data.kafedralar || [];
+                    if (!royxat.length) {
+                        kafedra.innerHTML = '<option value="">Bu fakultetda kafedra yo\'q</option>';
+                        return;
+                    }
+                    kafedra.innerHTML = '<option value="">Tanlang...</option>';
+                    royxat.forEach(function (k) {
+                        var opt = document.createElement('option');
+                        opt.value = k.id;
+                        opt.textContent = k.nomi;
+                        kafedra.appendChild(opt);
+                    });
+                })
+                .catch(function () {
+                    kafedra.innerHTML = '<option value="">Kafedralarni yuklab bo\'lmadi</option>';
+                });
+        });
+    })();
+
+    // ── Parolni tekshirish ──
+    (function () {
+        var parol = document.getElementById('parol');
+        var tasdiq = document.getElementById('parol_tasdiq');
+        var parolHelp = document.getElementById('ppParolHelp');
+        var matchHelp = document.getElementById('ppMatchHelp');
+        var forma = document.getElementById('ppRegForm');
+        if (!parol || !tasdiq) return;
+
+        function tekshir() {
+            var qisqa = parol.value.length > 0 && parol.value.length < 6;
+            parolHelp.textContent = qisqa ? 'Parol kamida 6 ta belgidan iborat bo\'lsin.' : 'Kamida 6 ta belgi.';
+            parolHelp.className = 'pp-help' + (qisqa ? ' pp-error' : '');
+
+            if (!tasdiq.value) {
+                matchHelp.textContent = '';
+                matchHelp.className = 'pp-help';
+                return !qisqa;
+            }
+            var mos = parol.value === tasdiq.value;
+            matchHelp.textContent = mos ? 'Parollar mos keldi' : 'Parollar mos kelmadi';
+            matchHelp.className = 'pp-help ' + (mos ? 'pp-ok' : 'pp-error');
+            return mos && !qisqa;
+        }
+
+        parol.addEventListener('input', tekshir);
+        tasdiq.addEventListener('input', tekshir);
+
+        if (forma) {
+            forma.addEventListener('submit', function (e) {
+                if (!tekshir()) {
+                    e.preventDefault();
+                    tasdiq.focus();
+                }
+            });
+        }
+    })();
+
+    // ── Rasm oldindan ko'rish ──
+    (function () {
+        var input = document.getElementById('image');
+        var preview = document.getElementById('ppPreview');
+        if (!input || !preview) return;
+
+        input.addEventListener('change', function () {
+            var fayl = input.files && input.files[0];
+            if (!fayl) return;
+            var url = URL.createObjectURL(fayl);
+            preview.innerHTML = '<img src="' + url + '" alt="Rasm">';
+        });
+    })();
+</script>
+{% endblock %}

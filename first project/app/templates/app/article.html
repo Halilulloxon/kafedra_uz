@@ -3,84 +3,173 @@
 
 {% block title %}Ilmiy Maqolalar — Kafedralar.uz{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923r">
+{% endblock %}
+
 {% block content %}
-<div class="page-header">
-  <div class="section-tag">Ilmiy izlanishlar</div>
-  <h1>Ilmiy Maqolalar</h1>
-  <p>O'qituvchilarimizning {{maqolalar.count}}+ tasdiqlangan ilmiy maqolalari va tadqiqot ishlari.</p>
+<div class="pp-page">
+    <div class="pp-inner">
+
+        <!-- ── Sarlavha ── -->
+        <header class="pp-hero">
+            <div>
+                <span class="pp-tag">Ilmiy izlanishlar</span>
+                <h1>Ilmiy Maqolalar</h1>
+                <p>O'qituvchilarimizning tasdiqlangan ilmiy maqolalari, tezislari va tadqiqot ishlari.</p>
+            </div>
+            <div class="pp-stats">
+                <span class="pp-pill"><i class="fas fa-file-alt"></i> {{ maqolalar|length }} ta ish</span>
+                <span class="pp-pill"><i class="fas fa-user-graduate"></i> {{ top_mualliflar|length }} ta muallif</span>
+            </div>
+        </header>
+
+        <!-- ── Qidiruv va tur bo'yicha filtr ── -->
+        <div class="pp-toolbar">
+            <div class="pp-search">
+                <i class="fas fa-search"></i>
+                <form method="GET" action="{% url 'search_article' %}">
+                    <input type="text" name="q" id="ppSearch" value="{{ query|default:'' }}"
+                           placeholder="Maqola sarlavhasi yoki kalit so'z..." autocomplete="off">
+                </form>
+            </div>
+
+            <div class="pp-chips">
+                <button type="button" class="pp-chip active" data-turi="all">Barchasi</button>
+                <button type="button" class="pp-chip" data-turi="scopus">Scopus</button>
+                <button type="button" class="pp-chip" data-turi="maqola">Maqola</button>
+                <button type="button" class="pp-chip" data-turi="tezis">Tezis</button>
+                <button type="button" class="pp-chip" data-turi="patent">Patent / EHM</button>
+            </div>
+        </div>
+
+        <p class="pp-result" id="ppResult"></p>
+
+        <div class="pp-layout">
+            <!-- ── Maqolalar ro'yxati ── -->
+            <div class="pp-list" id="ppList">
+                {% for maqola in maqolalar %}
+                <article class="pp-row" data-turi="{{ maqola.turi|lower }}" data-name="{{ maqola.nomi|lower }}">
+                    <div class="pp-row-icon"><i class="fas fa-file-alt"></i></div>
+
+                    <div class="pp-row-main">
+                        <h3 class="pp-title">{{ maqola.nomi }}</h3>
+
+                        <div class="pp-meta">
+                            <span class="pp-badge pp-badge-green"><i class="fas fa-check"></i> {{ maqola.turi }}</span>
+                            {% if maqola.kategoriya %}<span class="pp-badge pp-badge-amber">{{ maqola.kategoriya }}</span>{% endif %}
+                            <span><i class="far fa-calendar"></i> {{ maqola.sana|date:"d.m.Y" }}</span>
+                            {% if maqola.muallif.kafedra %}<span><i class="fas fa-landmark"></i> {{ maqola.muallif.kafedra }}</span>{% endif %}
+                        </div>
+
+                        <div class="pp-meta">
+                            <span class="pp-badge"><i class="fas fa-user-graduate"></i>
+                                {% if maqola.ish_mualliflari %}{{ maqola.ish_mualliflari }}{% else %}{{ maqola.muallif }}{% endif %}
+                            </span>
+                        </div>
+
+                        {% if maqola.haqida %}<p class="pp-text">{{ maqola.haqida }}</p>{% endif %}
+
+                        <div class="pp-actions">
+                            <a href="{{ maqola.get_fayl_url }}" target="_blank" class="read-btn">
+                                <i class="fas fa-book-reader"></i> <span data-i18n="read">O'qish</span>
+                            </a>
+                            <a href="{{ maqola.get_fayl_url }}" download class="download-btn">
+                                <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="pp-empty">
+                    <div class="pp-empty-icon"><i class="fas fa-file-alt"></i></div>
+                    <strong>Maqolalar hali qo'shilmagan</strong>
+                    <span>Yangi ilmiy ishlar joylanishi bilan shu yerda ko'rinadi.</span>
+                </div>
+                {% endfor %}
+
+                <div class="pp-empty" id="ppNoResult" style="display:none;">
+                    <div class="pp-empty-icon"><i class="fas fa-search"></i></div>
+                    <strong>Natija topilmadi</strong>
+                    <span>Qidiruv so'zini yoki ish turini o'zgartirib ko'ring.</span>
+                </div>
+            </div>
+
+            <!-- ── Yon panel ── -->
+            <aside class="pp-side">
+                <div class="pp-side-card">
+                    <h3><i class="fas fa-trophy"></i> Faol mualliflar</h3>
+                    {% for muallif in top_mualliflar %}
+                    <a class="pp-author" href="{% url 'teacher1' id=muallif.id %}">
+                        <div class="pp-author-ava">
+                            {% if muallif.image %}<img src="{{ muallif.get_image_url }}" alt="{{ muallif }}">{% else %}👨‍🎓{% endif %}
+                        </div>
+                        <div class="pp-author-info">
+                            <h5>{{ muallif.ism }} {{ muallif.familiya }}</h5>
+                            <span>{{ muallif.kafedra|default:"Kafedra ko'rsatilmagan" }}</span>
+                        </div>
+                        <span class="pp-author-count">{{ muallif.maqola_soni }}</span>
+                    </a>
+                    {% empty %}
+                    <p class="pp-text">Hozircha muallif yo'q.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="pp-side-card">
+                    <h3><i class="fas fa-lightbulb"></i> Bilib qo'ying</h3>
+                    <p class="pp-text">Bu yerda faqat mualliflar ommaviy deb belgilagan ishlar ko'rsatiladi.
+                        O'z ishlaringizni joylash uchun tizimga kiring.</p>
+                </div>
+            </aside>
+        </div>
+
+    </div>
 </div>
+{% endblock %}
 
-<div class="main-layout">
+{% block extra_js %}
+<script>
+    (function () {
+        var qidiruv = document.getElementById('ppSearch');
+        var qatorlar = [].slice.call(document.querySelectorAll('.pp-row'));
+        var natijaYozuvi = document.getElementById('ppResult');
+        var natijaYoq = document.getElementById('ppNoResult');
+        var joriyTuri = 'all';
 
-  <!-- MAIN CONTENT -->
-  <div>
+        function filtrla() {
+            var matn = (qidiruv && qidiruv.value || '').trim().toLowerCase();
+            var korinadi = 0;
 
-    <form method="GET" action="{% url 'search_article' %}" style="margin-bottom:32px;">
-        <div class="search-box">
-            <input type="text"
-                   name="q"
-                   placeholder="Maqola sarlavhasi yoki kalit so'z..."
-                   value="{{ request.GET.q }}"
-                   style="width:100%; border-radius:12px;" />
-        </div>
-    </form>
+            qatorlar.forEach(function (qator) {
+                var turi = qator.dataset.turi || '';
+                var nomMos = !matn || (qator.dataset.name || '').indexOf(matn) !== -1;
+                var turMos = joriyTuri === 'all'
+                    || turi.indexOf(joriyTuri) !== -1
+                    || (joriyTuri === 'patent' && (turi.indexOf('ehm') !== -1 || turi.indexOf('guvohnoma') !== -1));
+                var chiqsin = nomMos && turMos;
+                qator.style.display = chiqsin ? '' : 'none';
+                if (chiqsin) korinadi++;
+            });
 
-    <div class="articles-list">
-      {% for maqola in maqolalar %}
-        <div class="article-card">
-            <div class="article-top">
-                <div></div>
-                <div class="article-meta-top">
-                    <span class="year-chip">{{maqola.sana}}</span>
-                    <span class="indexed-chip">✓ {{maqola.turi}}</span>
-                </div>
-            </div>
-            <h3>{{maqola.nomi}}</h3>
-            <div class="article-author">
+            if (natijaYoq) natijaYoq.style.display = (korinadi === 0 && qatorlar.length) ? '' : 'none';
+            if (natijaYozuvi) {
+                natijaYozuvi.innerHTML = qatorlar.length
+                    ? '<strong>' + korinadi + '</strong> ta ish ko\'rsatilmoqda'
+                    : '';
+            }
+        }
 
-                <span class="author-chip">👨‍🎓 {{maqola.ish_mualliflari}}</span>
+        document.querySelectorAll('.pp-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.pp-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                joriyTuri = chip.dataset.turi;
+                filtrla();
+            });
+        });
 
-            </div>
-            <p class="article-abstract">Kafedra-{{maqola.muallif.kafedra}}</p>
-            <p class="article-abstract">{{maqola.haqida}}</p>
-
-            <div class="article-footer">
-                <div class="article-actions">
-                    <!-- HTML + CSS -->
-                    <a href="{{ maqola.get_fayl_url }}" target="_blank" class="read-btn" style="display:inline-flex; padding:10px 20px; background:#1a73e8; color:white; text-decoration:none; border-radius:8px;">
-                        <span>📄</span>
-                        <span>O'qish</span>
-                        <span>→</span>
-                    </a>
-
-                    <a href="{{ maqola.get_fayl_url }}" download class="download-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                        Yuklab olish
-                    </a>
-                </div>
-            </div>
-        </div>
-      {% endfor %}
-
-    </div>
-  </div>
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-
-    <div class="side-card">
-        <h3>Top Mualliflar</h3>
-        {% for muallif in top_mualliflar %}
-        <div class="top-author">
-            <div class="author-ava">👨‍🎓</div>
-            <div class="author-info"><h5>{{muallif}}</h5><span>{{muallif.maqola_soni}}</span></div>
-        </div>
-        {% endfor %}
-    </div>
-    </div>
-  </div>
+        if (qidiruv) qidiruv.addEventListener('input', filtrla);
+        filtrla();
+    })();
+</script>
 {% endblock %}

@@ -1,0 +1,422 @@
+/* ==========================================================================
+   Kafedralar.uz — Kirish va ro'yxatdan o'tish sahifalari
+   Ranglar public-pages.css dagi --pp-* o'zgaruvchilaridan olinadi.
+   ========================================================================== */
+
+.pp-auth {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border);
+    box-shadow: var(--pp-shadow-lg);
+}
+
+.pp-auth-wide {
+    grid-template-columns: 0.75fr 1.25fr;
+}
+
+/* ── Chap panel ── */
+.pp-auth-brand {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 34px;
+    color: #ffffff;
+    background: linear-gradient(150deg, #0f2b52 0%, #1e3a8a 55%, #2563eb 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+}
+
+.pp-auth-brand::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.pp-auth-logo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.pp-auth-logo img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+
+.pp-auth-brand h2 {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 27px;
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+.pp-auth-brand p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.pp-auth-points {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pp-auth-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.pp-auth-points i {
+    margin-top: 2px;
+    color: #f5c842;
+}
+
+/* ── O'ng panel: forma ── */
+.pp-auth-form {
+    padding: 38px 34px;
+}
+
+.pp-auth-form h1 {
+    margin: 0 0 6px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--pp-text);
+}
+
+.pp-sub {
+    margin: 0 0 22px;
+    font-size: 13.5px;
+    color: var(--pp-muted);
+}
+
+.pp-form-section {
+    margin: 22px 0 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--pp-border);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--pp-muted);
+}
+
+.pp-form-section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+
+.pp-grid-2,
+.pp-grid-3 {
+    display: grid;
+    gap: 14px;
+}
+
+.pp-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.pp-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.pp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.pp-field label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--pp-text);
+}
+
+.pp-req {
+    color: #ef4444;
+}
+
+.pp-input-wrap {
+    position: relative;
+}
+
+.pp-input-wrap > i {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: var(--pp-muted);
+    pointer-events: none;
+}
+
+.pp-field input,
+.pp-field select,
+.pp-field textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--pp-border);
+    background: var(--pp-bg);
+    color: var(--pp-text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pp-input-wrap input,
+.pp-input-wrap select {
+    padding-left: 38px;
+}
+
+.pp-field textarea {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.pp-field input:focus,
+.pp-field select:focus,
+.pp-field textarea:focus {
+    border-color: var(--pp-accent);
+    box-shadow: 0 0 0 3px var(--pp-accent-soft);
+}
+
+.pp-eye {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--pp-muted);
+    cursor: pointer;
+}
+
+.pp-eye:hover {
+    color: var(--pp-accent);
+    background: var(--pp-accent-soft);
+}
+
+.pp-help {
+    font-size: 12px;
+    color: var(--pp-muted);
+    min-height: 15px;
+}
+
+.pp-help.pp-error {
+    color: #ef4444;
+}
+
+.pp-help.pp-ok {
+    color: #10b981;
+}
+
+.pp-row-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 4px 0 18px;
+    font-size: 13px;
+    color: var(--pp-muted);
+}
+
+.pp-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.pp-check input {
+    width: 16px;
+    height: 16px;
+    min-height: 0;
+    accent-color: var(--pp-accent);
+}
+
+.pp-submit {
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--pp-accent);
+    color: #ffffff;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.pp-submit:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+}
+
+.pp-auth-footer {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--pp-muted);
+}
+
+.pp-auth-footer a {
+    color: var(--pp-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pp-auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ── Xabarlar ── */
+.pp-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    border: 1px solid transparent;
+}
+
+.pp-alert i {
+    margin-top: 2px;
+}
+
+.pp-alert a {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.pp-alert-error {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.pp-alert-success {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+.pp-alert-warning {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #b45309;
+}
+
+body.dark-mode .pp-alert-warning {
+    color: #fbbf24;
+}
+
+.pp-alert-info {
+    background: var(--pp-accent-soft);
+    border-color: rgba(37, 99, 235, 0.3);
+    color: var(--pp-accent);
+}
+
+/* ── Rasm tanlash ── */
+.pp-file {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pp-file-preview {
+    width: 56px;
+    height: 56px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: var(--pp-accent-soft);
+    color: var(--pp-accent);
+}
+
+.pp-file-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ── Moslashuvchanlik ── */
+@media (max-width: 991.98px) {
+    .pp-auth,
+    .pp-auth-wide {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-auth-brand {
+        padding: 26px 22px;
+    }
+
+    .pp-auth-brand h2 {
+        font-size: 22px;
+    }
+
+    .pp-auth-points {
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .pp-auth-form {
+        padding: 24px 18px;
+    }
+
+    .pp-grid-2,
+    .pp-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
