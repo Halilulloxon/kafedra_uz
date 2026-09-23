@@ -1,0 +1,34 @@
+<!-- Ochiq sahifalarning yagona menyusi. Faol bo'lim manzil nomidan aniqlanadi. -->
+{% with joriy=request.resolver_match.url_name %}
+<nav>
+  <div class="logo"><a href="{% url 'index' %}">Kafedralar<span>.uz</span></a></div>
+  <ul>
+      <li><a href="{% url 'index' %}" {% if joriy == 'index' %}class="active"{% endif %} data-i18n="nav_home">Bosh sahifa</a></li>
+      <li><a href="{% url 'teachers' %}" {% if joriy == 'teachers' or joriy == 'teacher1' or joriy == 'qidirish' %}class="active"{% endif %} data-i18n="nav_teachers">O'qituvchilar</a></li>
+      <li><a href="{% url 'book' %}" {% if joriy == 'book' or joriy == 'search_book' %}class="active"{% endif %} data-i18n="nav_books">Kitoblar</a></li>
+      <li><a href="{% url 'article' %}" {% if joriy == 'article' or joriy == 'search_article' %}class="active"{% endif %} data-i18n="nav_articles">Maqolalar</a></li>
+      <li><a href="{% url 'video' %}" {% if joriy == 'video' or joriy == 'search_video' %}class="active"{% endif %} data-i18n="nav_videos">Video darslar</a></li>
+      {% if foydalanuvchi %}
+          {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+          <li><a href="{% url 'home4' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt mr-1"></i> Dashboard</a></li>
+          {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+          <li><a href="{% url 'home3' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-university mr-1"></i> Dashboard</a></li>
+          {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+          <li><a href="{% url 'home2' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
+          {% else %}
+          <li><a href="{% url 'profile' user_id=foydalanuvchi.id %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-user mr-1"></i> Profil</a></li>
+          {% endif %}
+          <li><a href="{% url 'logout' %}" style="color:#ef4444;"><i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span></a></li>
+      {% else %}
+          <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
+      {% endif %}
+  </ul>
+  <div class="nav-controls">
+      {% include "app/partials/lang_switcher.html" %}
+      <button id="themeToggleBtn" class="theme-toggle-btn theme-toggle-icon" data-label="off"
+              onclick="toggleDarkMode()" title="Mavzuni almashtirish" aria-label="Mavzuni almashtirish">
+          <i class="fas fa-moon"></i>
+      </button>
+  </div>
+</nav>
+{% endwith %}

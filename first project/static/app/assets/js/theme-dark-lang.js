@@ -330,6 +330,38 @@
         }
     };
 
+    // 2.1. Sahifaga xos tarjimalar (shablon window.pageTranslations sifatida beradi)
+    function mergePageTranslations() {
+        var extra = window.pageTranslations;
+        if (!extra) return;
+        ['uz', 'ru', 'en'].forEach(function (lang) {
+            if (!extra[lang]) return;
+            translations[lang] = translations[lang] || {};
+            Object.keys(extra[lang]).forEach(function (kalit) {
+                if (!(kalit in translations[lang])) {
+                    translations[lang][kalit] = extra[lang][kalit];
+                }
+            });
+        });
+    }
+
+    // 2.2. ApexCharts diagrammalarini joriy mavzuga moslash.
+    // Shablonlar diagrammani window.__appCharts ro'yxatiga qo'shib qo'yadi.
+    window.applyChartTheme = function () {
+        var isDark = document.body.classList.contains('dark-mode') ||
+                     document.documentElement.classList.contains('dark-mode');
+        (window.__appCharts || []).forEach(function (chart) {
+            try {
+                chart.updateOptions({
+                    theme: { mode: isDark ? 'dark' : 'light' },
+                    chart: { background: 'transparent', foreColor: isDark ? '#cbd5e1' : '#373d3f' },
+                    tooltip: { theme: isDark ? 'dark' : 'light' },
+                    grid: { borderColor: isDark ? '#334155' : '#e2e8f0' }
+                }, false, false);
+            } catch (e) { /* diagramma hali tayyor emas */ }
+        });
+    };
+
     // 3. Toggle Dark / Light Mode
     window.toggleDarkMode = function () {
         var isDark = document.body.classList.toggle('dark-mode');
@@ -337,6 +369,7 @@
         localStorage.setItem('app_theme', isDark ? 'dark' : 'light');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         updateToggleButtons();
+        window.applyChartTheme();
     };
 
     function updateToggleButtons() {
@@ -347,6 +380,13 @@
         var icon = isDark ? '☀️' : '🌙';
 
         document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
+            // data-label="off" — faqat belgi ko'rsatiladigan yumaloq tugma (yangi dizayn)
+            if (btn.dataset.label === 'off') {
+                btn.innerHTML = '<i class="fas ' + (isDark ? 'fa-sun' : 'fa-moon') + '"></i>';
+                btn.setAttribute('title', label);
+                btn.setAttribute('aria-label', label);
+                return;
+            }
             btn.innerHTML = icon + ' <span class="d-none d-md-inline">' + label + '</span>';
         });
         document.querySelectorAll('.global-theme-btn').forEach(function (btn) {
@@ -453,10 +493,86 @@
         });
 
         updateToggleButtons();
+        updateLangLabels();
     };
+
+    // 4.0. Til tanlagich (globus belgili ochiladigan ro'yxat).
+    var TIL_NOMLARI = { uz: "O'zbek", ru: 'Русский', en: 'English' };
+
+    function updateLangLabels() {
+        var lang = localStorage.getItem('app_lang') || 'uz';
+        document.querySelectorAll('.lang-current').forEach(function (el) {
+            el.textContent = TIL_NOMLARI[lang] || TIL_NOMLARI.uz;
+        });
+        document.querySelectorAll('.lang-menu [data-lang]').forEach(function (btn) {
+            btn.setAttribute('aria-selected', btn.dataset.lang === lang ? 'true' : 'false');
+        });
+    }
+
+    function closeLangMenus(except) {
+        document.querySelectorAll('.lang-dropdown.open').forEach(function (d) {
+            if (d === except) return;
+            d.classList.remove('open');
+            var b = d.querySelector('.lang-btn');
+            if (b) b.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    var langInited = false;
+
+    function initLangControls() {
+        updateLangLabels();
+        if (langInited) return;   // hodisa ikki marta ulanmasligi uchun
+        langInited = true;
+
+        document.addEventListener('click', function (e) {
+            var tanlov = e.target.closest('.lang-menu [data-lang]');
+            if (tanlov) {
+                e.preventDefault();
+                window.changeLanguage(tanlov.dataset.lang);
+                closeLangMenus();
+                return;
+            }
+
+            var tugma = e.target.closest('.lang-btn');
+            if (tugma) {
+                e.preventDefault();
+                var dropdown = tugma.closest('.lang-dropdown');
+                var ochiq = dropdown.classList.toggle('open');
+                tugma.setAttribute('aria-expanded', ochiq ? 'true' : 'false');
+                closeLangMenus(dropdown);
+                return;
+            }
+
+            closeLangMenus();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLangMenus();
+        });
+    }
+
+    // 4.1. Telefonda yuqori menyu balandligi o'zgarib turadi (tugmalar qatorga sig'masa).
+    //      Kontent uning ostida qolib ketmasligi uchun bo'shliqni o'lchab qo'yamiz.
+    function syncContentOffset() {
+        var nav = document.querySelector('.header-navbar');
+        var content = document.querySelector('.app-content');
+        if (!nav || !content) return;
+        if (window.innerWidth >= 992) {
+            content.style.removeProperty('padding-top');
+            return;
+        }
+        // CSS'da bu qiymat !important bilan yozilgani uchun biz ham shunday qo'yamiz
+        content.style.setProperty('padding-top', (nav.offsetHeight + 16) + 'px', 'important');
+    }
+    window.addEventListener('resize', syncContentOffset);
+    window.addEventListener('load', syncContentOffset);
 
     // 5. Initialize on Page Load
     function initGlobalControls() {
+        mergePageTranslations();
+        syncContentOffset();
+        initLangControls();
         var hasNavbarToggle = document.getElementById('themeToggleBtn') || document.querySelector('.theme-toggle-btn');
         if (!hasNavbarToggle && !document.querySelector('.global-floating-controls')) {
             var floatingDiv = document.createElement('div');
@@ -519,36 +635,51 @@
                 openNavUl.classList.remove('nav-mobile-open');
             }
 
-            // 2. Cabinet / Dashboard Sidebar Drawer Toggle (profil, ilmiy_ishlar, oquv_ishlari, etc.)
-            var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main, .modern-nav-toggle');
-            if (toggleBtn) {
-                e.preventDefault();
-                if (document.documentElement.classList.contains('loading')) {
-                    document.documentElement.classList.remove('loading');
-                }
-                var isOpen = document.body.classList.toggle('menu-open');
-                var mainMenus = document.querySelectorAll('.main-menu');
-                mainMenus.forEach(function(m) {
-                    if (isOpen) {
-                        m.classList.add('is-mobile-open');
-                    } else {
-                        m.classList.remove('is-mobile-open');
-                    }
-                });
-                var overlay = document.querySelector('.sidenav-overlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'sidenav-overlay';
-                    overlay.addEventListener('click', function() {
-                        document.body.classList.remove('menu-open');
-                        mainMenus.forEach(function(m) { m.classList.remove('is-mobile-open'); });
-                        overlay.style.display = 'none';
-                    });
-                    document.body.appendChild(overlay);
-                }
-                overlay.style.display = isOpen ? 'block' : 'none';
-            }
         });
+
+        // 2. Kabinet yon menyusi (telefon va planshet).
+        //    Muammo: vendor app.min.js ham shu tugmani ushlaydi va ikkala kod
+        //    holatni almashtirib, bir-birini bekor qilardi — menyu faqat ikkinchi
+        //    bosishda ochilardi. Shuning uchun hodisani "capture" bosqichida,
+        //    ya'ni vendordan oldin ushlaymiz va uni to'xtatamiz.
+        //    Katta ekranda ("modern-nav-toggle" bilan yig'ish) vendor o'zi hal qiladi.
+        document.addEventListener('click', function (e) {
+            if (window.innerWidth >= 992) return;
+
+            var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main');
+            if (!toggleBtn) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (document.documentElement.classList.contains('loading')) {
+                document.documentElement.classList.remove('loading');
+            }
+
+            var isOpen = document.body.classList.toggle('menu-open');
+            document.body.classList.toggle('menu-hide', !isOpen);
+
+            var mainMenus = document.querySelectorAll('.main-menu');
+            mainMenus.forEach(function (m) {
+                m.classList.toggle('is-mobile-open', isOpen);
+            });
+
+            var overlay = document.querySelector('.sidenav-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'sidenav-overlay';
+                overlay.addEventListener('click', function () {
+                    document.body.classList.remove('menu-open');
+                    document.body.classList.add('menu-hide');
+                    document.querySelectorAll('.main-menu').forEach(function (m) {
+                        m.classList.remove('is-mobile-open');
+                    });
+                    overlay.style.display = 'none';
+                });
+                document.body.appendChild(overlay);
+            }
+            overlay.style.display = isOpen ? 'block' : 'none';
+        }, true);
         
         // Remove loading class if still present
         if (document.documentElement.classList.contains('loading')) {

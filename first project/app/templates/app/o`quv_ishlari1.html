@@ -2,6 +2,24 @@
 {% load static %}
 <html>
 <head>
+    <!-- kafedra-theme-init: mavzu sahifa chizilishidan oldin qo'llanadi (oq ekran miltillamasligi uchun) -->
+    <script>
+    (function () {
+        try {
+            var t = localStorage.getItem('app_theme') || localStorage.getItem('theme');
+            if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                t = 'dark';
+            }
+            if (t !== 'dark') return;
+            document.documentElement.classList.add('dark-mode');
+            (function applyBody() {
+                if (document.body) { document.body.classList.add('dark-mode'); }
+                else { requestAnimationFrame(applyBody); }
+            })();
+        } catch (e) {}
+    })();
+    </script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>O`quv ishlari</title>
@@ -14,7 +32,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
     <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260923p">
 </head>
 <body>
     <header>
@@ -138,6 +156,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
         <script src="{% static 'app/scripts/row-click.js' %}"></script>
     </footer>
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
+    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923p"></script>
 </body>
 </html>

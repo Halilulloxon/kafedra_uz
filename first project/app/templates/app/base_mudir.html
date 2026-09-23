@@ -1,0 +1,4 @@
+{% extends "app/base_dashboard.html" %}
+
+{# Faqat "panel" qiymatini belgilaydi: yuqori menyudagi nishon va tugmalar shunga qarab chiqadi. #}
+{% block navbar %}{% include "app/partials/navbar_dashboard.html" with panel="mudir" %}{% endblock %}

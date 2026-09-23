@@ -295,15 +295,15 @@ server {
 ln -s /etc/nginx/sites-available/kafedra /etc/nginx/sites-enabled/kafedra
 ```
 
-```bash
-rm -f /etc/nginx/sites-enabled/default
-```
+> Serverda boshqa saytlar bo'lsa (`ls /etc/nginx/sites-enabled/`), `default` ni **o'chirmang** —
+> `server_name` domen bo'yicha ishlaydi, boshqa saytlarga ta'sir qilmaydi.
 
 ```bash
 nginx -t && systemctl reload nginx
 ```
 
-Firewall (faqat SSH va veb portlar ochiq qoladi):
+Firewall (faqat SSH va veb portlar ochiq qoladi). Serverda boshqa loyihalar bo'lsa, avval `ufw status` va
+`ss -tlnp` bilan ular ishlatadigan portlarni tekshiring — `ufw enable` ro'yxatda yo'q portlarni yopadi:
 
 ```bash
 ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw enable

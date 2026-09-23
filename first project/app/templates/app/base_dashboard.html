@@ -1,0 +1,45 @@
+{% load static %}<!DOCTYPE html>
+<html class="loading" lang="uz" data-textdirection="ltr">
+<head>
+    {% include "app/partials/theme_init.html" %}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Kafedralar.uz{% endblock %}</title>
+
+    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CQuicksand:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260923">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/colors/palette-gradient.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}?v=20260923p">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260923p">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
+
+    {% block navbar %}{% include "app/partials/navbar_dashboard.html" with panel="oqituvchi" %}{% endblock %}
+
+    {% block sidebar %}{% include "app/partials/sidebar_dashboard.html" %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% include "app/partials/footer_dashboard.html" %}
+
+    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}?v=20260923"></script>
+    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}?v=20260923"></script>
+    <script src="{% static 'app/app-assets/js/core/app.min.js' %}?v=20260923"></script>
+    {% block extra_js %}{% endblock %}
+    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923p"></script>
+</body>
+</html>

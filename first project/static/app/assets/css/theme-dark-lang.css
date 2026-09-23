@@ -2338,3 +2338,723 @@ body.dark-mode .apexcharts-ycrosshairs {
 
 
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   QORONG'I REJIM — TO'LDIRUVCHI QOIDALAR
+   Ochiq sahifalar (yangi/style.css, yangi/pages.css), Bootstrap yordamchi
+   klasslari va ApexCharts uchun yetishmayotgan qoidalar.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Ochiq sahifalarning rang o'zgaruvchilari ──
+   Faqat fon uchun (--light) yoki faqat matn uchun (--text, --muted)
+   ishlatiladiganlari almashtiriladi. --white va --navy ikkala maqsadda
+   ishlatilgani uchun ularga tegilmaydi, ular quyida alohida yoziladi. */
+html.dark-mode,
+body.dark-mode {
+    --light: #0f172a !important;
+    --text: #f1f5f9 !important;
+    --muted: #94a3b8 !important;
+}
+
+/* ── 2. Oq fonli kartochka va maydonlar ── */
+body.dark-mode .features,
+body.dark-mode .teacher-card,
+body.dark-mode .tabs-wrap,
+body.dark-mode .book-card,
+body.dark-mode .video-card,
+body.dark-mode .article-card,
+body.dark-mode .side-card,
+body.dark-mode .filter-btn,
+body.dark-mode .search-box input {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .search-box input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* ── 3. Quyuq (navy) matnlar qorong'i fonda ko'rinmay qolardi ──
+   Tilla fonli elementlar (.badge-new, .featured-label, tugma hover holatlari)
+   ataylab chetda qoldirilgan: ularda quyuq matn to'g'ri ko'rinadi. */
+body.dark-mode .section-title,
+body.dark-mode .feature-card h3,
+body.dark-mode .teacher-card h4,
+body.dark-mode .count-item strong,
+body.dark-mode .content-header h2,
+body.dark-mode .book-body h4,
+body.dark-mode .book-info h4,
+body.dark-mode .book-type,
+body.dark-mode .book-type-tag,
+body.dark-mode .btn-view,
+body.dark-mode .watch-btn,
+body.dark-mode .video-info h4,
+body.dark-mode .vid-title,
+body.dark-mode .article-card h3,
+body.dark-mode .author-chip,
+body.dark-mode .a-tag,
+body.dark-mode .btn-cite,
+body.dark-mode .side-card h3,
+body.dark-mode .author-info h5,
+body.dark-mode .kw,
+body.dark-mode .stat-row span:last-child {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .btn-view,
+body.dark-mode .watch-btn,
+body.dark-mode .btn-cite {
+    border-color: #475569 !important;
+}
+
+/* ── 4. Bootstrap yordamchi klasslari ──
+   .text-dark saytda 34 marta ishlatiladi (video formalari), qorong'i rejimda
+   qora fonda qora matn bo'lib qolardi. */
+body.dark-mode .text-dark {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .bg-light,
+body.dark-mode .bg-white {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* "Orqaga" tugmasi 11 ta shablonda to'g'ridan-to'g'ri oq deb yozilgan;
+   !important shu sababli kerak — u ichki (inline) uslubni ham bosadi. */
+body.dark-mode .btn-outline-secondary {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+    background: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* ── 5. ApexCharts diagrammalari ── */
+body.dark-mode .apexcharts-toolbar svg {
+    fill: #cbd5e1 !important;
+}
+
+body.dark-mode .apexcharts-menu {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .apexcharts-menu-item:hover {
+    background: #334155 !important;
+}
+
+body.dark-mode .apexcharts-tooltip-title {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .apexcharts-legend-text {
+    color: #e2e8f0 !important;
+}
+
+/* ── Kabinet sahifalari footer'i ── */
+body.dark-mode .footer,
+body.dark-mode .footer-light {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   QORONG'I REJIM — FORMA MAYDONLARI
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Brauzerning o'z elementlari ham qorong'i bo'lsin:
+   sana tanlagich, ochiladigan ro'yxat, aylantirish paneli */
+html.dark-mode,
+body.dark-mode {
+    color-scheme: dark;
+}
+
+/* Ochiladigan ro'yxat bandlari oq fonda oq matn bo'lib ko'rinmay qolardi */
+body.dark-mode option,
+body.dark-mode optgroup {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Maydon ichidagi maslahat matni asosiy matn bilan bir xil rangda edi */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark-mode .form-control::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+/* Barcha turdagi maydonlar bir xil ko'rinishda bo'lsin */
+body.dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode .custom-select {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+/* Tanlangan (fokusdagi) maydon ko'rinib tursin */
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus,
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Brauzer avtomatik to'ldirganda oq fon qolib ketardi */
+body.dark-mode input:-webkit-autofill,
+body.dark-mode input:-webkit-autofill:hover,
+body.dark-mode input:-webkit-autofill:focus,
+body.dark-mode textarea:-webkit-autofill,
+body.dark-mode select:-webkit-autofill {
+    -webkit-text-fill-color: #f1f5f9 !important;
+    -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+    caret-color: #f1f5f9 !important;
+}
+
+/* Belgilash katakchalari va fayl tanlash */
+body.dark-mode input[type="checkbox"],
+body.dark-mode input[type="radio"] {
+    accent-color: #3b82f6;
+}
+
+body.dark-mode input[type="file"],
+body.dark-mode .custom-file-label,
+body.dark-mode .input-group-text {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+/* O'zgartirib bo'lmaydigan maydonlar */
+body.dark-mode input:disabled,
+body.dark-mode select:disabled,
+body.dark-mode textarea:disabled,
+body.dark-mode .form-control:disabled,
+body.dark-mode .form-control[readonly] {
+    background-color: #1e293b !important;
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+/* Maydon tagidagi izoh va xato yozuvlari */
+body.dark-mode .form-text,
+body.dark-mode small.text-muted,
+body.dark-mode label {
+    color: #cbd5e1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TELEFONDA YUQORI MENYU — IXCHAM KO'RINISH
+   Boshqaruv tugmalari 375px ekranga sig'may, menyu uch qatorga cho'zilardi
+   va avatar ekrandan chiqib ketardi. Endi faqat belgilar qoladi.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767.98px) {
+    .header-navbar .navbar-container {
+        padding: 0 0.25rem !important;
+    }
+
+    .header-navbar .navbar-container .navbar-nav.ml-auto {
+        flex-wrap: nowrap !important;
+        justify-content: flex-end;
+    }
+
+    /* Tugmalardagi yozuvlar olib tashlanadi, belgilar qoladi */
+    .header-navbar .theme-toggle-btn span,
+    .header-navbar .navbar-nav .btn span,
+    .header-navbar .user-name {
+        display: none !important;
+    }
+
+    /* Rol nishoni telefonda o'rin egallamasin */
+    .header-navbar .navbar-nav.mr-auto {
+        display: none !important;
+    }
+
+    .header-navbar .lang-select {
+        max-width: 64px;
+        padding: 2px 4px !important;
+        font-size: 12px !important;
+    }
+
+    .header-navbar .navbar-nav .btn {
+        padding: 4px 7px !important;
+    }
+
+    .header-navbar .nav-item {
+        margin-right: 4px !important;
+    }
+
+    .header-navbar .dropdown-user .avatar img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+}
+
+/* Juda kichik ekranda logotip yozuvi ham olib tashlanadi */
+@media (max-width: 479.98px) {
+    .header-navbar .brand-text {
+        display: none !important;
+    }
+}
+
+/* Juda kichik ekranda faqat logotip qoladi (yozuv sig'maydi).
+   Mavzu faylida allaqachon 4 darajali tanlagich bor, shuning uchun bu ham shunday. */
+@media (max-width: 479.98px) {
+    .header-navbar .navbar-header .navbar-brand .brand-text {
+        display: none !important;
+    }
+}
+
+/* Avatar ekrandan chiqib ketmasin */
+@media (max-width: 767.98px) {
+    .header-navbar .navbar-container .dropdown-user .nav-link {
+        padding: 6px 2px !important;
+    }
+
+    .header-navbar .navbar-container .navbar-nav.ml-auto .nav-item:last-child {
+        margin-right: 0 !important;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TIL TANLAGICH VA MAVZU TUGMASI — IXCHAM DIZAYN
+   Globus belgili ochiladigan ro'yxat + yumaloq oy/quyosh tugmasi.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.lang-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    color: #e2e8f0;
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.lang-btn:hover,
+.lang-dropdown.open .lang-btn {
+    background: rgba(148, 163, 184, 0.14);
+    border-color: rgba(148, 163, 184, 0.55);
+}
+
+.lang-btn .lang-caret {
+    font-size: 10px;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+}
+
+.lang-dropdown.open .lang-btn .lang-caret {
+    transform: rotate(180deg);
+}
+
+.lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 152px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+    display: none;
+    z-index: 1200;
+}
+
+.lang-dropdown.open .lang-menu {
+    display: block;
+}
+
+.lang-menu li {
+    list-style: none;
+}
+
+.lang-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+}
+
+.lang-menu button:hover {
+    background: #f1f5f9;
+}
+
+.lang-menu button[aria-selected="true"] {
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-weight: 700;
+}
+
+/* Yumaloq mavzu tugmasi */
+.theme-toggle-btn.theme-toggle-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59, 130, 246, 0.16);
+    border: 1px solid rgba(59, 130, 246, 0.38);
+    color: #60a5fa;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle-btn.theme-toggle-icon:hover {
+    background: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+}
+
+/* Qorong'i rejim */
+body.dark-mode .lang-menu {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .lang-menu button {
+    color: #e2e8f0;
+}
+
+body.dark-mode .lang-menu button:hover {
+    background: #334155;
+}
+
+body.dark-mode .lang-menu button[aria-selected="true"] {
+    background: #1e3a5f;
+    color: #93c5fd;
+}
+
+body.dark-mode .theme-toggle-btn.theme-toggle-icon {
+    background: rgba(250, 204, 21, 0.16);
+    border-color: rgba(250, 204, 21, 0.38);
+    color: #facc15;
+}
+
+body.dark-mode .theme-toggle-btn.theme-toggle-icon:hover {
+    background: rgba(250, 204, 21, 0.28);
+}
+
+/* Telefonda til nomi o'rniga qisqa belgi qoladi */
+@media (max-width: 575.98px) {
+    .lang-btn {
+        padding: 7px 10px;
+        gap: 5px;
+    }
+
+    .lang-btn .lang-current {
+        display: none;
+    }
+
+    .theme-toggle-btn.theme-toggle-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        font-size: 14px;
+    }
+}
+
+/* Eski mavzu qoidalari ul elementlariga display:flex beradi —
+   shuning uchun ro'yxat holati aniq belgilanadi. */
+.lang-dropdown .lang-menu {
+    display: none !important;
+}
+
+.lang-dropdown.open .lang-menu {
+    display: block !important;
+}
+
+.header-navbar .theme-toggle-btn.theme-toggle-icon,
+nav .theme-toggle-btn.theme-toggle-icon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+}
+
+@media (max-width: 575.98px) {
+    .header-navbar .theme-toggle-btn.theme-toggle-icon,
+    nav .theme-toggle-btn.theme-toggle-icon {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+    }
+}
+
+/* 768–991px oralig'ida ham boshqaruvlar bitta qatorga sig'sin —
+   avval ular uch qatorga yig'ilib, menyu 137px balandlikka cho'zilardi. */
+@media (max-width: 991.98px) {
+    .header-navbar .navbar-container .navbar-nav {
+        flex-wrap: nowrap !important;
+    }
+
+    .header-navbar .navbar-nav .btn span,
+    .header-navbar .user-name {
+        display: none !important;
+    }
+
+    .header-navbar .navbar-nav .btn {
+        padding: 5px 9px !important;
+        white-space: nowrap;
+    }
+
+    .header-navbar .nav-item {
+        margin-right: 6px !important;
+    }
+}
+
+/* Yuqori menyudagi tugmalar hech qachon ikki qatorga bo'linmasin */
+.header-navbar .navbar-nav .btn,
+.header-navbar .badge {
+    white-space: nowrap;
+}
+
+/* Til tugmasi joylashgan joyiga qarab rang oladi:
+   quyuq menyularda och, oq kartochkada (masalan kirish sahifasi) quyuq. */
+.lang-btn {
+    color: inherit;
+}
+
+.header-navbar .lang-btn,
+nav .lang-btn {
+    color: #e2e8f0;
+}
+
+body.dark-mode .lang-btn {
+    color: #e2e8f0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KARTOCHKA TUGMALARI VA RASMLARI — YAGONA KO'RINISH
+   Avval tugmalar har xil balandlikda edi (32px dan 70px gacha) va
+   "Yuklab olish" tugmasi ostida havola tagchizig'i chiqib turardi.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Tugmalar qatori: teng kenglikda, bir tekisda */
+.article-actions,
+.book-actions,
+.featured-actions,
+.video-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.article-actions > *,
+.book-actions > *,
+.featured-actions > *,
+.video-actions > * {
+    flex: 1 1 140px;
+}
+
+/* Barcha kartochka tugmalari bir xil o'lchamda */
+.read-btn,
+.download-btn,
+.watch-btn,
+.btn-read,
+.btn-dl,
+.btn-view,
+.btn-cite {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 11px 18px !important;
+    border-radius: 10px !important;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none !important;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.2s ease;
+}
+
+.read-btn:hover,
+.download-btn:hover,
+.watch-btn:hover,
+.btn-read:hover,
+.btn-dl:hover,
+.btn-view:hover,
+.btn-cite:hover {
+    text-decoration: none !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+    filter: brightness(1.06);
+}
+
+.read-btn:active,
+.download-btn:active,
+.watch-btn:active,
+.btn-read:active,
+.btn-dl:active,
+.btn-view:active,
+.btn-cite:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+/* Kartochka ichidagi havolalar hech qachon tagchiziqli bo'lmasin */
+.book-card a,
+.video-card a,
+.article-card a,
+.side-card a,
+.t-card,
+.t-card a {
+    text-decoration: none;
+}
+
+/* ── Rasmlar bir xil o'lchamda ── */
+.book-cover {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-thumb-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.video-thumb-wrap video,
+.video-thumb-wrap canvas,
+.video-thumb-wrap img,
+.video-thumb-wrap .thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.t-avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.t-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 575.98px) {
+    .book-cover {
+        height: 200px;
+    }
+
+    .read-btn,
+    .download-btn,
+    .watch-btn,
+    .btn-read,
+    .btn-dl,
+    .btn-view,
+    .btn-cite {
+        font-size: 13px;
+        padding: 10px 14px !important;
+    }
+}
+
+/* Ba'zi kartochkalarda emoji belgisi tugmani cho'zib yuborardi —
+   balandlik aniq belgilanadi, shunda hamma tugma bir xil bo'ladi. */
+.read-btn,
+.download-btn,
+.watch-btn,
+.btn-read,
+.btn-dl,
+.btn-view,
+.btn-cite {
+    height: 44px !important;
+    overflow: hidden;
+}
+
+@media (max-width: 575.98px) {
+    .read-btn,
+    .download-btn,
+    .watch-btn,
+    .btn-read,
+    .btn-dl,
+    .btn-view,
+    .btn-cite {
+        height: 42px !important;
+    }
+}
+
+/* Kabinetdagi kichik tugmalar juda past (23px) va notekis edi */
+.btn.btn-sm {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn,
+.btn:hover,
+.btn:focus {
+    text-decoration: none !important;
+}
+
+.btn.btn-sm.btn-block {
+    width: 100%;
+}

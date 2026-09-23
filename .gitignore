@@ -36,3 +36,6 @@ bin/
 
 # Environment secrets
 .env
+
+# Claude Code lokal sozlamalari
+.claude/

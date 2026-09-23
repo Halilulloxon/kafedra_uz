@@ -1,20 +1,15 @@
-<!DOCTYPE html>
+{% extends "app/base_public.html" %}
 {% load static %}
-<html lang="uz">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ teacher.ism }} {{ teacher.familiya }} — Kafedralar.uz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_4">
-    <style>
+
+{% block title %}{{ teacher.ism }} {{ teacher.familiya }} — Kafedralar.uz{% endblock %}
+
+{% block extra_head %}
+<style>
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         :root {
             --bg: #0d0f14;
             --surface: #161a23;
@@ -26,14 +21,12 @@
             --muted: #7a839a;
             --card-bg: #13161f;
         }
-
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
         }
-
         nav {
             display: flex;
             align-items: center;
@@ -47,24 +40,20 @@
             top: 0;
             z-index: 100;
         }
-
         .logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--text);
         }
-
             .logo span {
                 color: var(--accent);
             }
-
         nav ul {
             display: flex;
             gap: 8px;
             list-style: none;
         }
-
             nav ul li a {
                 text-decoration: none;
                 color: var(--muted);
@@ -74,12 +63,10 @@
                 border-radius: 8px;
                 transition: all 0.2s;
             }
-
                 nav ul li a:hover, nav ul li a.active {
                     color: var(--text);
                     background: var(--surface2);
                 }
-
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -90,17 +77,14 @@
             padding: 32px 40px 0;
             transition: color 0.2s;
         }
-
             .back-link:hover {
                 color: var(--accent);
             }
-
         .profile-hero {
             padding: 32px 40px 48px;
             max-width: 1100px;
             margin: 0 auto;
         }
-
         .profile-wrapper {
             display: flex;
             gap: 40px;
@@ -112,7 +96,6 @@
             position: relative;
             overflow: hidden;
         }
-
             .profile-wrapper::before {
                 content: '';
                 position: absolute;
@@ -123,7 +106,6 @@
                 background: radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 70%);
                 pointer-events: none;
             }
-
         .avatar-big {
             width: 140px;
             height: 140px;
@@ -136,52 +118,43 @@
             align-items: center;
             justify-content: center;
         }
-
             .avatar-big img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
-
             .avatar-big .emoji-fallback {
                 font-size: 4rem;
             }
-
         .profile-info {
             flex: 1;
         }
-
             .profile-info h1 {
                 font-family: 'Playfair Display', serif;
                 font-size: 2rem;
                 font-weight: 700;
                 margin-bottom: 8px;
             }
-
         .profile-title {
             color: var(--accent);
             font-size: 0.9rem;
             font-weight: 500;
             margin-bottom: 6px;
         }
-
         .profile-dept {
             color: var(--muted);
             font-size: 0.85rem;
             margin-bottom: 6px;
         }
-
         .profile-email {
             color: var(--muted);
             font-size: 0.85rem;
             margin-bottom: 14px;
         }
-
             .profile-email a {
                 color: var(--accent);
                 text-decoration: none;
             }
-
         .profile-bio {
             color: #b0b8cc;
             font-size: 0.9rem;
@@ -189,14 +162,12 @@
             margin-bottom: 18px;
             max-width: 640px;
         }
-
         .profile-stats {
             display: flex;
             gap: 24px;
             margin-top: 18px;
             flex-wrap: wrap;
         }
-
             .profile-stats > div {
                 text-align: center;
                 background: var(--surface2);
@@ -204,32 +175,27 @@
                 border-radius: 12px;
                 padding: 14px 22px;
             }
-
         .p-stat-num {
             font-family: 'Playfair Display', serif;
             font-size: 1.6rem;
             font-weight: 700;
             color: var(--accent);
         }
-
         .p-stat-label {
             font-size: 0.75rem;
             color: var(--muted);
             margin-top: 2px;
         }
-
         .tabs-wrap {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 40px 24px;
         }
-
         .tabs {
             display: flex;
             gap: 8px;
             border-bottom: 1px solid var(--border);
         }
-
         .tab {
             background: none;
             border: none;
@@ -243,42 +209,34 @@
             transition: all 0.2s;
             margin-bottom: -1px;
         }
-
             .tab:hover {
                 color: var(--text);
             }
-
             .tab.active {
                 color: var(--accent);
                 border-bottom-color: var(--accent);
             }
-
         .content-area {
             max-width: 1100px;
             margin: 0 auto;
             padding: 32px 40px 60px;
         }
-
         .tab-content {
             display: none;
         }
-
             .tab-content.active {
                 display: block;
             }
-
         .content-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 28px;
         }
-
             .content-header h2 {
                 font-family: 'Playfair Display', serif;
                 font-size: 1.4rem;
             }
-
         .count-badge {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -287,13 +245,11 @@
             padding: 3px 10px;
             border-radius: 20px;
         }
-
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
-
         .book-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -301,19 +257,16 @@
             overflow: hidden;
             transition: transform 0.2s, border-color 0.2s;
         }
-
             .book-card:hover {
                 transform: translateY(-4px);
                 border-color: var(--accent);
             }
-
         .book-cover {
             width: 100%;
             height: 180px;
             object-fit: cover;
             display: block;
         }
-
         .book-cover-placeholder {
             width: 100%;
             height: 180px;
@@ -322,47 +275,38 @@
             justify-content: center;
             font-size: 3rem;
         }
-
         .c1 {
             background: linear-gradient(135deg, #1e3a5f, #2d6a9f);
         }
-
         .c2 {
             background: linear-gradient(135deg, #1a4a2e, #2d7a4f);
         }
-
         .c3 {
             background: linear-gradient(135deg, #4a1a2e, #8a2d4f);
         }
-
         .c4 {
             background: linear-gradient(135deg, #3a2d1a, #7a5c2d);
         }
-
         .book-info {
             padding: 14px;
         }
-
             .book-info h4 {
                 font-size: 0.88rem;
                 font-weight: 600;
                 margin-bottom: 6px;
                 line-height: 1.4;
             }
-
         .book-type {
             font-size: 0.75rem;
             color: var(--accent2);
             margin-bottom: 10px;
         }
-
         /* ── VIDEO CARDS ── */
         .videos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
-
         .video-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -370,11 +314,9 @@
             overflow: hidden;
             transition: border-color 0.2s;
         }
-
             .video-card:hover {
                 border-color: var(--accent);
             }
-
         .video-thumb-wrap {
             position: relative;
             height: 180px;
@@ -382,7 +324,6 @@
             cursor: pointer;
             background: linear-gradient(135deg, #0a1628, #1a3a6b);
         }
-
             /*
          * MUHIM: video display:none bo'lsa browser seek qilmaydi!
          * Shuning uchun visibility:hidden + position:absolute ishlatamiz —
@@ -398,13 +339,11 @@
                 visibility: hidden; /* ko'rinmaydi, lekin yuklaydi */
                 z-index: 1;
             }
-
                 /* Video o'ynayotganda ko'rsat */
                 .video-thumb-wrap video.active {
                     visibility: visible;
                     z-index: 5;
                 }
-
             .video-thumb-wrap canvas {
                 position: absolute;
                 top: 0;
@@ -414,17 +353,14 @@
                 object-fit: cover;
                 z-index: 2;
             }
-
                 /* Canvas yashibdi — yashir */
                 .video-thumb-wrap canvas.ready {
                     z-index: 2;
                 }
-
             /* Video active bo'lganda canvas ni yashir */
             .video-thumb-wrap video.active ~ canvas {
                 display: none;
             }
-
         .play-overlay {
             position: absolute;
             inset: 0;
@@ -435,17 +371,14 @@
             background: rgba(0,0,0,0.25);
             transition: background 0.2s;
         }
-
         .video-thumb-wrap:hover .play-overlay {
             background: rgba(0,0,0,0.5);
         }
-
         /* Video active bo'lganda overlay yashir */
         .video-thumb-wrap video.active ~ canvas ~ .play-overlay,
         .video-thumb-wrap video.active ~ .play-overlay {
             display: none;
         }
-
         .play-overlay-btn {
             width: 50px;
             height: 50px;
@@ -459,11 +392,9 @@
             box-shadow: 0 4px 20px rgba(79,142,247,0.4);
             transition: transform 0.2s;
         }
-
         .video-thumb-wrap:hover .play-overlay-btn {
             transform: scale(1.1);
         }
-
         .video-duration {
             position: absolute;
             bottom: 8px;
@@ -475,29 +406,24 @@
             padding: 2px 7px;
             border-radius: 4px;
         }
-
         .video-content {
             padding: 14px;
         }
-
         .video-title {
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 6px;
             line-height: 1.4;
         }
-
         .video-content p {
             font-size: 0.8rem;
             color: var(--muted);
         }
-
         .articles-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-
         .article-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -505,24 +431,20 @@
             padding: 24px;
             transition: border-color 0.2s;
         }
-
             .article-card:hover {
                 border-color: var(--accent);
             }
-
             .article-card h3 {
                 font-family: 'Playfair Display', serif;
                 font-size: 1.05rem;
                 margin-bottom: 8px;
             }
-
             .article-card p {
                 font-size: 0.85rem;
                 color: var(--muted);
                 line-height: 1.6;
                 margin-bottom: 14px;
             }
-
         .download-btn {
             display: inline-flex;
             align-items: center;
@@ -539,11 +461,9 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-
             .download-btn:hover {
                 background: #3a7de8;
             }
-
         .read-btn {
             display: inline-flex;
             align-items: center;
@@ -560,18 +480,15 @@
             cursor: pointer;
             transition: border-color 0.2s;
         }
-
             .read-btn:hover {
                 border-color: var(--accent);
                 color: var(--accent);
             }
-
         .btn-group {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-
         footer {
             border-top: 1px solid var(--border);
             padding: 24px 40px;
@@ -579,79 +496,35 @@
             color: var(--muted);
             font-size: 0.85rem;
         }
-
         @media (max-width: 768px) {
             nav {
                 padding: 0 16px;
             }
-
                 nav ul {
                     display: none;
                 }
-
             .profile-hero, .tabs-wrap, .content-area {
                 padding-left: 16px;
                 padding-right: 16px;
             }
-
             .profile-wrapper {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
                 padding: 24px;
             }
-
             .profile-stats {
                 justify-content: center;
             }
-
             .books-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
-</head>
-<body>
+{% endblock %}
 
-    <nav>
-        <div class="logo">Kafedralar<span>.uz</span></div>
-        <ul>
-            <li><a href="{% url 'index' %}" data-i18n="nav_home">Bosh sahifa</a></li>
-            <li><a href="{% url 'teachers' %}" data-i18n="nav_teachers">O'qituvchilar</a></li>
-            <li><a href="{% url 'teacher1' id=teacher.id %}" class="active" data-i18n="nav_teacher_profile">O'qituvchi profili</a></li>
-            <li><a href="{% url 'book' %}" data-i18n="nav_books">Kitoblar</a></li>
-            <li><a href="{% url 'article' %}" data-i18n="nav_articles">Maqolalar</a></li>
-            <li><a href="{% url 'video' %}" data-i18n="nav_videos">Video darslar</a></li>
-            {% if foydalanuvchi %}
-                {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
-                <li><a href="{% url 'home4' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
-                <li><a href="{% url 'home3' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-university mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
-                <li><a href="{% url 'home2' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
-                {% else %}
-                <li><a href="{% url 'profile' user_id=foydalanuvchi.id %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-user mr-1"></i> Profil</a></li>
-                {% endif %}
-                <li><a href="{% url 'logout' %}" style="color:#ef4444;"><i class="fas fa-sign-out-alt mr-1"></i> Chiqish</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
-            {% endif %}
-        </ul>
-        <div class="nav-controls">
-            <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
-                🌙 <span class="d-none d-md-inline">Tungi rejim</span>
-            </button>
-            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                <option value="uz">🇺🇿 UZ</option>
-                <option value="ru">🇷🇺 RU</option>
-                <option value="en">🇬🇧 EN</option>
-            </select>
-        </div>
-    </nav>
-
-    <a href="{% url 'teachers' %}" class="back-link">
+{% block content %}
+<a href="{% url 'teachers' %}" class="back-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m12 19-7-7 7-7" />
             <path d="M19 12H5" />
@@ -802,10 +675,6 @@
 
     </div>
 
-    <footer>
-        <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
-    </footer>
-
     <script>
         // ── Tab almashtirish ─────────────────────────────────────
         function showTab(name, btn) {
@@ -893,7 +762,4 @@
             }
         });
     </script>
-
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
-</body>
-</html>
+{% endblock %}

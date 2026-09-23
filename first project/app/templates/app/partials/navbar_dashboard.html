@@ -1,0 +1,112 @@
+{% load static %}
+<!-- Kabinet yuqori menyusi. "panel" qiymati qaysi kabinetda turganimizni bildiradi:
+     oqituvchi | mudir | dekan | prorektor. O'zgartirish faqat shu yerda. -->
+<nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
+    <div class="navbar-wrapper">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mobile-menu d-lg-none mr-auto">
+                    <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                        <i class="fas fa-bars font-medium-3"></i>
+                    </a>
+                </li>
+                <li class="nav-item mr-auto">
+                    <a class="navbar-brand" href="{% url 'index' %}">
+                        <img class="brand-logo" alt="Kafedralar.uz" src="{% static 'app/app-assets/images/logo/logo.png' %}" style="height:32px;">
+                        <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-lg-block nav-toggle">
+                    <a class="nav-link modern-nav-toggle pr-0">
+                        <i class="fas fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="navbar-container content">
+            <div class="collapse navbar-collapse" id="navbar-mobile">
+                <ul class="nav navbar-nav mr-auto float-left">
+                    <li class="nav-item d-none d-md-block">
+                        {% if panel == 'mudir' %}
+                        <span class="badge badge-pill badge-info font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                            <i class="fas fa-user-tie mr-1"></i> <span data-i18n="role_mudir">Kafedra Mudiri Paneli</span>
+                        </span>
+                        {% elif panel == 'dekan' %}
+                        <span class="badge badge-pill badge-success font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                            <i class="fas fa-university mr-1"></i> <span data-i18n="role_dekan">Dekan Boshqaruv Paneli</span>
+                        </span>
+                        {% elif panel == 'prorektor' %}
+                        <span class="badge badge-pill badge-danger font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                            <i class="fas fa-shield-alt mr-1"></i> <span data-i18n="role_prorektor">Prorektor boshqaruvi</span>
+                        </span>
+                        {% else %}
+                        <span class="badge badge-pill badge-primary font-medium-1 px-3 py-1 mt-1 shadow-sm">
+                            <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="role_oqituvchi">O'qituvchi Kabineti</span>
+                        </span>
+                        {% endif %}
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav ml-auto align-items-center">
+                    <li class="nav-item mr-1">
+                        {% include "app/partials/lang_switcher.html" %}
+                    </li>
+
+                    <li class="nav-item mr-2">
+                        <button id="themeToggleBtn" class="theme-toggle-btn theme-toggle-icon" data-label="off"
+                                onclick="toggleDarkMode()" title="Mavzuni almashtirish" aria-label="Mavzuni almashtirish">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+
+                    {% if panel == 'oqituvchi' %}
+                        {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                        <li class="nav-item mr-1">
+                            <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fas fa-user-tie mr-1"></i> <span data-i18n="switch_mudir_panel">Mudir Paneli</span>
+                            </a>
+                        </li>
+                        {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                        <li class="nav-item mr-1">
+                            <a href="{% url 'profile3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                <i class="fas fa-university mr-1"></i> <span data-i18n="switch_dekan_panel">Dekan Paneli</span>
+                            </a>
+                        </li>
+                        {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                        <li class="nav-item mr-1">
+                            <a href="{% url 'home4' %}" class="btn btn-outline-danger btn-sm rounded-pill px-2">
+                                <i class="fas fa-shield-alt mr-1"></i> <span data-i18n="switch_prorektor_panel">Prorektor Paneli</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="nav-item mr-1">
+                        <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-info btn-sm rounded-pill px-2" title="Shaxsiy o'qituvchi kabinetiga o'tish">
+                            <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="switch_teacher_profile">O'qituvchi Profilim</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="dropdown dropdown-user nav-item">
+                        <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                            <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
+                            <span class="avatar avatar-online">
+                                <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
+                                <i class="fas fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

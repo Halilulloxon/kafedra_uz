@@ -25,6 +25,25 @@ body {
   background: var(--light);
   color: var(--text);
   overflow-x: hidden;
+  /* Sahifa kalta bo'lsa ham footer eng pastda tursin */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Flex bola elementlari "margin: 0 auto" tufayli torayib qolmasligi uchun */
+body > * {
+  width: 100%;
+}
+
+body > footer {
+  margin-top: auto;
+}
+
+/* Logo havolaga aylantirildi — brauzerning ko'k rangi va tagchizig'i kerak emas */
+.logo a {
+  color: inherit;
+  text-decoration: none;
 }
 
 /* ---- NAV ---- */

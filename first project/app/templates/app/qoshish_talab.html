@@ -1,159 +1,12 @@
-<!DOCTYPE html>
+{% extends "app/base_mudir.html" %}
 {% load static %}
-<html class="loading" lang="uz">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>{{ title }} - Kafedralar.uz</title>
 
-    <link rel="apple-touch-icon" href="{% static 'app/app-assets/images/ico/apple-icon-120.png' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/app-assets/images/ico/favicon.ico' %}">
+{% block title %}{{ title }} - Kafedralar.uz{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/vendors.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/bootstrap-extended.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/colors.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/components.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/core/menu/menu-types/vertical-menu-modern.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
-</head>
-
-<body class="vertical-layout vertical-menu-modern 2-columns fixed-navbar" data-menu="vertical-menu-modern">
-
-    <!-- Header -->
-    <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow">
-        <div class="navbar-wrapper">
-            <div class="navbar-header">
-                <ul class="nav navbar-nav flex-row">
-                    <li class="nav-item mobile-menu d-lg-none mr-auto">
-                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="fa fa-bars font-medium-3"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item mr-auto">
-                        <a class="navbar-brand" href="{% url 'index' %}">
-                            <img class="brand-logo" alt="logo" src="/static/app/app-assets/images/logo/logo.png" style="height:32px;">
-                            <h3 class="brand-text text-bold-700">Kafedralar.uz</h3>
-                        </a>
-                    </li>
-                    <li class="nav-item d-none d-lg-block nav-toggle">
-                        <a class="nav-link modern-nav-toggle pr-0">
-                            <i class="fa fa-chevron-right" style="font-size:16px; color:#fff; margin-right:15px;"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="navbar-container content">
-                <div class="collapse navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav mr-auto float-left">
-                        <li class="nav-item d-none d-md-block">
-                            <span class="badge badge-pill badge-info font-medium-1 px-3 py-1 mt-1 shadow-sm">
-                                <i class="fas fa-user-tie mr-1"></i> <span data-i18n="role_mudir">Kafedra Mudiri Paneli</span>
-                            </span>
-                        </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav ml-auto align-items-center">
-                        <li class="nav-item mr-1">
-                            <button id="themeToggleBtn" class="theme-toggle-btn text-bold-600" onclick="toggleDarkMode()">
-                                🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
-                            </button>
-                        </li>
-
-                        <li class="nav-item mr-2">
-                            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                                <option value="uz">🇺🇿 O'zbek</option>
-                                <option value="ru">🇷🇺 Русский</option>
-                                <option value="en">🇬🇧 English</option>
-                            </select>
-                        </li>
-
-                        <li class="nav-item mr-1">
-                            <a href="{% url 'profile' user_id=foydalanuvchi.id %}" class="btn btn-outline-info btn-sm rounded-pill px-2" title="Shaxsiy o'qituvchi kabinetiga o'tish">
-                                <i class="fas fa-chalkboard-teacher mr-1"></i> <span data-i18n="switch_teacher_profile">O'qituvchi Profilim</span>
-                            </a>
-                        </li>
-
-                        <li class="dropdown dropdown-user nav-item">
-                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <span class="mr-1 user-name text-bold-700">{{ foydalanuvchi.ism }} {{ foydalanuvchi.familiya }}</span>
-                                <span class="avatar avatar-online">
-                                    <img src="{{ foydalanuvchi.get_image_url }}" alt="avatar" style="height:35px; width:35px; object-fit:cover; border-radius:50%;">
-                                </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{% url 'profil_tahrirlash' user_id=foydalanuvchi.id %}">
-                                    <i class="fa fa-user-edit mr-1"></i> <span data-i18n="edit_profile">Profilni tahrirlash</span>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                    <i class="fa fa-sign-out-alt mr-1"></i> <span data-i18n="logout">Chiqish</span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- END: Header-->
+{% block content %}
+<!-- Header -->
 
     <!-- Sidebar -->
-    <!-- BEGIN: Main Menu-->
-    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
-        <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation">
-                <li class="nav-item ">
-                    <a href="{% url 'home2' %}">
-                        <i class="fa fa-home"></i><span class="menu-title" data-i18n="mudir_dashboard">Mudir Paneli</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-tasks"></i><span class="menu-title" data-i18n="dept_requirements">Kafedra Talablari & Rejasi</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Kafedra Ilmiy Ishlari</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}">
-                        <i class="fa fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Kafedra O'quv Ishlari</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'teachers' %}">
-                        <i class="fa fa-users"></i><span class="menu-title" data-i18n="all_teachers_menu">O'qituvchilar</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'book' %}">
-                        <i class="fa fa-book"></i><span class="menu-title" data-i18n="nav_library">Kutubxona</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{% url 'article' %}">
-                        <i class="fa fa-newspaper"></i><span class="menu-title" data-i18n="nav_public_articles">Ommaviy Maqolalar</span>
-                    </a>
-                </li>
-            
-                <li class="nav-item" style="border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; padding-top: 4px;">
-                    <a href="{% url 'profile' user_id=foydalanuvchi.id %}">
-                        <i class="fas fa-chalkboard-teacher text-info"></i><span class="menu-title text-info" data-i18n="my_teacher_profile">O'qituvchi Profilim</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- END: Main Menu-->
 
     <!-- Content -->
     <div class="app-content content">
@@ -218,10 +71,4 @@
             </div>
         </div>
     </div>
-
-    <script src="{% static 'app/app-assets/vendors/js/vendors.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}"></script>
-    <script src="{% static 'app/app-assets/js/core/app.min.js' %}"></script>
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
-</body>
-</html>
+{% endblock %}

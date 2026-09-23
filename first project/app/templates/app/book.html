@@ -1,54 +1,10 @@
-<!DOCTYPE html>
-<html lang="uz">
+{% extends "app/base_public.html" %}
 {% load static %}
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kitoblar — Kafedralar.uz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'yangi/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'yangi/pages.css' %}" />
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
-</head>
-<body>
 
-    <nav>
-        <div class="logo">Kafedralar<span>.uz</span></div>
-        <ul>
-            <li><a href="{% url 'index' %}" data-i18n="nav_home">Bosh sahifa</a></li>
-            <li><a href="{% url 'teachers' %}" data-i18n="nav_teachers">O'qituvchilar</a></li>
-            <li><a href="{% url 'book' %}" class="active" data-i18n="nav_books">Kitoblar</a></li>
-            <li><a href="{% url 'article' %}" data-i18n="nav_articles">Maqolalar</a></li>
-            <li><a href="{% url 'video' %}" data-i18n="nav_videos">Video darslar</a></li>
-            {% if foydalanuvchi %}
-                {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
-                <li><a href="{% url 'home4' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
-                <li><a href="{% url 'home3' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-university mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
-                <li><a href="{% url 'home2' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
-                {% else %}
-                <li><a href="{% url 'profile' user_id=foydalanuvchi.id %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-user mr-1"></i> Profil</a></li>
-                {% endif %}
-                <li><a href="{% url 'logout' %}" style="color:#ef4444;"><i class="fas fa-sign-out-alt mr-1"></i> Chiqish</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
-            {% endif %}
-        </ul>
-        <div class="nav-controls">
-            <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
-                🌙 <span class="d-none d-md-inline">Tungi rejim</span>
-            </button>
-            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                <option value="uz">🇺🇿 UZ</option>
-                <option value="ru">🇷🇺 RU</option>
-                <option value="en">🇬🇧 EN</option>
-            </select>
-        </div>
-    </nav>
+{% block title %}Kitoblar — Kafedralar.uz{% endblock %}
 
-    <div class="page-header">
+{% block content %}
+<div class="page-header">
         <div class="section-tag">Bilim xazinasi</div>
         <h1>Kitoblar</h1>
         <p>O'qituvchilarimiz tomonidan yozilgan {{kitoblar.count}}+ darslik, qo'llanma va monografiyalar.</p>
@@ -70,7 +26,6 @@
 
         <div class="books-shelf">
 
-           
             {% for kitob in kitoblar %}
             <div class="book-card">
                 <div class="book-cover c2">
@@ -104,12 +59,4 @@
             {% endfor %}
         </div>
     </div>
-
-    <footer>
-        <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
-    </footer>
-
-    <script src="{% static 'yangi/main.js' %}"></script>
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
-</body>
-</html>
+{% endblock %}

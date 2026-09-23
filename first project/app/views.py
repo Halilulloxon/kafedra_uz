@@ -3,8 +3,8 @@ Definition of views.
 """
 
 from datetime import datetime
-from math import e
-from webbrowser import get
+from functools import wraps
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404,redirect
 from django.http import HttpRequest
 from .forms import IlmiyForm, Oquv, OquvForm , VideoForm, KafedraTalablariForm
@@ -29,6 +29,29 @@ def get_current_user(request):
         return Foydalanuvchilar.objects.get(id=user_id)
     except Foydalanuvchilar.DoesNotExist:
         return None
+
+
+def ozining_sahifasi(view):
+    """URL dagi user_id sessiyadagi foydalanuvchiga mos kelishini talab qiladi.
+
+    Busiz manzildagi raqamni almashtirib, birovning ma'lumotlarini
+    ko'rish, tahrirlash yoki o'chirish mumkin edi.
+    """
+    @wraps(view)
+    def wrapper(request, *args, **kwargs):
+        joriy = get_current_user(request)
+        if joriy is None:
+            return redirect('login')
+        if joriy.id != kwargs.get('user_id'):
+            raise PermissionDenied("Bu sahifa sizga tegishli emas.")
+        return view(request, *args, **kwargs)
+    return wrapper
+
+
+def faqat_kafedra_mudiri(foydalanuvchi):
+    """Kafedra talablarini faqat kafedra mudiri o'zgartira oladi."""
+    if foydalanuvchi.foydalanuvchi_rol != 'kafedra mudiri':
+        raise PermissionDenied("Kafedra talablarini faqat kafedra mudiri boshqaradi.")
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login as auth_login
@@ -323,8 +346,10 @@ def kafedra_talablari(request, user_id):
         'year': datetime.now().year,
     })
 
+@ozining_sahifasi
 def qoshish_talab(request, user_id):
-    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    foydalanuvchi = get_current_user(request)
+    faqat_kafedra_mudiri(foydalanuvchi)
     if request.method == 'POST':
         form = KafedraTalablariForm(request.POST)
         if form.is_valid():
@@ -343,8 +368,10 @@ def qoshish_talab(request, user_id):
         'year': datetime.now().year,
     })
 
+@ozining_sahifasi
 def tahrirlash_talab(request, t_id, user_id):
-    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    foydalanuvchi = get_current_user(request)
+    faqat_kafedra_mudiri(foydalanuvchi)
     talab = get_object_or_404(KafedraTalablari, id=t_id, kafedra=foydalanuvchi.kafedra)
     if request.method == 'POST':
         form = KafedraTalablariForm(request.POST, instance=talab)
@@ -362,9 +389,14 @@ def tahrirlash_talab(request, t_id, user_id):
         'year': datetime.now().year,
     })
 
+@ozining_sahifasi
 def ochir_talab(request, t_id, user_id):
-    foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
+    foydalanuvchi = get_current_user(request)
+    faqat_kafedra_mudiri(foydalanuvchi)
     talab = get_object_or_404(KafedraTalablari, id=t_id, kafedra=foydalanuvchi.kafedra)
+    # Faqat POST: oddiy havola yoki qidiruv roboti o'chirib yubormasligi uchun
+    if request.method != 'POST':
+        return redirect('kafedra_talablari', user_id=user_id)
     talab.delete()
     messages.success(request, "Talab muvaffaqiyatli o'chirildi!")
     return redirect('kafedra_talablari', user_id=user_id)
@@ -492,9 +524,10 @@ def ilmiy_ishlari(request, user_id):
             'ish_muallifi':ish_muallifi
         }
     )
+@ozining_sahifasi
 def profile(request, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi = get_current_user(request)
     maqolalar_soni = ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='maqola').count()
     scopuslar_soni = ilmiy.objects.filter(muallif_id=foydalanuvchi.id, turi__iexact='scopus').count()
     oquv_soni = oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).count()
@@ -591,19 +624,20 @@ def qoshish_i(request, user_id):
             'year':datetime.now().year,
         }
     )
+@ozining_sahifasi
 def qoshish_oquv(request, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     assert isinstance(request, HttpRequest)
     if request.method=="POST":
         turi=request.POST.get("turi")
         nomi=request.POST.get("nomi")
         haqida=request.POST.get("haqida")
         sana=request.POST.get("sana")
-        muallif_id=request.POST.get("muallif")
         ish_mualliflari=request.POST.get("ish_mualliflari")
         betlar_soni=request.POST.get("betlar_soni")
         fayl=request.FILES.get("fayl")
-        muallif=Foydalanuvchilar.objects.get(id=muallif_id)
+        # Muallif formadan emas, sessiyadan olinadi: aks holda birovning nomidan ish qo'shish mumkin edi
+        muallif=foydalanuvchi
         foreveryone = request.POST.get("foreveryone") == "on"
         image = request.FILES.get("image")
         yangi=oquvIshlari(turi=turi,nomi=nomi,sana=sana,muallif=muallif,betlar_soni=betlar_soni,fayl=fayl,ish_mualliflari=ish_mualliflari,foreveryone=foreveryone, image=image, haqida=haqida)
@@ -618,19 +652,20 @@ def qoshish_oquv(request, user_id):
             'year':datetime.now().year,
         }
     )
+@ozining_sahifasi
 def qoshish_ilmiy(request, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     assert isinstance(request, HttpRequest)
     if request.method=="POST":
         turi=request.POST.get("turi")
         nomi=request.POST.get("nomi")
         sana=request.POST.get("sana")
-        muallif_id=request.POST.get("muallif")
         haqida=request.POST.get("haqida")
         ish_mualliflari=request.POST.get("ish_mualliflari")
         kategoriya=request.POST.get("kategoriya")
         fayl=request.FILES.get("fayl")
-        muallif=Foydalanuvchilar.objects.get(id=muallif_id)
+        # Muallif formadan emas, sessiyadan olinadi
+        muallif=foydalanuvchi
         foreveryone = request.POST.get("foreveryone") == "on"
         yangi=ilmiy(turi=turi,nomi=nomi,sana=sana,muallif=muallif, ish_mualliflari=ish_mualliflari ,kategoriya=kategoriya,fayl=fayl, haqida=haqida, foreveryone=foreveryone)
         yangi.save()
@@ -645,8 +680,9 @@ def qoshish_ilmiy(request, user_id):
             'foydalanuvchi':foydalanuvchi,
         }
     )
+@ozining_sahifasi
 def ochir(request, j_id, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     assert isinstance(request, HttpRequest)
     if j_id==1:
         ochir=oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id)
@@ -665,9 +701,10 @@ def ochir(request, j_id, user_id):
 
         }
         )
+@ozining_sahifasi
 def ochirish(request, i_id, j_id, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     if request.method=="POST" and j_id==1:
         maqola=oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id)
         turi=oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id).values_list('turi', flat=True).distinct()
@@ -677,7 +714,7 @@ def ochirish(request, i_id, j_id, user_id):
             if qator: 
                 ish_muallifi.extend([m.strip() for m in qator.split(',')])
                 ish_muallifi = list(set(ish_muallifi))
-        ochir=get_object_or_404(oquvIshlari, id=i_id)
+        ochir=get_object_or_404(oquvIshlari, id=i_id, muallif_id=foydalanuvchi.id)
         ochir.delete()
         return render(
         request,
@@ -701,7 +738,7 @@ def ochirish(request, i_id, j_id, user_id):
             if qator: 
                 ish_muallifi.extend([m.strip() for m in qator.split(',')])
                 ish_muallifi = list(set(ish_muallifi))
-        ochir=get_object_or_404(ilmiy, id=i_id)
+        ochir=get_object_or_404(ilmiy, id=i_id, muallif_id=foydalanuvchi.id)
         ochir.delete()
         return render(
         request,
@@ -716,6 +753,11 @@ def ochirish(request, i_id, j_id, user_id):
             'ish_muallifi':ish_muallifi
         }
         )
+
+    # GET bo'lsa yoki j_id noma'lum bo'lsa, tasdiqlash sahifasiga qaytamiz
+    # (avval bu yerda hech narsa qaytmay, 500 xato chiqardi)
+    return redirect('ochir', j_id=j_id, user_id=user_id)
+
 from django.db.models import Min
 
 
@@ -963,8 +1005,9 @@ def filtrlash_oquv3(request, user_id):
         'turi': turlar,
         'ish_muallifi': ish_muallifi
     })
+@ozining_sahifasi
 def tahrirlash_ilmiy(request, i_id, t_id, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
 
     if t_id == 1:
         model = ilmiy_a
@@ -974,7 +1017,7 @@ def tahrirlash_ilmiy(request, i_id, t_id, user_id):
         model = oquvIshlari
         form_class = OquvForm
 
-    ilmiy = get_object_or_404(model, id=i_id)
+    ilmiy = get_object_or_404(model, id=i_id, muallif_id=foydalanuvchi.id)
 
     if request.method == "POST":
         form = form_class(request.POST, request.FILES, instance=ilmiy)
@@ -1285,8 +1328,9 @@ def download_zip(request):
 
     return response 
 
+@ozining_sahifasi
 def profillarni_tahrirlash(request, user_id):
-    foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi = get_current_user(request)
     if request.method == "POST":
         ism = request.POST.get("ism")
         familiya = request.POST.get("familiya")
@@ -1294,61 +1338,58 @@ def profillarni_tahrirlash(request, user_id):
         ilmiy_daraja = request.POST.get("ilmiy_daraja")
         gmail = request.POST.get("gmail")
         haqida = request.POST.get("haqida")
-        foydalanuvchi_rol = request.POST.get("foydalanuvchi_rol")
-        fakulteti_id = request.POST.get("fakultet")
+        tugulgan_sana = request.POST.get("tugulgan_sana")
+        fakulteti_id = request.POST.get("fakulteti")
         kafedra_id = request.POST.get("kafedra")
         image = request.FILES.get("image")
         login_f = request.POST.get("login_f")
         parol = request.POST.get("parol")
+        parolni_tasdiqlang = request.POST.get("parolni_tasdiqlang")
 
-        foydalanuvchi.ism = ism
-        foydalanuvchi.familiya = familiya
-        foydalanuvchi.sharifi = otasining_ismi
-        foydalanuvchi.ilmiy_daraja = ilmiy_daraja
-        foydalanuvchi.gmail = gmail
-        foydalanuvchi.haqida = haqida
-        foydalanuvchi.foydalanuvchi_rol = foydalanuvchi_rol
-        foydalanuvchi.login_f = login_f
-        if parol:
-            foydalanuvchi.set_password(parol)
-        
+        # Rol shu yerdan o'zgartirilmaydi: aks holda har kim o'zini prorektor qilib olardi
+        xato = None
+        if parol and parol != parolni_tasdiqlang:
+            xato = "Parollar mos kelmadi!"
+        elif login_f and login_f != foydalanuvchi.login_f and \
+                Foydalanuvchilar.objects.filter(login_f=login_f).exclude(id=foydalanuvchi.id).exists():
+            xato = "Bu login allaqachon band!"
 
-        if fakulteti_id:
-            foydalanuvchi.fakulteti = Dekanatlar.objects.get(id=fakulteti_id)
+        if xato:
+            messages.error(request, xato)
         else:
-            foydalanuvchi.fakulteti = None
+            foydalanuvchi.ism = ism
+            foydalanuvchi.familiya = familiya
+            foydalanuvchi.sharifi = otasining_ismi
+            foydalanuvchi.ilmiy_daraja = ilmiy_daraja
+            foydalanuvchi.gmail = gmail
+            foydalanuvchi.haqida = haqida
+            if tugulgan_sana:
+                foydalanuvchi.tugulgan_sana = tugulgan_sana
+            if login_f:
+                foydalanuvchi.login_f = login_f
+            if parol:
+                foydalanuvchi.parol = make_password(parol)
 
-        if kafedra_id:
-            foydalanuvchi.kafedra = Kafedralar.objects.get(id=kafedra_id)
-        else:
-            foydalanuvchi.kafedra = None
+            # Bo'sh tanlov yuborilsa, bog'lanish olib tashlanadi
+            foydalanuvchi.fakulteti = Dekanatlar.objects.filter(id=fakulteti_id).first() if fakulteti_id else None
+            foydalanuvchi.kafedra = Kafedralar.objects.filter(id=kafedra_id).first() if kafedra_id else None
 
-        if image:
-            foydalanuvchi.image = image
+            if image:
+                foydalanuvchi.image = image
 
-        foydalanuvchi.save()
+            foydalanuvchi.save()
+            messages.success(request, "Ma'lumotlaringiz saqlandi!")
+            return redirect('profile', user_id=foydalanuvchi.id)
 
-    kafedralar = Kafedralar.objects.all()
-    fakultetlar = Dekanatlar.objects.all()
-    foydalanuvchi_rollari = Foydalanuvchilar.ROLES
+    # Xato bo'lsa yoki sahifa to'g'ridan-to'g'ri ochilsa, tahrirlash formasiga qaytamiz.
+    # Avval bu yerda profil.html chizilardi — kerakli ma'lumotlarsiz, shuning uchun
+    # sahifadagi diagrammalar va ko'rsatkichlar ishdan chiqardi.
+    return redirect('profil_tahrirlash', user_id=foydalanuvchi.id)
 
-    return render(
-        request,
-        'app/profil.html',
-        {
-            'foydalanuvchi': foydalanuvchi,
-            'kafedralar': kafedralar,
-            'fakultetlar': fakultetlar,
-            'foydalanuvchi_rollari': foydalanuvchi_rollari,
-            'title': 'About',
-            'message': 'Your application description page.',
-            'year': datetime.now().year,
-        }
-    )
-
+@ozining_sahifasi
 def profil_tahrir(request, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     fakultetlar=Dekanatlar.objects.all()
     kafedralar=Kafedralar.objects.all()
     ROLES=Foydalanuvchilar.ROLES
@@ -1457,60 +1498,57 @@ def video_darslar(request, user_id):
             'year':datetime.now().year,
         }
     )
+@ozining_sahifasi
 def tahrirlash_video(request, v_id, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    video=get_object_or_404(videolar, id=v_id)
+    foydalanuvchi=get_current_user(request)
+    video=get_object_or_404(videolar, id=v_id, muallif_id=foydalanuvchi.id)
     if request.method=="POST":
         form=VideoForm(request.POST, request.FILES, instance=video)
         if form.is_valid():
             form.save()
-            return render(request, 'app/video_darslar.html', {
-                'videolar':videolar.objects.filter(muallif_id=user_id),
-                'foydalanuvchi':foydalanuvchi,
-                'title':'Video Darslar',
-                'message':'Your video_darslar page.',
-                'year':datetime.now().year,
-            })
+            return redirect('video_darslar', user_id=foydalanuvchi.id)
     else:
         form=VideoForm(instance=video)
-        return render(request, 'app/tahrirlash_video.html', {
+
+    # Forma xato to'ldirilgan bo'lsa ham shu sahifa qaytadi (avval 500 xato berardi)
+    return render(request, 'app/tahrirlash_video.html', {
         'form': form,
         'video': video,
-        'foydalanuvchi':foydalanuvchi,
+        'foydalanuvchi': foydalanuvchi,
     })
 
+@ozining_sahifasi
 def qoshish_video(request, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     if request.method=="POST":
         form=VideoForm(request.POST, request.FILES)
         if form.is_valid():
             video=form.save(commit=False)
-            video.muallif_id=user_id
+            # Muallif sessiyadagi foydalanuvchi bo'ladi
+            video.muallif=foydalanuvchi
             video.save()
-            return render(request, 'app/video_darslar.html', {
-                'videolar':videolar.objects.filter(muallif_id=user_id),
-                'foydalanuvchi':foydalanuvchi,
-                'title':'Video Darslar',
-                'message':'Your video_darslar page.',
-                'year':datetime.now().year,
-            })
+            return redirect('video_darslar', user_id=foydalanuvchi.id)
     else:
         form=VideoForm()
-        return render(request, 'app/video_qoshish.html', {
+
+    # Forma xato to'ldirilgan bo'lsa ham shu sahifa qaytadi (avval 500 xato berardi)
+    return render(request, 'app/video_qoshish.html', {
         'form': form,
-        'foydalanuvchi':foydalanuvchi,
+        'foydalanuvchi': foydalanuvchi,
     })
+@ozining_sahifasi
 def ochirish_video(request, user_id):
     assert isinstance(request, HttpRequest)
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
+    foydalanuvchi=get_current_user(request)
     ochir=videolar.objects.filter(muallif_id=user_id)
     return render(request, 'app/ochir_video.html', {
         'ochir': ochir,
         'foydalanuvchi':foydalanuvchi,
     })
+@ozining_sahifasi
 def ochir_video(request, v_id, user_id):
-    foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
-    video=get_object_or_404(videolar, id=v_id)
+    foydalanuvchi=get_current_user(request)
+    video=get_object_or_404(videolar, id=v_id, muallif_id=foydalanuvchi.id)
     if request.method=="POST":
         video.delete()
         return render(request, 'app/video_darslar.html', {

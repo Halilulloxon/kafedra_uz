@@ -1,20 +1,15 @@
-<!DOCTYPE html>
+{% extends "app/base_public.html" %}
 {% load static %}
-<html lang="uz">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video Darslar — EduPortal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_4">
-    <style>
+
+{% block title %}Video Darslar — EduPortal{% endblock %}
+
+{% block extra_head %}
+<style>
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         :root {
             --bg: #0d0f14;
             --surface: #161a23;
@@ -24,14 +19,12 @@
             --text: #e8eaf0;
             --muted: #7a839a;
         }
-
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
         }
-
         /* NAV */
         nav {
             display: flex;
@@ -46,24 +39,20 @@
             top: 0;
             z-index: 100;
         }
-
         .logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--text);
         }
-
             .logo span {
                 color: var(--accent);
             }
-
         nav ul {
             display: flex;
             gap: 8px;
             list-style: none;
         }
-
             nav ul li a {
                 text-decoration: none;
                 color: var(--muted);
@@ -73,12 +62,10 @@
                 border-radius: 8px;
                 transition: all 0.2s;
             }
-
                 nav ul li a:hover, nav ul li a.active {
                     color: var(--text);
                     background: var(--surface2);
                 }
-
         /* PAGE HEADER */
         .page-header {
             text-align: center;
@@ -86,7 +73,6 @@
             background: linear-gradient(180deg, rgba(79,142,247,0.06) 0%, transparent 100%);
             border-bottom: 1px solid var(--border);
         }
-
         .section-tag {
             display: inline-block;
             background: rgba(79,142,247,0.12);
@@ -100,26 +86,22 @@
             margin-bottom: 14px;
             border: 1px solid rgba(79,142,247,0.2);
         }
-
         .page-header h1 {
             font-family: 'Playfair Display', serif;
             font-size: 2.6rem;
             font-weight: 900;
             margin-bottom: 10px;
         }
-
         .page-header p {
             color: var(--muted);
             font-size: 1rem;
         }
-
         /* MAIN */
         .main {
             max-width: 1200px;
             margin: 0 auto;
             padding: 48px 40px 80px;
         }
-
         /* FILTERS */
         .filters {
             display: flex;
@@ -128,13 +110,11 @@
             flex-wrap: wrap;
             margin-bottom: 40px;
         }
-
         .filter-label {
             font-size: 0.82rem;
             color: var(--muted);
             font-weight: 500;
         }
-
         .filter-btn {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -147,22 +127,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
             .filter-btn:hover {
                 color: var(--text);
                 border-color: var(--accent);
             }
-
             .filter-btn.active {
                 background: var(--accent);
                 border-color: var(--accent);
                 color: #fff;
             }
-
         .search-box {
             margin-left: auto;
         }
-
             .search-box input {
                 background: var(--surface);
                 border: 1px solid var(--border);
@@ -175,15 +151,12 @@
                 width: 220px;
                 transition: border-color 0.2s;
             }
-
                 .search-box input:focus {
                     border-color: var(--accent);
                 }
-
                 .search-box input::placeholder {
                     color: var(--muted);
                 }
-
         /* FEATURED */
         .featured {
             display: grid;
@@ -194,7 +167,6 @@
             overflow: hidden;
             margin-bottom: 48px;
         }
-
         .featured-thumb {
             position: relative;
             min-height: 300px;
@@ -204,7 +176,6 @@
             justify-content: center;
             overflow: hidden;
         }
-
             .featured-thumb video {
                 width: 100%;
                 height: 100%;
@@ -214,7 +185,6 @@
                 left: 0;
                 display: none;
             }
-
             .featured-thumb canvas {
                 position: absolute;
                 top: 0;
@@ -223,14 +193,12 @@
                 height: 100%;
                 object-fit: cover;
             }
-
         .feat-overlay {
             position: absolute;
             inset: 0;
             background: rgba(0,0,0,0.35);
             z-index: 1;
         }
-
         .play-big {
             position: relative;
             z-index: 3;
@@ -247,11 +215,9 @@
             transition: transform 0.2s;
             box-shadow: 0 4px 24px rgba(79,142,247,0.4);
         }
-
             .play-big:hover {
                 transform: scale(1.1);
             }
-
         .featured-label {
             position: absolute;
             top: 16px;
@@ -264,7 +230,6 @@
             padding: 4px 10px;
             border-radius: 6px;
         }
-
         .feat-duration {
             position: absolute;
             bottom: 12px;
@@ -276,14 +241,12 @@
             padding: 3px 8px;
             border-radius: 4px;
         }
-
         .featured-info {
             padding: 36px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-
         .new-badge {
             display: inline-block;
             background: rgba(79,142,247,0.15);
@@ -296,38 +259,32 @@
             border: 1px solid rgba(79,142,247,0.25);
             width: fit-content;
         }
-
         .featured-info h2 {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             margin-bottom: 12px;
             line-height: 1.4;
         }
-
         .featured-info p {
             color: var(--muted);
             font-size: 0.88rem;
             line-height: 1.7;
             margin-bottom: 20px;
         }
-
         .featured-meta {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
-
             .featured-meta span {
                 font-size: 0.8rem;
                 color: var(--muted);
             }
-
         .featured-actions {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-
         /* SECTION TITLE */
         .section-title {
             font-family: 'Playfair Display', serif;
@@ -337,14 +294,12 @@
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
         }
-
         /* VIDEOS GRID */
         .videos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
-
         .video-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -352,12 +307,10 @@
             overflow: hidden;
             transition: border-color 0.2s, transform 0.2s;
         }
-
             .video-card:hover {
                 border-color: var(--accent);
                 transform: translateY(-4px);
             }
-
         /* THUMBNAIL */
         .video-thumb-wrap {
             position: relative;
@@ -366,20 +319,17 @@
             height: 180px;
             overflow: hidden;
         }
-
             .video-thumb-wrap video {
                 width: 100%;
                 height: 180px;
                 object-fit: cover;
                 display: none;
             }
-
             .video-thumb-wrap canvas {
                 width: 100%;
                 height: 180px;
                 display: block;
             }
-
         .thumb-placeholder {
             position: absolute;
             inset: 0;
@@ -390,7 +340,6 @@
             font-size: 2.5rem;
             z-index: 0;
         }
-
         .play-overlay {
             position: absolute;
             inset: 0;
@@ -401,11 +350,9 @@
             background: rgba(0,0,0,0.22);
             transition: background 0.2s;
         }
-
         .video-thumb-wrap:hover .play-overlay {
             background: rgba(0,0,0,0.48);
         }
-
         .play-overlay-btn {
             width: 50px;
             height: 50px;
@@ -419,11 +366,9 @@
             box-shadow: 0 4px 20px rgba(79,142,247,0.45);
             transition: transform 0.2s;
         }
-
         .video-thumb-wrap:hover .play-overlay-btn {
             transform: scale(1.1);
         }
-
         .vid-duration {
             position: absolute;
             bottom: 8px;
@@ -435,7 +380,6 @@
             padding: 2px 7px;
             border-radius: 4px;
         }
-
         .teacher-mini {
             position: absolute;
             top: 8px;
@@ -447,36 +391,30 @@
             padding: 3px 8px;
             border-radius: 6px;
         }
-
         .video-info {
             padding: 14px 16px;
         }
-
         .vid-subject {
             font-size: 0.75rem;
             color: var(--accent);
             margin-bottom: 6px;
             font-weight: 600;
         }
-
         .video-info h4 {
             font-size: 0.92rem;
             font-weight: 600;
             margin-bottom: 8px;
             line-height: 1.4;
         }
-
         .video-meta {
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
         }
-
             .video-meta span {
                 font-size: 0.75rem;
                 color: var(--muted);
             }
-
         /* BUTTONS */
         .watch-btn, .download-btn, .read-btn {
             display: inline-flex;
@@ -492,45 +430,37 @@
             text-decoration: none;
             border: none;
         }
-
         .watch-btn {
             background: var(--accent);
             color: #fff;
             width: 100%;
             justify-content: center;
         }
-
             .watch-btn:hover {
                 background: #3a7de8;
             }
-
         .read-btn {
             background: var(--surface2);
             color: var(--text);
             border: 1px solid var(--border);
         }
-
             .read-btn:hover {
                 border-color: var(--accent);
                 color: var(--accent);
             }
-
         .download-btn {
             background: var(--accent);
             color: #fff;
         }
-
             .download-btn:hover {
                 background: #3a7de8;
             }
-
         .empty-msg {
             color: var(--muted);
             padding: 40px;
             text-align: center;
             grid-column: 1/-1;
         }
-
         footer {
             border-top: 1px solid var(--border);
             padding: 24px 40px;
@@ -538,74 +468,31 @@
             color: var(--muted);
             font-size: 0.85rem;
         }
-
         @media (max-width: 768px) {
             nav {
                 padding: 0 16px;
             }
-
                 nav ul {
                     display: none;
                 }
-
             .main {
                 padding: 32px 16px 60px;
             }
-
             .featured {
                 grid-template-columns: 1fr;
             }
-
             .featured-thumb {
                 min-height: 200px;
             }
-
             .featured-info {
                 padding: 24px;
             }
         }
     </style>
-    <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
-</head>
-<body>
+{% endblock %}
 
-    <nav>
-        <div class="logo">Kafedralar<span>.uz</span></div>
-        <ul>
-            <li><a href="{% url 'index' %}" data-i18n="nav_home">Bosh sahifa</a></li>
-            <li><a href="{% url 'teachers' %}" data-i18n="nav_teachers">O'qituvchilar</a></li>
-            <li><a href="{% url 'book' %}" data-i18n="nav_books">Kitoblar</a></li>
-            <li><a href="{% url 'article' %}" data-i18n="nav_articles">Maqolalar</a></li>
-            <li><a href="{% url 'video' %}" class="active" data-i18n="nav_videos">Video darslar</a></li>
-            {% if foydalanuvchi %}
-                {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
-                <li><a href="{% url 'home4' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
-                <li><a href="{% url 'home3' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-university mr-1"></i> Dashboard</a></li>
-                {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
-                <li><a href="{% url 'home2' %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
-                {% else %}
-                <li><a href="{% url 'profile' user_id=foydalanuvchi.id %}" style="color:var(--accent); font-weight:700;"><i class="fas fa-user mr-1"></i> Profil</a></li>
-                {% endif %}
-                <li><a href="{% url 'logout' %}" style="color:#ef4444;"><i class="fas fa-sign-out-alt mr-1"></i> Chiqish</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}" data-i18n="nav_login">Kirish</a></li>
-            {% endif %}
-        </ul>
-        <div class="nav-controls d-flex align-items-center" style="gap:10px;">
-            <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
-                🌙 <span class="d-none d-md-inline" data-i18n="dark_mode">Tungi rejim</span>
-            </button>
-            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                <option value="uz">🇺🇿 UZ</option>
-                <option value="ru">🇷🇺 RU</option>
-                <option value="en">🇬🇧 EN</option>
-            </select>
-        </div>
-    </nav>
-
-    <div class="page-header">
+{% block content %}
+<div class="page-header">
         <div class="section-tag" data-i18n="edu_videos_tag">Ta'lim videolari</div>
         <h1 data-i18n="video_lessons_title">Video Darslar</h1>
         <p data-i18n="video_lessons_desc">O'qituvchilarimiz tomonidan tayyorlangan sifatli video darsliklar platformasi.</p>
@@ -705,10 +592,6 @@
         </div>
 
     </div>
-
-    <footer>
-        <p>© 2026 <strong style="color:var(--accent)">Kafedralar.uz</strong> — Universitet Bilim Markazi.</p>
-    </footer>
 
     <script>
         // ── Thumbnail: video 3-soniyasidagi kadrni canvasga chizish ──
@@ -817,7 +700,4 @@
             document.getElementById('noResults').style.display = (!any && q) ? 'block' : 'none';
         });
     </script>
-
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
-</body>
-</html>
+{% endblock %}

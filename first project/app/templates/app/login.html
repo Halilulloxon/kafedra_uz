@@ -8,6 +8,24 @@ Author: Kafedralar.uz
 <!-- BEGIN: Head-->
 
 <head>
+    <!-- kafedra-theme-init: mavzu sahifa chizilishidan oldin qo'llanadi (oq ekran miltillamasligi uchun) -->
+    <script>
+    (function () {
+        try {
+            var t = localStorage.getItem('app_theme') || localStorage.getItem('theme');
+            if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                t = 'dark';
+            }
+            if (t !== 'dark') return;
+            document.documentElement.classList.add('dark-mode');
+            (function applyBody() {
+                if (document.body) { document.body.classList.add('dark-mode'); }
+                else { requestAnimationFrame(applyBody); }
+            })();
+        } catch (e) {}
+    })();
+    </script>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -92,7 +110,7 @@ Author: Kafedralar.uz
             }
     </style>
     <link rel="stylesheet" href="{% static 'app/app-assets/fonts/font-awesome/css/all.min.css' %}?v=20260922_3">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260922_3">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260923p">
 </head>
 <!-- END: Head-->
 
@@ -133,14 +151,11 @@ Author: Kafedralar.uz
                                                 <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="nav_home">Bosh sahifa</span>
                                             </a>
                                             <div class="d-flex align-items-center" style="gap:8px;">
-                                                <button id="themeToggleBtn" type="button" class="theme-toggle-btn btn-sm" onclick="toggleDarkMode()" title="Mavzuni almashtirish">
-                                                    🌙 <span class="d-none d-sm-inline" data-i18n="dark_mode">Tungi rejim</span>
+                                                {% include "app/partials/lang_switcher.html" %}
+                                                <button id="themeToggleBtn" type="button" class="theme-toggle-btn theme-toggle-icon" data-label="off"
+                                                        onclick="toggleDarkMode()" title="Mavzuni almashtirish" aria-label="Mavzuni almashtirish">
+                                                    <i class="fas fa-moon"></i>
                                                 </button>
-                                                <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                                                    <option value="uz">🇺🇿 UZ</option>
-                                                    <option value="ru">🇷🇺 RU</option>
-                                                    <option value="en">🇬🇧 EN</option>
-                                                </select>
                                             </div>
                                         </div>
 
@@ -235,6 +250,6 @@ Author: Kafedralar.uz
         });
     </script>
 
-    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260922_3"></script>
+    <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260923p"></script>
 </body>
 </html>

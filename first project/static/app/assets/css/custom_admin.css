@@ -546,3 +546,118 @@ input:focus, textarea:focus, select:focus {
         margin-bottom: 6px !important;
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ADMIN PANEL — QORONG'I REJIM
+   Django admin o'z mavzu tugmasi bilan <html data-theme="dark"> qo'yadi.
+   Shu sababli quyidagi qoidalar o'sha holatga va tizim sozlamasiga bog'langan.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"],
+html.dark-mode,
+body.dark-mode {
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f1f5f9;
+    --text-muted: #94a3b8;
+    --primary-light: #1e3a5f;
+}
+
+html[data-theme="dark"] body,
+body.dark-mode {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] div.breadcrumbs,
+html[data-theme="dark"] .dashboard .module,
+html[data-theme="dark"] .dashboard .module caption,
+html[data-theme="dark"] #changelist,
+html[data-theme="dark"] #changelist thead th,
+html[data-theme="dark"] #toolbar,
+html[data-theme="dark"] #changelist-filter,
+html[data-theme="dark"] .submit-row,
+html[data-theme="dark"] .module,
+html[data-theme="dark"] .inline-group,
+html[data-theme="dark"] fieldset {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] .dashboard .module tr:hover,
+html[data-theme="dark"] #changelist tbody tr:hover {
+    background: #243449 !important;
+}
+
+html[data-theme="dark"] #content h1,
+html[data-theme="dark"] .dashboard .module th a,
+html[data-theme="dark"] #changelist-filter h2,
+html[data-theme="dark"] .dashboard .module caption,
+html[data-theme="dark"] a:link,
+html[data-theme="dark"] a:visited {
+    color: #e2e8f0 !important;
+}
+
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] input[type="email"],
+html[data-theme="dark"] input[type="url"],
+html[data-theme="dark"] input[type="number"],
+html[data-theme="dark"] input[type="tel"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Tizim sozlamasi qorong'i bo'lsa (foydalanuvchi qo'lda "light" tanlamagan bo'lsa) */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) body {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+
+    html:not([data-theme="light"]) div.breadcrumbs,
+    html:not([data-theme="light"]) .dashboard .module,
+    html:not([data-theme="light"]) .dashboard .module caption,
+    html:not([data-theme="light"]) #changelist,
+    html:not([data-theme="light"]) #changelist thead th,
+    html:not([data-theme="light"]) #toolbar,
+    html:not([data-theme="light"]) #changelist-filter,
+    html:not([data-theme="light"]) .submit-row,
+    html:not([data-theme="light"]) .module,
+    html:not([data-theme="light"]) .inline-group,
+    html:not([data-theme="light"]) fieldset {
+        background: #1e293b !important;
+        background-color: #1e293b !important;
+        color: #f1f5f9 !important;
+        border-color: #334155 !important;
+    }
+
+    html:not([data-theme="light"]) #content h1,
+    html:not([data-theme="light"]) .dashboard .module th a,
+    html:not([data-theme="light"]) #changelist-filter h2 {
+        color: #e2e8f0 !important;
+    }
+
+    html:not([data-theme="light"]) input[type="text"],
+    html:not([data-theme="light"]) input[type="password"],
+    html:not([data-theme="light"]) input[type="email"],
+    html:not([data-theme="light"]) input[type="url"],
+    html:not([data-theme="light"]) input[type="number"],
+    html:not([data-theme="light"]) input[type="tel"],
+    html:not([data-theme="light"]) textarea,
+    html:not([data-theme="light"]) select {
+        background: #0f172a !important;
+        color: #f1f5f9 !important;
+        border-color: #334155 !important;
+    }
+}

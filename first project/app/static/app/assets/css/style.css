@@ -12,3 +12,103 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 	cursor: pointer;
 	transition: background-color 0.2s ease;
 }
+/* ══════════════════════════════════════════════════════════════════════════
+   KABINET SAHIFALARI — JOYLASHUV VA MOSLASHUVCHANLIK (RESPONSIVE)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Kontent balandligi footer ekranga sig'adigan qilib hisoblanadi.
+   Avval 100vh edi va footer har doim ekrandan pastda qolardi. */
+body.vertical-layout .app-content {
+    min-height: calc(100vh - 8rem) !important;
+}
+
+/* Footer kontent bilan bir tekisda tursin (yon menyu kengligi 260px) */
+.footer.footer-static {
+    margin-left: 260px;
+}
+
+/* Yon menyu yig'ilgan holatda */
+body.menu-collapsed .footer.footer-static {
+    margin-left: 60px;
+}
+
+@media (max-width: 991.98px) {
+    /* Telefon va planshetda yon menyu yashirin — footer butun kenglikni egallaydi */
+    .footer.footer-static,
+    body.menu-collapsed .footer.footer-static {
+        margin-left: 0;
+    }
+
+    body.vertical-layout .app-content {
+        min-height: calc(100vh - 10rem) !important;
+    }
+
+    /* Keng jadvallar sahifani cho'zib yubormasin, o'zi suriladigan bo'lsin */
+    .card .table,
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Sarlavha va tugmalar bir qatorga sig'masa, ustma-ust tushsin */
+    .card-header {
+        flex-wrap: wrap;
+    }
+
+    .card-header .btn,
+    .card-header .badge {
+        margin-top: 6px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Kichik ekranda ichki bo'shliqlar kamaytiriladi */
+    .app-content.content {
+        padding: 1rem 0.75rem !important;
+    }
+
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    /* Tugmalar to'liq kenglikda va barmoq bilan bosish uchun qulay */
+    .card-header .btn,
+    form .btn-block-sm {
+        width: 100%;
+    }
+
+    /* Matn juda mayda bo'lib ketmasin */
+    body {
+        font-size: 14px;
+    }
+}
+
+/* ── Telefonda yuqori menyu ixcham bo'lsin ──
+   Avval tugma yozuvlari sig'may, menyu uch qatorga cho'zilardi va
+   sahifa sarlavhasini bosib qolardi. Endi faqat belgilar qoladi. */
+@media (max-width: 767.98px) {
+    .header-navbar .navbar-container {
+        padding: 0 0.5rem;
+    }
+
+    .header-navbar .theme-toggle-btn span,
+    .header-navbar .navbar-nav .btn span,
+    .header-navbar .user-name {
+        display: none !important;
+    }
+
+    .header-navbar .lang-select {
+        max-width: 72px;
+        padding: 2px 4px;
+    }
+
+    .header-navbar .navbar-nav .btn {
+        padding: 4px 8px;
+    }
+
+    .header-navbar .brand-text {
+        font-size: 16px;
+    }
+}
