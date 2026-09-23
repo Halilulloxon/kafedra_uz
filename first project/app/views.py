@@ -31,12 +31,22 @@ def get_current_user(request):
         return None
 
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate, login as auth_login
 
 def login_view(request):
     if request.method == 'POST':
         login = request.POST.get('login_f')
         password = request.POST.get('password')
 
+        # 1. Check Django Superuser / Staff User (Admin Panel login)
+        django_user = authenticate(request, username=login, password=password)
+        if django_user is not None and (django_user.is_staff or django_user.is_superuser):
+            auth_login(request, django_user)
+            request.session['username'] = django_user.username
+            messages.success(request, f"Xush kelibsiz, administrator {django_user.username}!")
+            return redirect('/admin/')
+
+        # 2. Check Standard Foydalanuvchilar (Teachers, Heads, Deans, Vice-rectors)
         try:
             user = Foydalanuvchilar.objects.get(login_f=login)
         except Foydalanuvchilar.DoesNotExist:
