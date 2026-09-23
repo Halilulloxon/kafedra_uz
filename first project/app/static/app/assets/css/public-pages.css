@@ -472,7 +472,8 @@ body.dark-mode .pp-badge-amber {
 .pp-grid {
     display: grid;
     gap: 22px;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    /* Kartochka kamida 320px — kitoblar sahifasida qatoriga 3 ta tushadi */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
 }
 
 .pp-card {
@@ -494,7 +495,7 @@ body.dark-mode .pp-badge-amber {
 .pp-cover {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -554,8 +555,12 @@ body.dark-mode .pp-badge-amber {
 
 @media (max-width: 767.98px) {
     .pp-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
         gap: 16px;
+    }
+
+    .pp-cover {
+        height: 150px;
     }
 
     .pp-card-actions {

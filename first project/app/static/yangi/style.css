@@ -56,7 +56,8 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 48px;
+  /* Menyu ichi sahifa konteyneri bilan bir tekisda (1400px) turadi */
+  padding: 0 max(20px, calc((100% - 1400px) / 2));
   height: 68px;
   border-bottom: 1px solid rgba(232, 160, 32, 0.2);
 }
@@ -276,7 +277,7 @@ footer {
   background: var(--navy);
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
-  padding: 36px 48px;
+  padding: 36px max(20px, calc((100% - 1400px) / 2));
   font-size: 14px;
   border-top: 1px solid rgba(232, 160, 32, 0.2);
 }

@@ -679,6 +679,13 @@ nav {
     -webkit-backdrop-filter: blur(12px);
 }
 
+/* Ochiq sahifalar menyusi sahifa konteyneri bilan bir tekisda (1400px).
+   Kabinetdagi .header-navbar ga tegilmaydi. */
+nav:not(.header-navbar) {
+    padding: 0 max(16px, calc((100% - 1400px) / 2));
+}
+
+
 nav .logo {
     font-size: clamp(1.15rem, 2.5vw, 1.45rem);
     white-space: nowrap;
