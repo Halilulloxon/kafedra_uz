@@ -362,6 +362,18 @@
         });
     };
 
+    // Mavzu tugmasi belgilari — ingichka chiziqli (stroke) ko'rinish.
+    // Font Awesome o'rniga SVG: shriftga bog'liq emas va rangni o'zi oladi.
+    var QUYOSH_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" ' +
+        'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/>' +
+        '<path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/>' +
+        '<path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
+
+    var OY_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" ' +
+        'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+
     // 3. Toggle Dark / Light Mode
     window.toggleDarkMode = function () {
         var isDark = document.body.classList.toggle('dark-mode');
@@ -382,7 +394,7 @@
         document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
             // data-label="off" — faqat belgi ko'rsatiladigan yumaloq tugma (yangi dizayn)
             if (btn.dataset.label === 'off') {
-                btn.innerHTML = '<i class="fas ' + (isDark ? 'fa-sun' : 'fa-moon') + '"></i>';
+                btn.innerHTML = isDark ? QUYOSH_SVG : OY_SVG;
                 btn.setAttribute('title', label);
                 btn.setAttribute('aria-label', label);
                 return;
