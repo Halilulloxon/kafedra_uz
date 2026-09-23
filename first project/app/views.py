@@ -34,21 +34,44 @@ def get_current_user(request):
         return None
 
 
-def ozining_sahifasi(view):
-    """URL dagi user_id sessiyadagi foydalanuvchiga mos kelishini talab qiladi.
+ROL_DARAJASI = {
+    'oqituvchi': 1,
+    'kafedra mudiri': 2,
+    'dekan': 3,
+    'prorektor': 4,
+}
 
-    Busiz manzildagi raqamni almashtirib, birovning ma'lumotlarini
-    ko'rish, tahrirlash yoki o'chirish mumkin edi.
+
+def kabinet(eng_kam_rol=None):
+    """Kabinet sahifalarining qo'riqchisi.
+
+    - tizimga kirmagan bo'lsa — login sahifasiga yuboradi;
+    - manzildagi user_id o'zinikidan boshqa bo'lsa — 403 (busiz manzildagi
+      raqamni almashtirib birovning ma'lumotlarini ko'rish mumkin edi);
+    - lavozimi yetarli bo'lmasa — 403. Yuqori lavozim pastdagi bo'limni ham
+      ocha oladi (prorektor > dekan > kafedra mudiri > o'qituvchi).
     """
-    @wraps(view)
-    def wrapper(request, *args, **kwargs):
-        joriy = get_current_user(request)
-        if joriy is None:
-            return redirect('login')
-        if joriy.id != kwargs.get('user_id'):
-            raise PermissionDenied("Bu sahifa sizga tegishli emas.")
-        return view(request, *args, **kwargs)
-    return wrapper
+    kerakli_daraja = ROL_DARAJASI[eng_kam_rol] if eng_kam_rol else 0
+
+    def dekorator(view):
+        @wraps(view)
+        def wrapper(request, *args, **kwargs):
+            joriy = get_current_user(request)
+            if joriy is None:
+                return redirect('login')
+            if kwargs.get('user_id') is not None and joriy.id != kwargs['user_id']:
+                raise PermissionDenied("Bu sahifa sizga tegishli emas.")
+            if ROL_DARAJASI.get(joriy.foydalanuvchi_rol, 0) < kerakli_daraja:
+                raise PermissionDenied(
+                    "Bu bo'lim %s uchun mo'ljallangan." % eng_kam_rol
+                )
+            return view(request, *args, **kwargs)
+        return wrapper
+    return dekorator
+
+
+# Eski nom: faqat "sahifa o'ziniki" tekshiruvi.
+ozining_sahifasi = kabinet()
 
 
 def faqat_kafedra_mudiri(foydalanuvchi):
@@ -195,6 +218,7 @@ def login(request):
             'year':datetime.now().year,
         }
     )
+@kabinet()
 def home1(request):
     foydalanuvchi = get_current_user(request)
     if not foydalanuvchi:
@@ -271,6 +295,7 @@ def home1(request):
             'talablar': talablar,
         }
     )
+@kabinet('kafedra mudiri')
 def home2(request):
     foydalanuvchi = get_current_user(request)
     if not foydalanuvchi:
@@ -305,6 +330,7 @@ def home2(request):
             'oqituvchilar_soni': oqituvchilar_soni,
         }
     )
+@kabinet('dekan')
 def home3(request):
     foydalanuvchi = get_current_user(request)
     if not foydalanuvchi:
@@ -335,6 +361,7 @@ def home3(request):
         }
     )
 
+@kabinet('prorektor')
 def home4(request):
     foydalanuvchi = get_current_user(request)
     if not foydalanuvchi:
@@ -403,9 +430,11 @@ def home4(request):
         }
     )
 
+@kabinet('prorektor')
 def profile4(request, user_id):
     return home4(request)
 
+@kabinet()
 def kafedra_talablari(request, user_id):
     foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
     talablar = KafedraTalablari.objects.filter(kafedra=foydalanuvchi.kafedra) if foydalanuvchi.kafedra else []
@@ -471,6 +500,7 @@ def ochir_talab(request, t_id, user_id):
     messages.success(request, "Talab muvaffaqiyatli o'chirildi!")
     return redirect('kafedra_talablari', user_id=user_id)
 
+@kabinet('prorektor')
 def ilmiy_ishlari4(request, user_id):
     foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
     fakultet_id = request.GET.get('fakultet')
@@ -507,6 +537,7 @@ def ilmiy_ishlari4(request, user_id):
         'turi': turlar,
     })
 
+@kabinet('prorektor')
 def oquv_ishlari4(request, user_id):
     foydalanuvchi = get_object_or_404(Foydalanuvchilar, id=user_id)
     fakultet_id = request.GET.get('fakultet')
@@ -543,6 +574,7 @@ def oquv_ishlari4(request, user_id):
         'turi': turlar,
     })
 
+@kabinet()
 def oquv_ishlari(request, user_id):
     """Renders the oquv_ishlari page."""
     assert isinstance(request, HttpRequest)
@@ -568,6 +600,7 @@ def oquv_ishlari(request, user_id):
             'ish_muallifi':ish_muallifi
         }
     )
+@kabinet()
 def ilmiy_ishlari(request, user_id):
     """Renders the oquv_ishlari page."""
     assert isinstance(request, HttpRequest)
@@ -668,6 +701,7 @@ def profile(request, user_id):
             'talablar': talablar,
         }
     )
+@kabinet()
 def qoshish(request, user_id):
     assert isinstance(request, HttpRequest)
     foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
@@ -681,6 +715,7 @@ def qoshish(request, user_id):
             'year':datetime.now().year,
         }
     )
+@kabinet()
 def qoshish_i(request, user_id):
     assert isinstance(request, HttpRequest)
     foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
@@ -839,6 +874,7 @@ def _get_ish_muallifi_list(qs_values):
     return sorted(result)
 
 
+@kabinet()
 def filtrlash_ilmiy(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -874,6 +910,7 @@ def filtrlash_ilmiy(request, user_id):
     })
 
 
+@kabinet('kafedra mudiri')
 def filtrlash_ilmiy2(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -911,6 +948,7 @@ def filtrlash_ilmiy2(request, user_id):
     })
 
 
+@kabinet('dekan')
 def filtrlash_ilmiy3(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -958,6 +996,7 @@ def filtrlash_ilmiy3(request, user_id):
     })
 
 
+@kabinet()
 def filtrlash_oquv(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -993,6 +1032,7 @@ def filtrlash_oquv(request, user_id):
     })
 
 
+@kabinet('kafedra mudiri')
 def filtrlash_oquv2(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -1030,6 +1070,7 @@ def filtrlash_oquv2(request, user_id):
     })
 
 
+@kabinet('dekan')
 def filtrlash_oquv3(request, user_id):
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -1119,6 +1160,7 @@ def tahrirlash_ilmiy(request, i_id, t_id, user_id):
         'foydalanuvchi':foydalanuvchi,
     })
 
+@kabinet('kafedra mudiri')
 def profile2(request, user_id):
     assert isinstance(request, HttpRequest)
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
@@ -1149,6 +1191,7 @@ def profile2(request, user_id):
         }
     )
 
+@kabinet('dekan')
 def profile3(request, user_id):
     assert isinstance(request, HttpRequest)
     foydalanuvchi = Foydalanuvchilar.objects.get(id=user_id)
@@ -1177,6 +1220,7 @@ def profile3(request, user_id):
 from django.db.models import Min
 
 
+@kabinet('kafedra mudiri')
 def ilmiy_ishlari2(request, user_id):
     assert isinstance(request, HttpRequest)
 
@@ -1211,6 +1255,7 @@ def ilmiy_ishlari2(request, user_id):
     })
 
 
+@kabinet('dekan')
 def ilmiy_ishlari3(request, user_id):
     assert isinstance(request, HttpRequest)
 
@@ -1250,6 +1295,7 @@ def ilmiy_ishlari3(request, user_id):
     })
 
 
+@kabinet('kafedra mudiri')
 def oquv_ishlari2(request, user_id):
     assert isinstance(request, HttpRequest)
 
@@ -1284,6 +1330,7 @@ def oquv_ishlari2(request, user_id):
     })
 
 
+@kabinet('dekan')
 def oquv_ishlari3(request, user_id):
     assert isinstance(request, HttpRequest)
 
@@ -1567,6 +1614,7 @@ def teacher1(request, id):
             'year': datetime.now().year,
         }
     )
+@kabinet()
 def video_darslar(request, user_id):
     assert isinstance(request, HttpRequest)
     foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
@@ -1647,6 +1695,7 @@ def ochir_video(request, v_id, user_id):
         'video': video,
         'foydalanuvchi':foydalanuvchi,
     })
+@kabinet()
 def video_filtrlash(request, user_id):
     foydalanuvchi=Foydalanuvchilar.objects.get(id=user_id)
     start = request.GET.get('from')
@@ -1657,6 +1706,7 @@ def video_filtrlash(request, user_id):
     return render(request, 'app/video_darslar.html', {'videolar': data, 'foydalanuvchi':foydalanuvchi})
 def qidirish(request):
     query = request.GET.get('q', '')
+    foydalanuvchi = get_current_user(request)
     total_maqolalar = ilmiy.objects.filter(foreveryone=True).count()
     total_kitoblar = oquvIshlari.objects.filter(foreveryone=True).count()
     total_videolar = videolar.objects.filter(foreveryone=True).count()
@@ -1675,6 +1725,8 @@ def qidirish(request):
         'total_kitoblar': total_kitoblar,
         'total_maqolalar': total_maqolalar,
         'total_videolar': total_videolar,
+        # Qidiruvdan keyin ham yuqoridagi menyu hisobni tanisin
+        'foydalanuvchi': foydalanuvchi,
         'title': 'Teachers',
         'year': datetime.now().year,
     })
