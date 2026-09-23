@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Kafedralar.uz — PDF modal oynasi
+   Sayt ichida hujjatni ko'rsatish uchun. Yorug' va qorong'i rejimga moslashadi.
+   ========================================================================== */
+
+.pdfm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    background: rgba(8, 12, 22, 0.72);
+    backdrop-filter: blur(3px);
+}
+
+.pdfm-overlay.is-open {
+    display: flex;
+    animation: pdfmFade 0.18s ease;
+}
+
+@keyframes pdfmFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+body.pdfm-lock {
+    overflow: hidden;
+}
+
+.pdfm {
+    display: flex;
+    flex-direction: column;
+    width: min(1040px, 100%);
+    height: min(88vh, 100%);
+    overflow: hidden;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    animation: pdfmUp 0.22s ease;
+}
+
+@keyframes pdfmUp {
+    from { transform: translateY(14px); opacity: 0; }
+    to   { transform: none; opacity: 1; }
+}
+
+body.dark-mode .pdfm {
+    background: #1e293b;
+}
+
+.pdfm-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+body.dark-mode .pdfm-head {
+    background: #0f172a;
+    border-bottom-color: #334155;
+}
+
+.pdfm-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+body.dark-mode .pdfm-title {
+    color: #f1f5f9;
+}
+
+.pdfm-title i {
+    color: #ef4444;
+}
+
+.pdfm-title span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdfm-tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.pdfm-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pdfm-btn:hover {
+    background: #eff6ff;
+    border-color: #2563eb;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+body.dark-mode .pdfm-btn {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+body.dark-mode .pdfm-btn:hover {
+    background: #263449;
+    border-color: #3b82f6;
+    color: #93c5fd;
+}
+
+.pdfm-close:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+
+.pdfm-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    background: #525659;
+}
+
+.pdfm-body iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+@media (max-width: 767.98px) {
+    .pdfm-overlay {
+        padding: 0;
+    }
+
+    .pdfm {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .pdfm-title {
+        font-size: 13.5px;
+    }
+
+    .pdfm-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.pdfm-body object {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+/* Brauzer PDF ni ko'rsata olmaganda chiqadigan zaxira ko'rinish */
+.pdfm-fallback {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 40px 24px;
+    text-align: center;
+    background: #ffffff;
+    color: #64748b;
+}
+
+body.dark-mode .pdfm-fallback {
+    background: #1e293b;
+    color: #94a3b8;
+}
+
+.pdfm-fallback i {
+    font-size: 40px;
+    color: #ef4444;
+}
+
+.pdfm-fallback strong {
+    font-size: 16px;
+    color: #0f172a;
+}
+
+body.dark-mode .pdfm-fallback strong {
+    color: #f1f5f9;
+}
+
+.pdfm-fallback span {
+    font-size: 13.5px;
+    max-width: 420px;
+    line-height: 1.6;
+}
+
+.pdfm-fallback-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 6px;
+}
