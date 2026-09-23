@@ -1184,6 +1184,15 @@ body.dark-mode .global-lang-select {
     color: #f8fafc;
 }
 
+/* Katta ekranlarda kabinet sahifalari ham kengroq bo'lsin
+   (Bootstrap .container ni 1140px da ushlab turadi) */
+@media (min-width: 1200px) {
+    body.vertical-layout .container,
+    body.vertical-layout .container-fluid {
+        max-width: 1400px;
+    }
+}
+
 /* Ultrawide Screens (>= 1600px) */
 @media (min-width: 1600px) {
     .main,
