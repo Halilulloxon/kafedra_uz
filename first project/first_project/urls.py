@@ -13,6 +13,8 @@ from django.urls import path, include
 urlpatterns = [
     path('home/', views.index, name='index'),
     path('login/', views.login_view, name='login'),
+    path('google/login/', views.google_login, name='google_login'),
+    path('google/callback/', views.google_callback, name='google_callback'),
     path('', views.index, name='index'),
     path('logout/',views.logout, name='logout'),
     path('home1/', views.home1, name='home1'),

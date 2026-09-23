@@ -157,6 +157,8 @@ To'ldirilishi kerak bo'lgan qatorlar:
 | `DB_USER` / `DB_PASSWORD` | 4-qadamdagi `kafedra_user` va uning paroli |
 | `EMAIL_HOST_USER` | Gmail manzili |
 | `EMAIL_HOST_PASSWORD` | Gmail App Password (bo'sh joylari bo'lsa, qo'shtirnoq ichida yozing) |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console dagi Client ID (ixtiyoriy, 16-bo'limga qarang) |
+| `GOOGLE_CLIENT_SECRET` | Google Cloud Console dagi Client secret |
 
 Saqlash: `Ctrl+O`, `Enter`, chiqish: `Ctrl+X`.
 
@@ -430,6 +432,58 @@ Tuzatilgandan keyin asosiy branchga qaytish: `sudo -u kafedra git checkout main`
 | Yuklangan rasm/video ko'rinmaydi | `media` papkasiga ruxsat yo'q | `chown -R kafedra:www-data /var/www/kafedra_uz/repo/first\ project/media` |
 
 ---
+
+## 16. Google orqali kirishni yoqish (ixtiyoriy)
+
+Saytdagi "Google bilan davom etish" tugmasi faqat kalitlar `.env` da bo'lsa ko'rinadi.
+Kalitlar bo'sh bo'lsa, sayt odatdagidek login/parol bilan ishlayveradi.
+
+### Kalitlarni olish
+
+1. <https://console.cloud.google.com> ga kiring va yangi loyiha yarating (masalan `Kafedralar.uz`).
+2. **APIs & Services → OAuth consent screen**:
+   - **External** ni tanlang;
+   - App name: `Kafedralar.uz`, qo'llab-quvvatlash emaili — o'zingizniki;
+   - sinash bosqichida **Test users** ga o'z Gmail manzilingizni qo'shing;
+   - saqlang. (Hamma foydalanuvchilar kira olishi uchun keyinroq **Publish app** qilinadi.)
+3. **APIs & Services → Credentials → Create credentials → OAuth client ID**:
+   - Application type: **Web application**;
+   - **Authorized JavaScript origins**:
+     - `https://kafedralar.uz`
+     - `http://localhost:8000` (lokal sinov uchun)
+   - **Authorized redirect URIs** (eng muhimi, aynan shunday yoziladi):
+     - `https://kafedralar.uz/google/callback/`
+     - `http://localhost:8000/google/callback/`
+4. **Create** bosilgach chiqadigan **Client ID** va **Client secret** ni nusxalang.
+
+### Serverga yozish
+
+```bash
+sudo -u kafedra nano /var/www/kafedra_uz/app/.env
+```
+
+```
+GOOGLE_CLIENT_ID=123456789-xxxxxxxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxx
+```
+
+Saqlagach xizmatni qayta ishga tushiring:
+
+```bash
+sudo systemctl restart kafedra
+```
+
+### Qanday ishlaydi
+
+- Kirish sahifasidagi tugma foydalanuvchini Google hisobini tanlashga yuboradi.
+- Shu email bilan hisob bo'lsa — tizimga kiradi (hisob tasdiqlangan bo'lishi shart).
+- Hisob bo'lmasa — ro'yxatdan o'tish formasi **ism, familiya, email va rasm bilan
+  to'ldirilgan** holda ochiladi; foydalanuvchi faqat lavozim, fakultet va kafedrani tanlaydi.
+- Yangi hisob, avvalgidek, **administrator tasdig'idan** keyin faollashadi
+  (admin panelda `Accepted` belgisi).
+
+> Kalitlar hech qachon git'ga qo'shilmaydi — ular faqat `.env` faylida turadi.
+> Kalit boshqaga ko'rinib qolsa, Google Cloud Console'dan uni o'chirib, yangisini yarating.
 
 ## Lokal kompyuterda ishlatish (Windows + XAMPP)
 

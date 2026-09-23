@@ -5,7 +5,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'app/assets/css/public-pages.css' %}?v=20260923w">
-<link rel="stylesheet" href="{% static 'app/assets/css/auth-pages.css' %}?v=20260923v">
+<link rel="stylesheet" href="{% static 'app/assets/css/auth-pages.css' %}?v=20260923y">
 {% endblock %}
 
 {% block content %}
@@ -47,6 +47,30 @@
                 </div>
                 {% endif %}
 
+                {% if google %}
+                <div class="pp-google-card">
+                    {% if google.rasm %}<img src="{{ google.rasm }}" alt="" referrerpolicy="no-referrer">
+                    {% else %}<span class="pp-google-avatar"><i class="fas fa-user"></i></span>{% endif %}
+                    <div>
+                        <strong>{{ google.toliq_ism|default:google.email }}</strong>
+                        <span>{{ google.email }} — Google hisobi tasdiqlandi</span>
+                    </div>
+                </div>
+                {% elif google_yoqilgan %}
+                <a class="pp-google" href="{% url 'google_login' %}">
+                    <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true">
+                        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.2 17.7 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.4c-.5 2.9-2.2 5.3-4.6 7l7.6 5.9c4.4-4.1 6.7-10.1 6.7-17.2z"/>
+                        <path fill="#FBBC05" d="M10.4 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C.9 16.3 0 20 0 24s.9 7.7 2.6 10.8l7.8-6.1z"/>
+                        <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.8 2.3-8.3 2.3-6.3 0-11.7-3.7-13.6-9.9l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/>
+                    </svg>
+                    <span>Google bilan davom etish</span>
+                </a>
+
+                <div class="pp-or"><span>yoki</span></div>
+
+                {% endif %}
+
                 <form method="POST" enctype="multipart/form-data" id="ppRegForm">
                     {% csrf_token %}
 
@@ -55,32 +79,34 @@
                     <div class="pp-grid-3">
                         <div class="pp-field">
                             <label for="ism">Ism <span class="pp-req">*</span></label>
-                            <input type="text" id="ism" name="ism" required>
+                            <input type="text" id="ism" name="ism" value="{{ qiymatlar.ism }}" required>
                         </div>
                         <div class="pp-field">
                             <label for="familiya">Familiya <span class="pp-req">*</span></label>
-                            <input type="text" id="familiya" name="familiya" required>
+                            <input type="text" id="familiya" name="familiya" value="{{ qiymatlar.familiya }}" required>
                         </div>
                         <div class="pp-field">
                             <label for="otasining_ismi">Otasining ismi</label>
-                            <input type="text" id="otasining_ismi" name="otasining_ismi">
+                            <input type="text" id="otasining_ismi" name="otasining_ismi" value="{{ qiymatlar.otasining_ismi }}">
                         </div>
                     </div>
 
                     <div class="pp-grid-3">
                         <div class="pp-field">
                             <label for="tugulgan_sana">Tug'ilgan sana</label>
-                            <input type="date" id="tugulgan_sana" name="tugulgan_sana">
+                            <input type="date" id="tugulgan_sana" name="tugulgan_sana" value="{{ qiymatlar.tugulgan_sana }}">
                         </div>
                         <div class="pp-field">
                             <label for="ilmiy_daraja">Ilmiy daraja</label>
-                            <input type="text" id="ilmiy_daraja" name="ilmiy_daraja" placeholder="Masalan: PhD, Bakalavr">
+                            <input type="text" id="ilmiy_daraja" name="ilmiy_daraja" value="{{ qiymatlar.ilmiy_daraja }}"
+                                   placeholder="Masalan: PhD, Bakalavr">
                         </div>
                         <div class="pp-field">
                             <label for="gmail">Email <span class="pp-req">*</span></label>
                             <div class="pp-input-wrap">
                                 <i class="fas fa-envelope"></i>
-                                <input type="email" id="gmail" name="gmail" placeholder="ism@gmail.com" required>
+                                <input type="email" id="gmail" name="gmail" value="{{ qiymatlar.gmail }}"
+                                       placeholder="ism@gmail.com" required {% if google %}readonly{% endif %}>
                             </div>
                         </div>
                     </div>
@@ -88,7 +114,7 @@
                     <div class="pp-field">
                         <label for="image">Profil rasmi</label>
                         <div class="pp-file">
-                            <div class="pp-file-preview" id="ppPreview"><i class="fas fa-user"></i></div>
+                            <div class="pp-file-preview" id="ppPreview">{% if google.rasm %}<img src="{{ google.rasm }}" alt="" referrerpolicy="no-referrer">{% else %}<i class="fas fa-user"></i>{% endif %}</div>
                             <input type="file" id="image" name="image" accept="image/*">
                         </div>
                     </div>
@@ -101,7 +127,7 @@
                             <select id="foydalanuvchi_rol" name="foydalanuvchi_rol" required>
                                 <option value="">Tanlang...</option>
                                 {% for key, label in foydalanuvchi_rollari %}
-                                <option value="{{ key }}">{{ label }}</option>
+                                <option value="{{ key }}" {% if qiymatlar.foydalanuvchi_rol == key %}selected{% endif %}>{{ label }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -110,13 +136,13 @@
                             <select id="fakultet-select" name="fakultet" required>
                                 <option value="">Tanlang...</option>
                                 {% for f in fakultetlar %}
-                                <option value="{{ f.id }}">{{ f.nomi }}</option>
+                                <option value="{{ f.id }}" {% if qiymatlar.fakultet == f.id|stringformat:"s" %}selected{% endif %}>{{ f.nomi }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="pp-field">
                             <label for="kafedra-select">Kafedra <span class="pp-req">*</span></label>
-                            <select id="kafedra-select" name="kafedra" required>
+                            <select id="kafedra-select" name="kafedra" required data-tanlangan="{{ qiymatlar.kafedra }}">
                                 <option value="">Avval fakultetni tanlang</option>
                             </select>
                         </div>
@@ -125,17 +151,21 @@
                     <div class="pp-field">
                         <label for="haqida">O'zingiz haqingizda</label>
                         <textarea id="haqida" name="haqida" rows="3"
-                                  placeholder="Qisqacha: yo'nalishingiz, tajribangiz, qiziqishlaringiz"></textarea>
+                                  placeholder="Qisqacha: yo'nalishingiz, tajribangiz, qiziqishlaringiz">{{ qiymatlar.haqida }}</textarea>
                     </div>
 
                     <div class="pp-form-section">Hisob ma'lumotlari</div>
+
+                    {% if google %}
+                    <div class="pp-help" style="margin:-6px 0 12px;">Parol qo'ymasangiz ham bo'ladi — keyin "Google bilan davom etish" orqali kirasiz.</div>
+                    {% endif %}
 
                     <div class="pp-field">
                         <label for="login_f">Login <span class="pp-req">*</span></label>
                         <div class="pp-input-wrap">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="login_f" name="login_f" placeholder="Tizimga kirish uchun nom"
-                                   required autocomplete="username">
+                            <input type="text" id="login_f" name="login_f" value="{{ qiymatlar.login_f }}"
+                                   placeholder="Tizimga kirish uchun nom" required autocomplete="username">
                         </div>
                     </div>
 
@@ -144,18 +174,18 @@
                             <label for="parol">Parol <span class="pp-req">*</span></label>
                             <div class="pp-input-wrap">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" id="parol" name="parol" required autocomplete="new-password">
+                                <input type="password" id="parol" name="parol" {% if not google %}required{% endif %} autocomplete="new-password">
                                 <button type="button" class="pp-eye" onclick="ppToggleParol('parol', this)"
                                         aria-label="Parolni ko'rsatish"><i class="fas fa-eye"></i></button>
                             </div>
-                            <div class="pp-help" id="ppParolHelp">Kamida 6 ta belgi.</div>
+                            <div class="pp-help" id="ppParolHelp">{% if google %}Ixtiyoriy — Google orqali kirasiz.{% else %}Kamida 6 ta belgi.{% endif %}</div>
                         </div>
 
                         <div class="pp-field">
                             <label for="parol_tasdiq">Parolni tasdiqlang <span class="pp-req">*</span></label>
                             <div class="pp-input-wrap">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" id="parol_tasdiq" name="parolni_tasdiqlang" required
+                                <input type="password" id="parol_tasdiq" name="parolni_tasdiqlang" {% if not google %}required{% endif %}
                                        autocomplete="new-password">
                                 <button type="button" class="pp-eye" onclick="ppToggleParol('parol_tasdiq', this)"
                                         aria-label="Parolni ko'rsatish"><i class="fas fa-eye"></i></button>
@@ -204,7 +234,7 @@
         var kafedra = document.getElementById('kafedra-select');
         if (!fakultet || !kafedra) return;
 
-        fakultet.addEventListener('change', function () {
+        function yukla(tanlanishi) {
             var id = fakultet.value;
             kafedra.innerHTML = '<option value="">Yuklanmoqda...</option>';
 
@@ -226,13 +256,19 @@
                         var opt = document.createElement('option');
                         opt.value = k.id;
                         opt.textContent = k.nomi;
+                        if (tanlanishi && String(k.id) === String(tanlanishi)) opt.selected = true;
                         kafedra.appendChild(opt);
                     });
                 })
                 .catch(function () {
                     kafedra.innerHTML = '<option value="">Kafedralarni yuklab bo\'lmadi</option>';
                 });
-        });
+        }
+
+        fakultet.addEventListener('change', function () { yukla(null); });
+
+        // Xatolikdan keyin avval tanlangan fakultet va kafedra saqlanib qoladi
+        if (fakultet.value) yukla(kafedra.dataset.tanlangan);
     })();
 
     // ── Parolni tekshirish ──

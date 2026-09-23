@@ -433,3 +433,101 @@ body.dark-mode .pp-alert-warning {
     margin: auto;
     width: 100%;
 }
+
+/* ── Google orqali kirish ── */
+.pp-google {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--pp-border);
+    border-radius: 12px;
+    background: var(--pp-card);
+    color: var(--pp-text);
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
+}
+
+.pp-google:hover {
+    text-decoration: none;
+    color: var(--pp-text);
+    border-color: var(--pp-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+}
+
+body.dark-mode .pp-google:hover {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+.pp-google svg {
+    flex: 0 0 auto;
+}
+
+/* "yoki" ajratkichi */
+.pp-or {
+    position: relative;
+    margin: 0 0 18px;
+    text-align: center;
+}
+
+.pp-or::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--pp-border);
+}
+
+.pp-or span {
+    position: relative;
+    padding: 0 12px;
+    background: var(--pp-card);
+    font-size: 12.5px;
+    color: var(--pp-muted);
+}
+
+/* Google hisobi tasdiqlangani haqidagi kartochka */
+.pp-google-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border: 1px solid var(--pp-border);
+    border-radius: 12px;
+    background: var(--pp-soft, rgba(37, 99, 235, 0.06));
+}
+
+.pp-google-card img,
+.pp-google-avatar {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pp-border);
+    color: var(--pp-muted);
+}
+
+.pp-google-card strong {
+    display: block;
+    font-size: 14px;
+    color: var(--pp-text);
+}
+
+.pp-google-card span {
+    font-size: 12.5px;
+    color: var(--pp-muted);
+}

@@ -20,6 +20,9 @@ import os
 from django.http import HttpResponse, FileResponse, JsonResponse
 from django.conf import settings
 from .models import video_darslar as VideoModel  
+import secrets
+from django.core.files.base import ContentFile
+from . import google_oauth
 
 def get_current_user(request):
     user_id = request.session.get('user_id')
@@ -95,14 +98,7 @@ def login_view(request):
             request.session['user_id'] = user.id
             request.session['username'] = user.login_f
 
-            if user.foydalanuvchi_rol == 'prorektor':
-                return redirect('home4')
-            elif user.foydalanuvchi_rol == 'kafedra mudiri':
-                return redirect('home2')
-            elif user.foydalanuvchi_rol == 'dekan':
-                return redirect('home3')
-            else:
-                return redirect('home1')
+            return rol_bosh_sahifasi(user)
 
         elif not user.accepted:
             messages.warning(
@@ -114,6 +110,80 @@ def login_view(request):
             messages.error(request, 'Login yoki parol xato!')
 
     return render(request, 'app/login.html', {'year': datetime.now().year})
+
+
+def rol_bosh_sahifasi(foydalanuvchi):
+    """Foydalanuvchini lavozimiga mos kabinetga yuboradi."""
+    if foydalanuvchi.foydalanuvchi_rol == 'prorektor':
+        return redirect('home4')
+    if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri':
+        return redirect('home2')
+    if foydalanuvchi.foydalanuvchi_rol == 'dekan':
+        return redirect('home3')
+    return redirect('home1')
+
+
+def google_login(request):
+    """Foydalanuvchini Google hisobini tanlash sahifasiga yuboramiz."""
+    if not google_oauth.sozlangan():
+        messages.error(request, "Google orqali kirish hozircha sozlanmagan.")
+        return redirect('login')
+
+    state = google_oauth.yangi_state()
+    request.session['google_state'] = state
+    return redirect(google_oauth.kirish_manzili(request, state))
+
+
+def google_callback(request):
+    """Google qaytargan javobni qabul qilamiz."""
+    if not google_oauth.sozlangan():
+        messages.error(request, "Google orqali kirish hozircha sozlanmagan.")
+        return redirect('login')
+
+    kutilgan_state = request.session.pop('google_state', None)
+
+    if request.GET.get('error'):
+        messages.warning(request, "Google orqali kirish bekor qilindi.")
+        return redirect('login')
+
+    kod = request.GET.get('code')
+    if not kod or not kutilgan_state or request.GET.get('state') != kutilgan_state:
+        messages.error(request, "Google orqali kirishni qaytadan boshlang.")
+        return redirect('login')
+
+    try:
+        token = google_oauth.token_olish(request, kod)
+        profil = google_oauth.profil_olish(token)
+    except google_oauth.GoogleXato as xato:
+        messages.error(request, str(xato))
+        return redirect('login')
+
+    foydalanuvchi = Foydalanuvchilar.objects.filter(gmail__iexact=profil['email']).first()
+
+    # Hisob yo'q — ro'yxatdan o'tish formasini Google ma'lumotlari bilan to'ldiramiz
+    if foydalanuvchi is None:
+        request.session['google_profil'] = profil
+        messages.info(
+            request,
+            "Ma'lumotlaringiz Google hisobidan olindi. Qolgan maydonlarni to'ldirib, "
+            "ro'yxatdan o'tishni yakunlang."
+        )
+        return redirect('registratsiya')
+
+    if not foydalanuvchi.accepted:
+        messages.warning(
+            request,
+            'Sizning hisobingiz hali tasdiqlanmagan. Iltimos, administrator tasdiqlashini kuting.'
+        )
+        return redirect('login')
+
+    request.session.pop('google_profil', None)
+    request.session['user_id'] = foydalanuvchi.id
+    request.session['username'] = foydalanuvchi.login_f
+    messages.success(request, "Xush kelibsiz, %s!" % foydalanuvchi.ism)
+    return rol_bosh_sahifasi(foydalanuvchi)
+
+
 def login(request):
     """Renders the login page."""
     assert isinstance(request, HttpRequest)
@@ -1619,8 +1689,44 @@ def get_kafedralar(request, fakultet_id):
     return JsonResponse({'kafedralar': data})
 
 
+def registratsiya_konteksti(request, qiymatlar=None, **qoshimcha):
+    """Ro'yxatdan o'tish formasi uchun umumiy ma'lumotlar.
+
+    Google orqali kelgan bo'lsa, maydonlar Google hisobidagi ism, familiya
+    va email bilan oldindan to'ldiriladi. Xatolik bo'lganda esa foydalanuvchi
+    yozgan qiymatlar yo'qolib ketmaydi.
+    """
+    google = request.session.get('google_profil')
+
+    boshlangich = {
+        'ism': '', 'familiya': '', 'otasining_ismi': '', 'tugulgan_sana': '',
+        'ilmiy_daraja': '', 'gmail': '', 'haqida': '', 'login_f': '',
+        'foydalanuvchi_rol': '', 'fakultet': '', 'kafedra': '',
+    }
+
+    if google:
+        boshlangich['ism'] = google.get('ism', '')
+        boshlangich['familiya'] = google.get('familiya', '')
+        boshlangich['gmail'] = google.get('email', '')
+        boshlangich['login_f'] = google.get('email', '').split('@')[0]
+
+    if qiymatlar is not None:
+        for kalit in boshlangich:
+            boshlangich[kalit] = qiymatlar.get(kalit) or ''
+
+    kontekst = {
+        'fakultetlar': Dekanatlar.objects.all(),
+        'foydalanuvchi_rollari': Foydalanuvchilar.ROLES,
+        'google': google,
+        'qiymatlar': boshlangich,
+    }
+    kontekst.update(qoshimcha)
+    return kontekst
+
+
 def registratsiya(request):
-    ROLES = Foydalanuvchilar.ROLES
+    google = request.session.get('google_profil')
+
     if request.method == "POST":
         ism = request.POST.get("ism")
         familiya = request.POST.get("familiya")
@@ -1630,29 +1736,38 @@ def registratsiya(request):
         kafedra = request.POST.get("kafedra")
         fakultet = request.POST.get("fakultet")
         tugulgan_sana = request.POST.get("tugulgan_sana")
-        gmail = request.POST.get("gmail")
+        gmail = (request.POST.get("gmail") or '').strip()
         haqida = request.POST.get("haqida")
         image = request.FILES.get("image")
         login_f = request.POST.get("login_f")
         parol = request.POST.get("parol")
         parolni_tasdiqlang = request.POST.get("parolni_tasdiqlang")
 
+        # Email Google tasdiqlagan email bilan bir xil bo'lsagina unga ishonamiz
+        google_tasdiqlangan = bool(google) and gmail.lower() == google.get('email', '')
+
+        def xato_bilan(matn):
+            return render(request, 'app/registratsiya.html',
+                          registratsiya_konteksti(request, request.POST, error=matn))
+
         if parol != parolni_tasdiqlang:
-            return render(request, 'app/registratsiya.html', {
-                'error': 'Parollar mos kelmadi!',
-                'fakultetlar': Dekanatlar.objects.all(),
-                'foydalanuvchi_rollari': ROLES
-            })
+            return xato_bilan('Parollar mos kelmadi!')
+
+        if not parol and not google_tasdiqlangan:
+            return xato_bilan('Parol kiriting!')
 
         if Foydalanuvchilar.objects.filter(login_f=login_f).exists():
-            return render(request, 'app/registratsiya.html', {
-                'error': 'Bu login allaqachon mavjud!',
-                'fakultetlar': Dekanatlar.objects.all(),
-                'foydalanuvchi_rollari': ROLES
-            })
+            return xato_bilan('Bu login allaqachon mavjud!')
+
+        if gmail and Foydalanuvchilar.objects.filter(gmail__iexact=gmail).exists():
+            return xato_bilan('Bu email bilan hisob allaqachon mavjud. Tizimga kiring.')
 
         kafedra_id_val = int(kafedra) if kafedra and str(kafedra).isdigit() else None
         fakulteti_id_val = int(fakultet) if fakultet and str(fakultet).isdigit() else None
+
+        # Google orqali kelgan va parol yozmagan bo'lsa — tasodifiy parol qo'yamiz,
+        # bunday hisobga faqat "Google bilan davom etish" orqali kiriladi.
+        xesh = make_password(parol) if parol else make_password(secrets.token_urlsafe(24))
 
         foydalanuvchi = Foydalanuvchilar(
             ism=ism or '',
@@ -1667,21 +1782,34 @@ def registratsiya(request):
             haqida=haqida or '',
             image=image if image else None,
             login_f=login_f,
-            parol=make_password(parol) if parol else ''
+            parol=xesh
         )
         foydalanuvchi.save()
 
+        # Rasm yuklanmagan bo'lsa, Google profilidagi rasmni olamiz
+        if not image and google_tasdiqlangan and google.get('rasm'):
+            natija = google_oauth.rasm_yuklab_olish(google['rasm'])
+            if natija:
+                baytlar, kengaytma = natija
+                foydalanuvchi.image.save(
+                    'google-%s%s' % (foydalanuvchi.id, kengaytma),
+                    ContentFile(baytlar),
+                    save=True
+                )
 
-        return render(request, 'app/login.html', {
-            'success': 'Ro\'yxatdan muvaffaqiyatli o\'tildi! Iltimos, tizimga kiring.'
-        })
+        request.session.pop('google_profil', None)
 
+        messages.success(
+            request,
+            "Ro'yxatdan muvaffaqiyatli o'tdingiz! Hisobingiz administrator "
+            "tasdig'idan keyin faollashadi."
+        )
+        return redirect('login')
 
     # GET request
-    return render(request, 'app/registratsiya.html', {
-        'fakultetlar': Dekanatlar.objects.all(),
-        'foydalanuvchi_rollari': ROLES
-    })
+    return render(request, 'app/registratsiya.html', registratsiya_konteksti(request))
+
+
 def article(request):
     foydalanuvchi = get_current_user(request)
     maqolalar = ilmiy.objects.filter(foreveryone=True).order_by('-sana')

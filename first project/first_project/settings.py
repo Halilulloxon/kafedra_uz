@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.google_sozlamalari',
             ],
         },
     },
@@ -180,3 +181,13 @@ if os.getenv('DJANGO_HTTPS', 'False') == 'True':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+
+# --- Google orqali kirish (OAuth 2.0) ---
+# Kalitlar Google Cloud Console → APIs & Services → Credentials da olinadi
+# va "first project/.env" fayliga yoziladi. Bo'sh bo'lsa, tugma ko'rinmaydi.
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET', '')
+# Odatda bo'sh qoldiriladi — manzil so'rovdan avtomatik yasaladi.
+# Kerak bo'lsa: https://kafedralar.uz/google/callback/
+GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI', '')
