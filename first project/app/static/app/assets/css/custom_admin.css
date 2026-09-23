@@ -1030,15 +1030,30 @@ body.login #container {
     border: none !important;
 }
 
+/* Kartochka ekranning o'rtasida tursin — Django'ning o'ramlari
+   (#container > #main > #content) ham markazga moslanadi. */
+body.login #container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 48px);
+}
+
 body.login #main,
 body.login #content-start,
 body.login #content {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
+}
+
+body.login .kx-login {
+    width: 100%;
 }
 
 .kx-login {
@@ -1177,8 +1192,8 @@ body.login .form-row label {
     pointer-events: none;
 }
 
-body.login .kx-input input[type="text"],
-body.login .kx-input input[type="password"] {
+body.login #content .kx-input input[type="text"],
+body.login #content .kx-input input[type="password"] {
     width: 100% !important;
     min-height: 46px;
     padding: 11px 42px !important;
@@ -1191,7 +1206,7 @@ body.login .kx-input input[type="password"] {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-body.login .kx-input input:focus {
+body.login #content .kx-input input:focus {
     outline: none;
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 3px var(--primary-light) !important;
@@ -1331,14 +1346,14 @@ input:-webkit-autofill:active {
 }
 
 /* Admin formalaridagi maydonlar ham bir xil ko'rinishda */
-#content .form-row input[type="text"],
-#content .form-row input[type="email"],
-#content .form-row input[type="url"],
-#content .form-row input[type="number"],
-#content .form-row input[type="password"],
-#content .form-row input[type="date"],
-#content .form-row select,
-#content .form-row textarea {
+body:not(.login) #content .form-row input[type="text"],
+body:not(.login) #content .form-row input[type="email"],
+body:not(.login) #content .form-row input[type="url"],
+body:not(.login) #content .form-row input[type="number"],
+body:not(.login) #content .form-row input[type="password"],
+body:not(.login) #content .form-row input[type="date"],
+body:not(.login) #content .form-row select,
+body:not(.login) #content .form-row textarea {
     min-height: 42px;
     padding: 9px 13px !important;
     border-radius: 10px !important;
@@ -1349,15 +1364,15 @@ input:-webkit-autofill:active {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-#content .form-row input:focus,
-#content .form-row select:focus,
-#content .form-row textarea:focus {
+body:not(.login) #content .form-row input:focus,
+body:not(.login) #content .form-row select:focus,
+body:not(.login) #content .form-row textarea:focus {
     outline: none;
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 3px var(--primary-light) !important;
 }
 
-#content .form-row input[type="file"] {
+body:not(.login) #content .form-row input[type="file"] {
     padding: 7px 10px !important;
     border-radius: 10px !important;
     border: 1px dashed var(--input-border) !important;
@@ -1366,7 +1381,7 @@ input:-webkit-autofill:active {
     font-size: 13px !important;
 }
 
-#content .form-row input[type="file"]::file-selector-button {
+body:not(.login) #content .form-row input[type="file"]::file-selector-button {
     margin-right: 12px;
     padding: 7px 15px;
     border: 0;
@@ -1378,7 +1393,7 @@ input:-webkit-autofill:active {
     cursor: pointer;
 }
 
-#content .form-row input[type="checkbox"] {
+body:not(.login) #content .form-row input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: var(--primary);
