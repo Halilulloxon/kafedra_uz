@@ -1400,3 +1400,287 @@ body:not(.login) #content .form-row input[type="checkbox"] {
     cursor: pointer;
     vertical-align: middle;
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Ro'yxat sahifalari (changelist)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Jadval konteyneri qisqara olmagani uchun filtr paneli ekrandan
+   chiqib ketardi — endi u yon tomonda o'z joyida turadi. */
+#changelist {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+#changelist .changelist-form-container {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+#changelist #changelist-filter {
+    flex: 0 0 250px;
+    width: 250px !important;
+    max-width: 250px !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 14px !important;
+    background: var(--bg-filter) !important;
+}
+
+#changelist-filter h2 {
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    color: var(--text-main) !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+#changelist-filter h3 {
+    margin: 14px 0 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+}
+
+#changelist-filter ul {
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    border-bottom: 0 !important;
+    list-style: none !important;
+}
+
+#changelist-filter li {
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+#changelist-filter li a {
+    display: block;
+    padding: 6px 10px !important;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+}
+
+#changelist-filter li a:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+#changelist-filter li.selected a {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+    font-weight: 700;
+}
+
+/* ── Qidiruv qatori ── */
+#toolbar {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0 14px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+#toolbar form#changelist-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+#toolbar #searchbar {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--input-border) !important;
+    background: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    font-size: 14px !important;
+}
+
+#toolbar #searchbar:focus {
+    outline: none;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+#toolbar input[type="submit"] {
+    min-height: 42px;
+    padding: 9px 20px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+}
+
+#toolbar input[type="submit"]:hover {
+    background: var(--primary-hover) !important;
+}
+
+/* ── Amallar qatori ── */
+#changelist .actions {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px !important;
+    padding: 10px 14px !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    background: var(--bg-filter) !important;
+    color: var(--text-muted) !important;
+    font-size: 13px;
+}
+
+#changelist .actions select {
+    min-height: 38px;
+    padding: 7px 12px !important;
+    border-radius: 9px !important;
+    border: 1px solid var(--input-border) !important;
+    background: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    font-size: 13.5px !important;
+}
+
+#changelist .actions button,
+#changelist .actions input[type="submit"] {
+    min-height: 38px;
+    padding: 7px 16px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+}
+
+/* ── Jadval ── */
+#result_list {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#result_list thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 12px 10px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--bg-table-header) !important;
+    color: var(--text-muted) !important;
+}
+
+#result_list tbody td,
+#result_list tbody th {
+    padding: 11px 10px !important;
+    font-size: 13.5px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
+
+#result_list tbody tr:hover > td,
+#result_list tbody tr:hover > th {
+    background: var(--bg-table-row-hover) !important;
+}
+
+
+/* Tor ustunlar: belgilash katakchasi va ID */
+#result_list th.action-checkbox-column,
+#result_list td.action-checkbox {
+    width: 38px;
+    padding-left: 10px !important;
+    padding-right: 4px !important;
+}
+
+#result_list th.column-id,
+#result_list td.field-id {
+    width: 52px;
+}
+
+/* Uzun matnlar ustunni cho'zib yubormasin */
+#result_list td {
+    word-break: break-word;
+}
+
+/* ── Sahifalash ── */
+.paginator {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px !important;
+    padding: 12px 4px 0 !important;
+    border-top: 1px solid var(--border-color) !important;
+    font-size: 13px;
+    color: var(--text-muted) !important;
+}
+
+.paginator a,
+.paginator .this-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+
+.paginator a {
+    border: 1px solid var(--border-color);
+    color: var(--link-color) !important;
+    background: var(--bg-card);
+}
+
+.paginator a:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.paginator .this-page {
+    background: var(--primary);
+    color: #ffffff !important;
+}
+
+/* Ilova sahifasida ("/admin/app/") o'ng ustun bo'sh qolmasin */
+body.dashboard[class*="app-"] #content,
+body.dashboard[class*="app-"] #content-main {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+@media (max-width: 991.98px) {
+    #changelist {
+        flex-direction: column;
+    }
+
+    #changelist #changelist-filter {
+        flex: 1 1 auto;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}

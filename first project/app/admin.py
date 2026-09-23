@@ -21,7 +21,10 @@ def make_edit_button(obj):
 
 
 class FoydalanuvchilarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name_display', 'login_f', 'gmail', 'role_badge', 'kafedra', 'fakulteti', 'accepted_status', 'tahrirlash_tugmasi')
+    # Ustunlar ro'yxatga sig'ishi uchun email ism ostida, kafedra bilan
+    # fakultet esa bitta ustunda ko'rsatiladi.
+    list_display = ('id', 'full_name_display', 'login_f', 'role_badge', 'joylashuv', 'accepted_status', 'tahrirlash_tugmasi')
+    list_display_links = ('id', 'full_name_display')
     search_fields = ('ism', 'familiya', 'sharifi', 'login_f', 'gmail')
     list_filter = ('foydalanuvchi_rol', 'accepted', 'kafedra', 'fakulteti')
     list_per_page = 25
@@ -31,9 +34,22 @@ class FoydalanuvchilarAdmin(admin.ModelAdmin):
     def tahrirlash_tugmasi(self, obj):
         return make_edit_button(obj)
 
-    @admin.display(description="F.I.SH")
+    @admin.display(description="Kafedra / Fakultet")
+    def joylashuv(self, obj):
+        return format_html(
+            '<div style="line-height:1.45;">{}<br><span style="color:#94a3b8; font-size:11.5px;">{}</span></div>',
+            obj.kafedra or "Kafedra yo'q",
+            obj.fakulteti or "Fakultet yo'q",
+        )
+
+    @admin.display(description="F.I.SH", ordering='familiya')
     def full_name_display(self, obj):
-        return f"{obj.familiya} {obj.ism} {obj.sharifi or ''}"
+        return format_html(
+            '<div style="line-height:1.45;"><span style="font-weight:600;">{}</span>'
+            '<br><span style="color:#94a3b8; font-size:11.5px;">{}</span></div>',
+            f"{obj.familiya} {obj.ism} {obj.sharifi or ''}".strip(),
+            obj.gmail or "email yo'q",
+        )
 
     @admin.display(description="Rol")
     def role_badge(self, obj):
@@ -68,7 +84,10 @@ class FoydalanuvchilarAdmin(admin.ModelAdmin):
 
 
 class oquvIshlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'betlar_soni', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
+    # Ish turi va betlar soni nom ostida ko'rsatiladi — shunda jadval
+    # ekranga sig'adi (ikkalasi ham o'ng tomondagi filtrda bor).
+    list_display = ('id', 'nomi_display', 'muallif', 'sana', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
+    list_display_links = ('id', 'nomi_display')
     search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
     list_filter = ('turi', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
@@ -77,6 +96,17 @@ class oquvIshlariAdmin(admin.ModelAdmin):
     @admin.display(description="Amallar")
     def tahrirlash_tugmasi(self, obj):
         return make_edit_button(obj)
+
+    @admin.display(description="Ish nomi", ordering='nomi')
+    def nomi_display(self, obj):
+        qismlar = [obj.turi or "Turi ko'rsatilmagan"]
+        if obj.betlar_soni:
+            qismlar.append("%s bet" % obj.betlar_soni)
+        return format_html(
+            '<div style="line-height:1.45;"><span style="font-weight:600;">{}</span>'
+            '<br><span style="color:#94a3b8; font-size:11.5px;">{}</span></div>',
+            obj.nomi, " · ".join(qismlar),
+        )
 
     @admin.display(description="Fayl")
     def file_preview(self, obj):
@@ -92,7 +122,9 @@ class oquvIshlariAdmin(admin.ModelAdmin):
 
 
 class ilmiy_ishlariAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomi', 'turi', 'muallif', 'sana', 'kategoriya', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
+    # Ish turi va kategoriya nom ostida — jadval ekranga sig'ishi uchun.
+    list_display = ('id', 'nomi_display', 'muallif', 'sana', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
+    list_display_links = ('id', 'nomi_display')
     search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
     list_filter = ('turi', 'kategoriya', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
@@ -101,6 +133,15 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
     @admin.display(description="Amallar")
     def tahrirlash_tugmasi(self, obj):
         return make_edit_button(obj)
+
+    @admin.display(description="Ish nomi", ordering='nomi')
+    def nomi_display(self, obj):
+        qismlar = [q for q in (obj.turi, obj.kategoriya) if q]
+        return format_html(
+            '<div style="line-height:1.45;"><span style="font-weight:600;">{}</span>'
+            '<br><span style="color:#94a3b8; font-size:11.5px;">{}</span></div>',
+            obj.nomi, " · ".join(qismlar) or "Turi ko'rsatilmagan",
+        )
 
     @admin.display(description="Fayl")
     def file_preview(self, obj):
