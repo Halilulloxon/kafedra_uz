@@ -297,3 +297,14 @@ footer a { color: var(--accent); text-decoration: none; }
   .search-box { margin-left: 0; }
   .search-box input { width: 100%; }
 }
+
+/* Sahifa bloki qolgan bo'sh joyni to'ldirsin —
+   aks holda footer ustida boshqa rangdagi bo'sh chiziq qolib ketadi. */
+body > .pp-page,
+body > .vp-page,
+body > .tp-page,
+body > .page-header,
+body > .main-layout,
+body > .main {
+  flex: 1 0 auto;
+}
