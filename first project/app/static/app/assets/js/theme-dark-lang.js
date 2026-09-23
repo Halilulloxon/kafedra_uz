@@ -482,6 +482,26 @@
 
         var savedLang = localStorage.getItem('app_lang') || 'uz';
         changeLanguage(savedLang);
+
+        // Mobile drawer menu toggle handler
+        document.addEventListener('click', function(e) {
+            var toggleBtn = e.target.closest('.menu-toggle, .mobile-menu a, .nav-menu-main');
+            if (toggleBtn) {
+                e.preventDefault();
+                var isOpen = document.body.classList.toggle('menu-open');
+                var overlay = document.querySelector('.sidenav-overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.className = 'sidenav-overlay';
+                    overlay.addEventListener('click', function() {
+                        document.body.classList.remove('menu-open');
+                        overlay.style.display = 'none';
+                    });
+                    document.body.appendChild(overlay);
+                }
+                overlay.style.display = isOpen ? 'block' : 'none';
+            }
+        });
     }
 
     if (document.readyState === 'loading') {
