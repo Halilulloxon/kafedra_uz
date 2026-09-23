@@ -2920,6 +2920,9 @@ body.dark-mode .lang-btn {
     justify-content: center;
     gap: 8px;
     min-height: 44px;
+    /* Eski uslublardan qolgan chekka bo'shliq tugmalarni bir-biridan
+       siljitib yuborardi ("Tomosha qilish" 12px pastda turardi) */
+    margin: 0 !important;
     padding: 11px 18px !important;
     border-radius: 10px !important;
     font-size: 13.5px;
