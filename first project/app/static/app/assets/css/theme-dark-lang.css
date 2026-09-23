@@ -1865,17 +1865,24 @@ body.dark-mode .apexcharts-ycrosshairs {
     /* Main Content Spacing on Mobile / Tablet */
     body.vertical-layout.vertical-menu-modern .app-content,
     body.vertical-layout.vertical-menu-modern.menu-expanded .app-content,
-    body.vertical-layout.vertical-menu-modern.menu-collapsed .app-content {
+    body.vertical-layout.vertical-menu-modern.menu-collapsed .app-content,
+    .app-content.content,
+    .app-content {
         margin-left: 0 !important;
         margin-right: 0 !important;
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-        padding-top: 75px !important;
-        padding-bottom: 24px !important;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        padding-top: 90px !important;
+        padding-bottom: 30px !important;
         width: 100% !important;
     }
 
     .content-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .content-body {
         padding: 0 !important;
         margin: 0 !important;
     }
