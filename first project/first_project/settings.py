@@ -167,7 +167,13 @@ LANGUAGE_CODE = 'uz'
 # "locale/uz" dan olinadi (yangilash: scripts/tarjima.py)
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
-# Sana formatlari: <input type="date"> ISO ko'rinishida yuboradi
+# Sana formatlari: dd.mm.yyyy (masalan: 17.08.1983)
+DATE_FORMAT = 'd.m.Y'
+DATE_INPUT_FORMATS = [
+    '%d.%m.%Y',
+    '%Y-%m-%d',
+    '%d/%m/%Y',
+]
 FORMAT_MODULE_PATH = ['first_project.formats']
 TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True

@@ -14,19 +14,19 @@ TIME_FORMAT = 'H:i'
 FIRST_DAY_OF_WEEK = 1  # Dushanba
 
 DATE_INPUT_FORMATS = [
-    '%Y-%m-%d',   # 2026-09-24  (brauzerning sana maydoni)
-    '%d.%m.%Y',   # 24.09.2026
+    '%d.%m.%Y',   # 24.09.2026 (DD.MM.YYYY — admin paneli va foydalanuvchi ko'rinishi)
+    '%Y-%m-%d',   # 2026-09-24 (brauzerning <input type="date"> maydoni)
     '%d/%m/%Y',
 ]
 
 DATETIME_INPUT_FORMATS = [
+    '%d.%m.%Y %H:%M:%S',
+    '%d.%m.%Y %H:%M',
+    '%d.%m.%Y',
     '%Y-%m-%d %H:%M:%S',
     '%Y-%m-%d %H:%M',
     '%Y-%m-%dT%H:%M',
     '%Y-%m-%d',
-    '%d.%m.%Y %H:%M:%S',
-    '%d.%m.%Y %H:%M',
-    '%d.%m.%Y',
 ]
 
 DECIMAL_SEPARATOR = '.'
