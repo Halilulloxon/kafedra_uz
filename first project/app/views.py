@@ -1978,4 +1978,8 @@ def search_video(request):
 def serve_video(request, video_id):
     # Videoni /media/ orqali beramiz: serverda nginx uni oqim bilan (Range, ya'ni oldinga o'tkazish bilan) uzatadi
     video = get_object_or_404(videolar, id=video_id)
-    return redirect(video.video.url)
+    if video.video:
+        return redirect(video.video.url)
+    elif video.video_link:
+        return redirect(video.video_link)
+    raise Http404("Video mavjud emas")

@@ -126,8 +126,16 @@
                                     <td class="text-muted font-small-3" style="max-width: 250px;" data-full="{{ video.haqida }}">{{ video.haqida|default:"-"|truncatechars:80 }}</td>
                                     <td><span class="badge badge-light border text-dark font-small-2"><i class="fas fa-user-tie mr-1 text-primary"></i>{{ video.muallif }}</span></td>
                                     <td><span class="badge badge-light border text-dark font-small-2"><i class="far fa-calendar-alt mr-1 text-muted"></i>{{ video.sana }}</span></td>
-                                    <td style="text-align:center;">
-                                        {% if video.get_video_url %}
+                                    <td style="text-align:center; white-space:nowrap;">
+                                        {% if video.video_link and video.is_youtube %}
+                                        <a href="{{ video.video_link }}" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;" onclick="event.stopPropagation();">
+                                            <i class="fab fa-youtube mr-1"></i> YouTube
+                                        </a>
+                                        {% elif video.video_link %}
+                                        <a href="{{ video.video_link }}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;" onclick="event.stopPropagation();">
+                                            <i class="fas fa-external-link-alt mr-1"></i> Havola
+                                        </a>
+                                        {% elif video.video %}
                                         <a href="{{ video.get_video_url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;" onclick="event.stopPropagation();">
                                             <i class="fas fa-play mr-1"></i> Ko'rish
                                         </a>

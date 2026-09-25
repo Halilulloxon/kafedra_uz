@@ -214,7 +214,8 @@ class video_darslar(models.Model):
     nomi = models.CharField("Dars nomi", max_length=250)
     muallif = models.ForeignKey(Foydalanuvchilar, on_delete=models.CASCADE, verbose_name="Muallif")
     haqida = models.TextField("Izoh", blank=True, null=True)
-    video = models.FileField("Video fayl", upload_to='video_darslar/')
+    video = models.FileField("Video fayl", upload_to='video_darslar/', null=True, blank=True)
+    video_link = models.URLField("Video havolasi (YouTube / Link)", max_length=500, null=True, blank=True, default='')
     sana = models.DateField("Sana", null=True)
     foreveryone= models.BooleanField("Hamma ko'ra oladi", default=False)
 
@@ -225,6 +226,36 @@ class video_darslar(models.Model):
                 return self.video.url
             except Exception:
                 pass
+        if self.video_link:
+            return self.video_link
+        return ''
+
+    @property
+    def is_youtube(self):
+        if not self.video_link:
+            return False
+        return 'youtube.com' in self.video_link or 'youtu.be' in self.video_link
+
+    @property
+    def youtube_id(self):
+        if not self.video_link:
+            return ''
+        import re
+        m = re.search(r'(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})', self.video_link)
+        return m.group(1) if m else ''
+
+    @property
+    def youtube_embed_url(self):
+        y_id = self.youtube_id
+        if y_id:
+            return f"https://www.youtube.com/embed/{y_id}"
+        return self.video_link or ''
+
+    @property
+    def youtube_thumbnail_url(self):
+        y_id = self.youtube_id
+        if y_id:
+            return f"https://img.youtube.com/vi/{y_id}/hqdefault.jpg"
         return ''
 
     class Meta:

@@ -59,10 +59,16 @@
                                                 <input type="date" name="sana" class="form-control" required style="border-radius: 8px;">
                                             </div>
                                             <div class="col-12 col-md-6 form-group mb-3">
-                                                <label class="font-weight-bold text-dark mb-1"><i class="fas fa-file-upload mr-1 text-primary"></i> <span data-i18n="video_file">Video fayli (.mp4, .mkv, .mov)</span> <span class="text-danger">*</span></label>
-                                                <input type="file" name="video" class="form-control-file p-1 border rounded bg-light" required accept="video/*" style="border-radius: 8px; width: 100%;">
-                                                <small class="text-muted d-block mt-1">Maksimal hajm: 250 MB</small>
+                                                <label class="font-weight-bold text-dark mb-1"><i class="fab fa-youtube mr-1 text-danger"></i> <span>YouTube / Video havolasi</span></label>
+                                                <input type="url" name="video_link" class="form-control" placeholder="https://www.youtube.com/watch?v=... yoki https://youtu.be/..." style="border-radius: 8px; padding: 10px;">
+                                                <small class="text-muted d-block mt-1">YouTube darslik havolasi (server xotirasini tejaydi)</small>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark mb-1"><i class="fas fa-file-upload mr-1 text-primary"></i> <span data-i18n="video_file">Yoki Video fayli (.mp4, .mkv, .mov)</span></label>
+                                            <input type="file" name="video" class="form-control-file p-1 border rounded bg-light" accept="video/*" style="border-radius: 8px; width: 100%;">
+                                            <small class="text-muted d-block mt-1">Agar video fayl yuklamoqchi bo'lsangiz (Maksimal: 250 MB). YouTube link bo'lsa shart emas.</small>
                                         </div>
 
                                         <div class="card p-3 mb-4 bg-light border-0" style="border-radius: 10px;">

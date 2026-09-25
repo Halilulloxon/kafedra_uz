@@ -165,7 +165,7 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
 
 class video_darslarAdmin(admin.ModelAdmin):
     list_display = ('id', 'nomi', 'muallif', 'sana', 'video_preview', 'public_badge', 'tahrirlash_tugmasi')
-    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya', 'video_link')
     list_filter = ('sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
@@ -174,11 +174,19 @@ class video_darslarAdmin(admin.ModelAdmin):
     def tahrirlash_tugmasi(self, obj):
         return make_edit_button(obj)
 
-    @admin.display(description="Video")
+    @admin.display(description="Video / Link")
     def video_preview(self, obj):
+        links = []
         if obj.video:
-            return format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-play-circle"></i> Ko\'rish</a>', obj.get_video_url)
-        return mark_safe('<span style="color:#94a3b8;">Video yo\'q</span>')
+            links.append(format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-play-circle"></i> Fayl</a>', obj.get_video_url))
+        if obj.video_link:
+            if obj.is_youtube:
+                links.append(format_html('<a href="{}" target="_blank" style="color:#e11d48; font-weight:600; margin-left:6px;"><i class="fab fa-youtube"></i> YouTube</a>', obj.video_link))
+            else:
+                links.append(format_html('<a href="{}" target="_blank" style="color:#059669; font-weight:600; margin-left:6px;"><i class="fas fa-external-link-alt"></i> Havola</a>', obj.video_link))
+        if links:
+            return mark_safe(" ".join(links))
+        return mark_safe('<span style="color:#94a3b8;">Yo\'q</span>')
 
     @admin.display(description="Ommaviylik")
     def public_badge(self, obj):

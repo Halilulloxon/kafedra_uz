@@ -54,6 +54,10 @@
                          data-name="{{ vid.nomi|lower }} {{ vid.muallif.ism|lower }} {{ vid.muallif.familiya|lower }}">
 
                     <div class="vp-thumb" onclick="vpOpen(this)">
+                        {% if vid.video_link and vid.is_youtube and vid.youtube_thumbnail_url %}
+                        <img src="{{ vid.youtube_thumbnail_url }}" alt="{{ vid.nomi }}" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+                        <div class="vp-play"><div class="vp-play-btn" style="background:#e11d48;"><i class="fab fa-youtube"></i></div></div>
+                        {% else %}
                         <video preload="metadata" crossorigin="anonymous" class="vp-video">
                             <source src="{% url 'serve_video' vid.id %}" type="video/mp4">
                         </video>
@@ -61,6 +65,7 @@
                         <div class="vp-thumb-empty"><i class="fas fa-film"></i></div>
                         <div class="vp-play"><div class="vp-play-btn"><i class="fas fa-play"></i></div></div>
                         <span class="vp-duration">00:00</span>
+                        {% endif %}
                     </div>
 
                     <div class="vp-body">
@@ -82,12 +87,23 @@
                         {% if vid.haqida %}<p class="vp-text">{{ vid.haqida }}</p>{% endif %}
 
                         <div class="vp-actions">
+                            {% if vid.video_link and vid.is_youtube %}
+                            <a href="{{ vid.video_link }}" target="_blank" class="watch-btn" style="background:#e11d48; border-color:#e11d48;">
+                                <i class="fab fa-youtube"></i> <span>YouTube da ko'rish</span>
+                            </a>
+                            {% elif vid.video_link %}
+                            <a href="{{ vid.video_link }}" target="_blank" class="watch-btn" style="background:#059669; border-color:#059669;">
+                                <i class="fas fa-external-link-alt"></i> <span>Videoni ko'rish</span>
+                            </a>
+                            {% endif %}
+                            {% if vid.video %}
                             <a href="{% url 'serve_video' vid.id %}" class="watch-btn" onclick="return vpWatch(this)">
                                 <i class="fas fa-play"></i> <span data-i18n="watch">Tomosha qilish</span>
                             </a>
                             <a href="{% url 'serve_video' vid.id %}" download class="download-btn">
                                 <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </article>

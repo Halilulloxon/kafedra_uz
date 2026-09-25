@@ -57,15 +57,21 @@
                                                 {{ form.sana }}
                                             </div>
                                             <div class="col-12 col-md-6 form-group mb-3">
-                                                <label class="font-weight-bold text-dark mb-1"><i class="fas fa-file-upload mr-1 text-primary"></i> <span data-i18n="change_video_file">Yangi video fayl yuklash</span></label>
-                                                {{ form.video }}
-                                                {% if video.video %}
-                                                <div class="current-file mt-2 p-2 bg-light rounded border font-small-3">
-                                                    <i class="fas fa-paperclip text-primary mr-1"></i> Joriy video: 
-                                                    <a href="{{ video.get_video_url }}" target="_blank" class="font-weight-bold">{{ video.nomi }}</a>
-                                                </div>
-                                                {% endif %}
+                                                <label class="font-weight-bold text-dark mb-1"><i class="fab fa-youtube mr-1 text-danger"></i> <span>YouTube / Video havolasi</span></label>
+                                                {{ form.video_link }}
+                                                <small class="text-muted d-block mt-1">YouTube darslik havolasi</small>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark mb-1"><i class="fas fa-file-upload mr-1 text-primary"></i> <span data-i18n="change_video_file">Video fayl (ixtiyoriy)</span></label>
+                                            {{ form.video }}
+                                            {% if video.video %}
+                                            <div class="current-file mt-2 p-2 bg-light rounded border font-small-3">
+                                                <i class="fas fa-paperclip text-primary mr-1"></i> Joriy video fayli: 
+                                                <a href="{{ video.get_video_url }}" target="_blank" class="font-weight-bold">{{ video.nomi }}</a>
+                                            </div>
+                                            {% endif %}
                                         </div>
 
                                         <div class="card p-3 mb-4 bg-light border-0" style="border-radius: 10px;">

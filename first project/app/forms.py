@@ -106,18 +106,34 @@ class OquvForm(forms.ModelForm):
 class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
-        fields = ['nomi', 'muallif', 'haqida', 'video', 'sana', 'foreveryone']
+        fields = ['nomi', 'muallif', 'haqida', 'video', 'video_link', 'sana', 'foreveryone']
         widgets = {
             'sana': forms.DateInput(attrs={'type': 'date'}),
             'haqida': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Video dars haqida qisqacha ma\'lumot...'}),
             'nomi': forms.TextInput(attrs={'placeholder': 'Video dars mavzusi / nomi'}),
+            'video_link': forms.URLInput(attrs={'placeholder': 'Masalan: https://www.youtube.com/watch?v=... yoki https://youtu.be/...'}),
         }
 
     def clean_video(self):
-        return validate_safe_video(self.cleaned_data.get('video'))
+        v = self.cleaned_data.get('video')
+        if v:
+            return validate_safe_video(v)
+        return v
+
+    def clean(self):
+        cleaned_data = super().clean()
+        video = cleaned_data.get('video')
+        video_link = cleaned_data.get('video_link')
+        if not video and not video_link:
+            raise ValidationError("Video fayli yuklang yoki YouTube/video havolasini kiriting!")
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if 'video' in self.fields:
+            self.fields['video'].required = False
+        if 'video_link' in self.fields:
+            self.fields['video_link'].required = False
         for name, field in self.fields.items():
             if name == 'foreveryone':
                 field.widget.attrs.update({
