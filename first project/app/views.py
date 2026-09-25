@@ -17,6 +17,7 @@ from datetime import datetime
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q, Count
 import os
+import re
 from django.http import HttpResponse, FileResponse, JsonResponse
 from django.conf import settings
 from .models import video_darslar as VideoModel  
@@ -597,7 +598,8 @@ def oquv_ishlari(request, user_id):
             'maqola':maqola,
             'foydalanuvchi': foydalanuvchi,
             'turi': turi, 
-            'ish_muallifi':ish_muallifi
+            'ish_muallifi':ish_muallifi,
+            'selected_mualliflar': []
         }
     )
 @kabinet()
@@ -624,7 +626,8 @@ def ilmiy_ishlari(request, user_id):
             'maqola':maqolalar,
             'foydalanuvchi': foydalanuvchi,
             'turi': turi, 
-            'ish_muallifi':ish_muallifi
+            'ish_muallifi':ish_muallifi,
+            'selected_mualliflar': []
         }
     )
 @ozining_sahifasi
@@ -871,8 +874,49 @@ def _get_ish_muallifi_list(qs_values):
     result = set()
     for qator in qs_values:
         if qator:
-            result.update(m.strip() for m in qator.split(','))
-    return sorted(result)
+            for m in re.split(r'[,;]+', str(qator)):
+                cleaned = m.strip()
+                if cleaned:
+                    result.add(cleaned)
+    return sorted(result, key=lambda s: s.lower())
+
+
+def _matches_author(filter_name, item_author):
+    if filter_name == item_author:
+        return True
+    if filter_name.replace(' ', '') == item_author.replace(' ', ''):
+        return True
+    if len(filter_name) >= 4 and filter_name in item_author:
+        return True
+    if len(item_author) >= 4 and item_author in filter_name:
+        return True
+    return False
+
+
+def _filter_by_authors(data, author_filters):
+    if not author_filters:
+        return data
+    clean_filters = [f.strip().lower() for f in author_filters if f and f.strip()]
+    if not clean_filters:
+        return data
+
+    filtered = []
+    for item in data:
+        raw_authors = getattr(item, 'ish_mualliflari', None)
+        if not raw_authors:
+            continue
+        item_authors = [m.strip().lower() for m in re.split(r'[,;]+', str(raw_authors)) if m.strip()]
+        match = False
+        for f in clean_filters:
+            for a in item_authors:
+                if _matches_author(f, a):
+                    match = True
+                    break
+            if match:
+                break
+        if match:
+            filtered.append(item)
+    return filtered
 
 
 @kabinet()
@@ -881,7 +925,7 @@ def filtrlash_ilmiy(request, user_id):
     start = request.GET.get('from')
     end = request.GET.get('to')
     turi = request.GET.get('turi')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     base_qs = ilmiy.objects.filter(muallif_id=foydalanuvchi.id)
 
@@ -894,9 +938,8 @@ def filtrlash_ilmiy(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -907,7 +950,8 @@ def filtrlash_ilmiy(request, user_id):
         'maqola': data,
         'foydalanuvchi': foydalanuvchi,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 
 
@@ -917,7 +961,7 @@ def filtrlash_ilmiy2(request, user_id):
     start = request.GET.get('from')
     end = request.GET.get('to')
     turi = request.GET.get('turi')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     base_qs = ilmiy.objects.filter(
         muallif__kafedra=foydalanuvchi.kafedra
@@ -932,9 +976,8 @@ def filtrlash_ilmiy2(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -945,7 +988,8 @@ def filtrlash_ilmiy2(request, user_id):
         'maqola': data,
         'foydalanuvchi': foydalanuvchi,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 
 
@@ -956,7 +1000,7 @@ def filtrlash_ilmiy3(request, user_id):
     end = request.GET.get('to')
     turi = request.GET.get('turi')
     kafedra = request.GET.get('kafedra')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     kafedralar = Kafedralar.objects.filter(fakultet=foydalanuvchi.fakulteti)
 
@@ -979,9 +1023,8 @@ def filtrlash_ilmiy3(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -993,7 +1036,8 @@ def filtrlash_ilmiy3(request, user_id):
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 
 
@@ -1003,7 +1047,7 @@ def filtrlash_oquv(request, user_id):
     start = request.GET.get('from')
     end = request.GET.get('to')
     turi = request.GET.get('turi')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     base_qs = oquvIshlari.objects.filter(muallif_id=foydalanuvchi.id)
 
@@ -1016,9 +1060,8 @@ def filtrlash_oquv(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -1029,7 +1072,8 @@ def filtrlash_oquv(request, user_id):
         'maqola': data,
         'foydalanuvchi': foydalanuvchi,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 
 
@@ -1039,7 +1083,7 @@ def filtrlash_oquv2(request, user_id):
     start = request.GET.get('from')
     end = request.GET.get('to')
     turi = request.GET.get('turi')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     base_qs = oquvIshlari.objects.filter(
         muallif__kafedra=foydalanuvchi.kafedra
@@ -1054,9 +1098,8 @@ def filtrlash_oquv2(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -1067,7 +1110,8 @@ def filtrlash_oquv2(request, user_id):
         'maqola': data,
         'foydalanuvchi': foydalanuvchi,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 
 
@@ -1078,7 +1122,7 @@ def filtrlash_oquv3(request, user_id):
     end = request.GET.get('to')
     turi = request.GET.get('turi')
     kafedra = request.GET.get('kafedra')
-    ish_muallifi_filter = request.GET.get('ish_muallifi')
+    selected_mualliflar = [m.strip() for m in request.GET.getlist('ish_muallifi') if m and m.strip()]
 
     kafedralar = Kafedralar.objects.filter(fakultet=foydalanuvchi.fakulteti)
 
@@ -1101,9 +1145,8 @@ def filtrlash_oquv3(request, user_id):
         data = data.filter(sana__range=[start, end])
     if turi:
         data = data.filter(turi=turi)
-    if ish_muallifi_filter:
-        data = [item for item in data if item.ish_mualliflari and
-                ish_muallifi_filter in [m.strip() for m in item.ish_mualliflari.split(',')]]
+    if selected_mualliflar:
+        data = _filter_by_authors(data, selected_mualliflar)
 
     turlar = base_qs.values_list('turi', flat=True).distinct()
     ish_muallifi = _get_ish_muallifi_list(
@@ -1115,7 +1158,8 @@ def filtrlash_oquv3(request, user_id):
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'turi': turlar,
-        'ish_muallifi': ish_muallifi
+        'ish_muallifi': ish_muallifi,
+        'selected_mualliflar': selected_mualliflar,
     })
 @ozining_sahifasi
 def tahrirlash_ilmiy(request, i_id, t_id, user_id):
@@ -1252,7 +1296,8 @@ def ilmiy_ishlari2(request, user_id):
         'maqola': maqolalar,
         'foydalanuvchi': foydalanuvchi,
         'turi': turi,
-        'ish_muallifi': sorted(ish_muallifi_set)
+        'ish_muallifi': _get_ish_muallifi_list(base_qs.values_list('ish_mualliflari', flat=True)),
+        'selected_mualliflar': []
     })
 
 
@@ -1280,11 +1325,6 @@ def ilmiy_ishlari3(request, user_id):
 
     turi = base_qs.values_list('turi', flat=True).distinct()
 
-    ish_muallifi_set = set()
-    for item in base_qs.values_list('ish_mualliflari', flat=True):
-        if item:
-            ish_muallifi_set.update(m.strip() for m in item.split(','))
-
     return render(request, 'app/ilmiy_ishlar3.html', {
         'title': 'Ilmiy Ishlari',
         'year': datetime.now().year,
@@ -1292,7 +1332,8 @@ def ilmiy_ishlari3(request, user_id):
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'turi': turi,
-        'ish_muallifi': sorted(ish_muallifi_set)
+        'ish_muallifi': _get_ish_muallifi_list(base_qs.values_list('ish_mualliflari', flat=True)),
+        'selected_mualliflar': []
     })
 
 
@@ -1316,18 +1357,14 @@ def oquv_ishlari2(request, user_id):
 
     turi = base_qs.values_list('turi', flat=True).distinct()
 
-    ish_muallifi_set = set()
-    for item in base_qs.values_list('ish_mualliflari', flat=True):
-        if item:
-            ish_muallifi_set.update(m.strip() for m in item.split(','))
-
     return render(request, "app/o`quv_ishlari2.html", {
         'title': 'Oquv Ishlari',
         'year': datetime.now().year,
         'maqola': maqolalar,
         'foydalanuvchi': foydalanuvchi,
         'turi': turi,
-        'ish_muallifi': sorted(ish_muallifi_set)
+        'ish_muallifi': _get_ish_muallifi_list(base_qs.values_list('ish_mualliflari', flat=True)),
+        'selected_mualliflar': []
     })
 
 
@@ -1355,11 +1392,6 @@ def oquv_ishlari3(request, user_id):
 
     turi = base_qs.values_list('turi', flat=True).distinct()
 
-    ish_muallifi_set = set()
-    for item in base_qs.values_list('ish_mualliflari', flat=True):
-        if item:
-            ish_muallifi_set.update(m.strip() for m in item.split(','))
-
     return render(request, "app/o`quv_ishlari3.html", {
         'title': 'Oquv Ishlari',
         'message': 'Your oquv_ishlari page.',
@@ -1368,7 +1400,8 @@ def oquv_ishlari3(request, user_id):
         'foydalanuvchi': foydalanuvchi,
         'kafedralar': kafedralar,
         'turi': turi,
-        'ish_muallifi': sorted(list(ish_muallifi_set))
+        'ish_muallifi': _get_ish_muallifi_list(base_qs.values_list('ish_mualliflari', flat=True)),
+        'selected_mualliflar': []
     })
 
 def logout(request):

@@ -77,12 +77,47 @@
                             </div>
                             <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
                                 <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-user text-muted mr-1"></i> Muallif</label>
-                                <select id="ish_muallifi" name="ish_muallifi" class="form-control form-control-sm rounded custom-select">
-                                    <option value="">Barchasi</option>
-                                    {% for tur in ish_muallifi %}
-                                    <option value="{{tur}}" {% if request.GET.ish_muallifi == tur %}selected{% endif %}>{{tur}}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="custom-multiselect dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-truncate" 
+                                            type="button" 
+                                            id="msMuallifDropdown" 
+                                            data-toggle="dropdown" 
+                                            aria-haspopup="true" 
+                                            aria-expanded="false"
+                                            style="height: 38px;">
+                                        <span class="ms-btn-text">
+                                            {% if selected_mualliflar %}
+                                                {{ selected_mualliflar|length }} ta muallif
+                                            {% else %}
+                                                Barcha mualliflar
+                                            {% endif %}
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="msMuallifDropdown">
+                                        <div class="ms-search-box">
+                                            <i class="fas fa-search ms-search-icon"></i>
+                                            <input type="text" class="form-control form-control-sm ms-search-input" placeholder="Qidirish..." autocomplete="off">
+                                        </div>
+                                        <div class="ms-actions-bar">
+                                            <a href="javascript:void(0)" class="ms-select-all"><i class="fas fa-check-double mr-1"></i>Barchasi</a>
+                                            <span class="text-muted">|</span>
+                                            <a href="javascript:void(0)" class="ms-clear-all clear-link"><i class="fas fa-times mr-1"></i>Tozalash</a>
+                                            <span class="badge badge-secondary ms-count-badge ml-auto">0</span>
+                                        </div>
+                                        <div class="ms-options-list">
+                                            {% for tur in ish_muallifi %}
+                                            <div class="ms-option-item" data-text="{{ tur|lower }}">
+                                                <input type="checkbox" name="ish_muallifi" value="{{ tur }}" id="ms_m_{{ forloop.counter }}" 
+                                                       {% if tur in selected_mualliflar or request.GET.ish_muallifi == tur %}checked{% endif %}>
+                                                <label for="ms_m_{{ forloop.counter }}" title="{{ tur }}">{{ tur }}</label>
+                                            </div>
+                                            {% endfor %}
+                                            <div class="ms-no-results text-muted text-center py-2 font-italic small" style="display:none;">
+                                                Hech narsa topilmadi
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-2">
                                 <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height:40px; font-weight:600;">
