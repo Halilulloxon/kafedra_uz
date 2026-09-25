@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/morris.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist-plugin-tooltip.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/tag-input.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -103,7 +104,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control">Ish mualliflari</label>
                                                 <div class="col-md-9">
-                                                    <input type="text" name="ish_mualliflari" class="form-control" placeholder="Mualliflar" required>
+                                                    <div class="tag-input-wrapper" data-name="ish_mualliflari" data-placeholder="Ism kiriting va Enter bosing..."></div>
                                                 </div>
                                             </div>
 
@@ -190,4 +191,5 @@
 <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
 <script src="https://unpkg.com/feather-icons"></script>
 <script src="{% static 'app/app-assets/js/scripts/pages/dashboard-ecommerce.min.js' %}"></script>
+<script src="{% static 'app/assets/js/tag-input.js' %}"></script>
 {% endblock %}

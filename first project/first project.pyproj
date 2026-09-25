@@ -1815,7 +1815,11 @@
     <Content Include="app\templates\app\index.html" />
     <Content Include="app\templates\app\index-e.html" />
     <Content Include="app\static\public\styles.css" />
+    <Content Include="app\templates\app\kafedra_talablari.html" />
     <Content Include="app\templates\app\ochir_video.html" />
+    <Content Include="app\templates\app\o`quv_ishlari4.html" />
+    <Content Include="app\templates\app\profil4.html" />
+    <Content Include="app\templates\app\qoshish_talab.html" />
     <Content Include="app\templates\app\registratsiya.html" />
     <Content Include="app\templates\app\teacher1.html" />
     <Content Include="app\templates\app\teachers.html" />

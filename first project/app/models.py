@@ -139,6 +139,7 @@ class ilmiy_ishlari(models.Model):
     )
     fayl = models.FileField("Fayl", upload_to='ilmiy_ishlari/')
     foreveryone= models.BooleanField("Hamma ko'ra oladi", default=False)
+    dgu_raqami = models.CharField("DGU / Guvohnoma raqami", max_length=150, null=True, blank=True)
 
     @property
     def get_fayl_url(self):

@@ -21,11 +21,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/timeline.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/css/pages/dashboard-ecommerce.min.css' %}">
     <!-- END: Page CSS-->
-    <!-- BEGIN: Custom CSS-->
     <!-- END: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/morris.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/app-assets/vendors/css/charts/chartist-plugin-tooltip.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/tag-input.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -62,7 +62,7 @@
                                                         <div class="form-group row">
                                                             <label class="col-md-3 label-control">Ilmiy ish turi</label>
                                                             <div class="col-md-9">
-                                                                <select name="turi" class="form-control" required>
+                                                                <select name="turi" class="form-control" required id="id_turi_select">
                                                                     <option value="">Tanlang...</option>
                                                                     <option value="Scopus">Scopus</option>
                                                                     <option value="Maqola">Maqola</option>
@@ -70,6 +70,14 @@
                                                                     <option value="EHM guvohnomalar">EHM guvohnomalar</option>
                                                                     <option value="Patent">Patent</option>
                                                                 </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row" id="dgu_raqami_row" style="display: none;">
+                                                            <label class="col-md-3 label-control">DGU / Guvohnoma raqami</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" name="dgu_raqami" id="id_dgu_raqami" class="form-control" placeholder="Masalan: № DGU 21495">
+                                                                <small class="form-text text-muted">EHM guvohnoma yoki patent ro'yxatdan o'tgan rasmiy raqami</small>
                                                             </div>
                                                         </div>
 
@@ -98,7 +106,7 @@
                                                         <div class="form-group row">
                                                             <label class="col-md-3 label-control">Ish mualliflari</label>
                                                             <div class="col-md-9">
-                                                                <input type="text" name="ish_mualliflari" class="form-control" placeholder="Mualliflar" required>
+                                                                <div class="tag-input-wrapper" data-name="ish_mualliflari" data-placeholder="Ism kiriting va Enter bosing..."></div>
                                                             </div>
                                                         </div>
 
@@ -183,4 +191,24 @@
 <script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
 <script src="https://unpkg.com/feather-icons"></script>
 <script src="{% static 'app/app-assets/js/scripts/pages/dashboard-ecommerce.min.js' %}"></script>
+<script src="{% static 'app/assets/js/tag-input.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var turiSelect = document.getElementById('id_turi_select') || document.querySelector('select[name="turi"]');
+    var dguRow = document.getElementById('dgu_raqami_row');
+    function checkDgu() {
+        if (!turiSelect || !dguRow) return;
+        var val = (turiSelect.value || '').toLowerCase();
+        if (val.includes('ehm') || val.includes('patent') || val.includes('guvohnoma')) {
+            dguRow.style.display = 'flex';
+        } else {
+            dguRow.style.display = 'none';
+        }
+    }
+    if (turiSelect) {
+        turiSelect.addEventListener('change', checkDgu);
+        checkDgu();
+    }
+});
+</script>
 {% endblock %}

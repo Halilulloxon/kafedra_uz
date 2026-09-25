@@ -125,7 +125,7 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
     # Ish turi va kategoriya nom ostida — jadval ekranga sig'ishi uchun.
     list_display = ('id', 'nomi_display', 'muallif', 'sana', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
     list_display_links = ('id', 'nomi_display')
-    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya', 'dgu_raqami')
     list_filter = ('turi', 'kategoriya', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
@@ -137,6 +137,8 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
     @admin.display(description="Ish nomi", ordering='nomi')
     def nomi_display(self, obj):
         qismlar = [q for q in (obj.turi, obj.kategoriya) if q]
+        if obj.dgu_raqami:
+            qismlar.append(f"📌 {obj.dgu_raqami}")
         return format_html(
             '<div style="line-height:1.45;"><span style="font-weight:600;">{}</span>'
             '<br><span style="color:#94a3b8; font-size:11.5px;">{}</span></div>',
