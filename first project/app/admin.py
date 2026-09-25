@@ -125,7 +125,7 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
     # Ish turi va kategoriya nom ostida — jadval ekranga sig'ishi uchun.
     list_display = ('id', 'nomi_display', 'muallif', 'sana', 'file_preview', 'public_badge', 'tahrirlash_tugmasi')
     list_display_links = ('id', 'nomi_display')
-    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya', 'dgu_raqami')
+    search_fields = ('nomi', 'haqida', 'muallif__ism', 'muallif__familiya', 'dgu_raqami', 'maqola_link')
     list_filter = ('turi', 'kategoriya', 'sana', 'foreveryone')
     date_hierarchy = 'sana'
     list_per_page = 25
@@ -145,11 +145,16 @@ class ilmiy_ishlariAdmin(admin.ModelAdmin):
             obj.nomi, " · ".join(qismlar) or "Turi ko'rsatilmagan",
         )
 
-    @admin.display(description="Fayl")
+    @admin.display(description="Fayl / Link")
     def file_preview(self, obj):
+        links = []
         if obj.fayl:
-            return format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-file-alt"></i> Ochish</a>', obj.get_fayl_url)
-        return mark_safe('<span style="color:#94a3b8;">Fayl yo\'q</span>')
+            links.append(format_html('<a href="{}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-file-alt"></i> Fayl</a>', obj.get_fayl_url))
+        if obj.maqola_link:
+            links.append(format_html('<a href="{}" target="_blank" style="color:#059669; font-weight:600; margin-left:6px;"><i class="fas fa-external-link-alt"></i> Havola</a>', obj.maqola_link))
+        if links:
+            return mark_safe(" ".join(links))
+        return mark_safe('<span style="color:#94a3b8;">Yo\'q</span>')
 
     @admin.display(description="Ommaviylik")
     def public_badge(self, obj):

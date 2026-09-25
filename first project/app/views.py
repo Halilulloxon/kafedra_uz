@@ -772,7 +772,8 @@ def qoshish_ilmiy(request, user_id):
         # Muallif formadan emas, sessiyadan olinadi
         foreveryone = request.POST.get("foreveryone") == "on"
         dgu_raqami = request.POST.get("dgu_raqami", "").strip() or None
-        yangi=ilmiy(turi=turi,nomi=nomi,sana=sana,muallif=muallif, ish_mualliflari=ish_mualliflari, kategoriya=kategoriya, fayl=fayl, haqida=haqida, foreveryone=foreveryone, dgu_raqami=dgu_raqami)
+        maqola_link = request.POST.get("maqola_link", "").strip() or None
+        yangi=ilmiy(turi=turi,nomi=nomi,sana=sana,muallif=muallif, ish_mualliflari=ish_mualliflari, kategoriya=kategoriya, fayl=fayl, haqida=haqida, foreveryone=foreveryone, dgu_raqami=dgu_raqami, maqola_link=maqola_link)
         yangi.save()
     return render(
         request,

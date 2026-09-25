@@ -129,12 +129,18 @@
                                     <td>
                                         <span class="badge badge-pill badge-secondary font-small-2">{{ item.kategoriya }}</span>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center; white-space:nowrap;">
                                         {% if item.get_fayl_url %}
                                         <a href="{{ item.get_fayl_url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm font-small-2" style="font-weight:600;">
-                                            <i class="fas fa-file-download mr-1"></i> Yuklab olish
+                                            <i class="fas fa-file-download mr-1"></i> Fayl
                                         </a>
-                                        {% else %}
+                                        {% endif %}
+                                        {% if item.maqola_link %}
+                                        <a href="{{ item.maqola_link }}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm font-small-2 ml-1" style="font-weight:600;">
+                                            <i class="fas fa-external-link-alt mr-1"></i> Havola
+                                        </a>
+                                        {% endif %}
+                                        {% if not item.get_fayl_url and not item.maqola_link %}
                                         <span class="badge badge-pill badge-light text-muted px-2 py-1 font-small-2">
                                             <i class="fas fa-times-circle mr-1"></i> Fayl yo'q
                                         </span>

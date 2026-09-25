@@ -63,7 +63,7 @@ def validate_safe_video(video_obj):
 class IlmiyForm(forms.ModelForm):
     class Meta:
         model = Ilmiy
-        fields = ['turi', 'nomi', 'haqida', 'muallif', 'ish_mualliflari', 'sana', 'kategoriya', 'fayl', 'foreveryone', 'dgu_raqami']
+        fields = ['turi', 'nomi', 'haqida', 'muallif', 'ish_mualliflari', 'sana', 'kategoriya', 'fayl', 'foreveryone', 'dgu_raqami', 'maqola_link']
 
     def clean_fayl(self):
         return validate_safe_document(self.cleaned_data.get('fayl'))
@@ -78,6 +78,10 @@ class IlmiyForm(forms.ModelForm):
         if 'dgu_raqami' in self.fields:
             self.fields['dgu_raqami'].widget.attrs.update({
                 'placeholder': 'Masalan: № DGU 21495'
+            })
+        if 'maqola_link' in self.fields:
+            self.fields['maqola_link'].widget.attrs.update({
+                'placeholder': 'Masalan: https://doi.org/... yoki jurnal havolasi'
             })
 
 class OquvForm(forms.ModelForm):

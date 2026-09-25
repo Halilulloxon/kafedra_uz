@@ -72,12 +72,19 @@
                         {% if maqola.haqida %}<p class="pp-text">{{ maqola.haqida }}</p>{% endif %}
 
                         <div class="pp-actions">
+                            {% if maqola.maqola_link %}
+                            <a href="{{ maqola.maqola_link }}" target="_blank" class="read-btn" style="background:#059669; border-color:#059669; color:#fff;">
+                                <i class="fas fa-external-link-alt"></i> <span>Havolani ochish</span>
+                            </a>
+                            {% endif %}
+                            {% if maqola.get_fayl_url %}
                             <a href="{{ maqola.get_fayl_url }}" target="_blank" class="read-btn">
                                 <i class="fas fa-book-reader"></i> <span data-i18n="read">O'qish</span>
                             </a>
                             <a href="{{ maqola.get_fayl_url }}" download class="download-btn">
                                 <i class="fas fa-download"></i> <span data-i18n="download">Yuklab olish</span>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </article>

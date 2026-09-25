@@ -81,6 +81,14 @@
                                                             </div>
                                                         </div>
 
+                                                        <div class="form-group row" id="maqola_link_row" style="display: none;">
+                                                            <label class="col-md-3 label-control">Maqola havolasi (DOI / Link)</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" name="maqola_link" id="id_maqola_link" class="form-control" placeholder="Masalan: https://doi.org/10.1016/... yoki jurnal havolasi">
+                                                                <small class="form-text text-muted">Scopus / maqolaning rasmiy internet havolasi yoki DOI manzili</small>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="form-group row">
                                                             <label class="col-md-3 label-control">Nomi</label>
                                                             <div class="col-md-9">
@@ -196,18 +204,34 @@
 document.addEventListener('DOMContentLoaded', function () {
     var turiSelect = document.getElementById('id_turi_select') || document.querySelector('select[name="turi"]');
     var dguRow = document.getElementById('dgu_raqami_row');
-    function checkDgu() {
-        if (!turiSelect || !dguRow) return;
+    var linkRow = document.getElementById('maqola_link_row');
+
+    function checkFields() {
+        if (!turiSelect) return;
         var val = (turiSelect.value || '').toLowerCase();
-        if (val.includes('ehm') || val.includes('patent') || val.includes('guvohnoma')) {
-            dguRow.style.display = 'flex';
-        } else {
-            dguRow.style.display = 'none';
+
+        // EHM / Patent -> DGU raqami
+        if (dguRow) {
+            if (val.includes('ehm') || val.includes('patent') || val.includes('guvohnoma')) {
+                dguRow.style.display = 'flex';
+            } else {
+                dguRow.style.display = 'none';
+            }
+        }
+
+        // Scopus / Maqola / Tezis -> Havola (link)
+        if (linkRow) {
+            if (val.includes('scopus') || val.includes('maqola') || val.includes('tezis')) {
+                linkRow.style.display = 'flex';
+            } else {
+                linkRow.style.display = 'none';
+            }
         }
     }
+
     if (turiSelect) {
-        turiSelect.addEventListener('change', checkDgu);
-        checkDgu();
+        turiSelect.addEventListener('change', checkFields);
+        checkFields();
     }
 });
 </script>
