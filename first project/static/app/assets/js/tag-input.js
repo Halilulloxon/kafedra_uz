@@ -146,6 +146,25 @@
             }
         });
 
+        // Blur event — maydondan chiqqanda qolgan matnni avtomatik teg qilish
+        textInput.addEventListener('blur', function () {
+            if (textInput.value.trim()) {
+                addTag(textInput.value);
+                textInput.value = '';
+            }
+        });
+
+        // Forma submit bo'lganda qolgan matnni teg qilish
+        var parentForm = wrapper.closest('form');
+        if (parentForm) {
+            parentForm.addEventListener('submit', function () {
+                if (textInput.value.trim()) {
+                    addTag(textInput.value);
+                    textInput.value = '';
+                }
+            });
+        }
+
         // Tag o'chirish tugmasi
         wrapper.addEventListener('click', function (e) {
             var btn = e.target.closest('.tag-remove');
