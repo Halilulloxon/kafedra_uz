@@ -1,0 +1,37 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+env/
+env5/
+venv/
+.venv/
+
+# Django
+staticfiles/
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Environment variables
+.env
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+obj/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Visual Studio project user settings
+*.pyproj.user
