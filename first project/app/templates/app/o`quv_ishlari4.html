@@ -24,12 +24,15 @@
                 </div>
             </div>
 
-            <div class="card mb-3 shadow-sm border-0" style="border-radius: 14px;">
+            <div class="card mb-3 shadow-sm border-0 filter-card" style="border-radius: 14px; position: relative; z-index: 1020; overflow: visible;">
                 <div class="card-body p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
                         <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
                             <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn" style="font-weight:600;">
                                 <i class="fas fa-file-archive mr-1"></i> ZIP yuklab olish
+                            </button>
+                            <button class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm" id="downloadExcelBtn" style="font-weight:600;">
+                                <i class="fas fa-file-excel mr-1"></i> Excel yuklab olish
                             </button>
                         </div>
                         <div>
@@ -49,10 +52,10 @@
                                 <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-calendar-alt text-muted mr-1"></i> Gacha</label>
                                 <input type="date" name="to" class="form-control form-control-sm rounded" value="{{ request.GET.to }}">
                             </div>
-                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                            <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
                                 <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-university text-muted mr-1"></i> Fakultet</label>
                                 <select name="fakultet" class="form-control form-control-sm rounded custom-select" onchange="this.form.submit()">
-                                    <option value="">Barcha fakultetlar</option>
+                                    <option value="">Barchasi</option>
                                     {% for f in fakultetlar %}
                                     <option value="{{ f.id }}" {% if request.GET.fakultet == f.id|stringformat:"s" %}selected{% endif %}>{{ f.nomi }}</option>
                                     {% endfor %}
@@ -67,7 +70,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
+                            <div class="col-12 col-sm-6 col-md-1 mb-2 mb-md-0">
                                 <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-tag text-muted mr-1"></i> Turi</label>
                                 <select name="turi" class="form-control form-control-sm rounded custom-select">
                                     <option value="">Barchasi</option>
@@ -76,8 +79,52 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="col-12 col-sm-6 col-md-2 mb-2 mb-md-0">
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-user text-muted mr-1"></i> Muallif</label>
+                                <div class="custom-multiselect dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-truncate" 
+                                            type="button" 
+                                            id="msMuallifDropdown" 
+                                            data-toggle="dropdown" 
+                                            aria-haspopup="true" 
+                                            aria-expanded="false"
+                                            style="height: 38px;">
+                                        <span class="ms-btn-text">
+                                            {% if selected_mualliflar %}
+                                                {{ selected_mualliflar|length }} ta muallif
+                                            {% else %}
+                                                Barcha mualliflar
+                                            {% endif %}
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="msMuallifDropdown">
+                                        <div class="ms-search-box">
+                                            <i class="fas fa-search ms-search-icon"></i>
+                                            <input type="text" class="form-control form-control-sm ms-search-input" placeholder="Qidirish..." autocomplete="off">
+                                        </div>
+                                        <div class="ms-actions-bar">
+                                            <a href="javascript:void(0)" class="ms-select-all"><i class="fas fa-check-double mr-1"></i>Barchasi</a>
+                                            <span class="text-muted">|</span>
+                                            <a href="javascript:void(0)" class="ms-clear-all clear-link"><i class="fas fa-times mr-1"></i>Tozalash</a>
+                                            <span class="badge badge-secondary ms-count-badge ml-auto">0</span>
+                                        </div>
+                                        <div class="ms-options-list">
+                                            {% for tur in ish_muallifi %}
+                                            <div class="ms-option-item" data-text="{{ tur|lower }}">
+                                                <input type="checkbox" name="ish_muallifi" value="{{ tur }}" id="ms_m_{{ forloop.counter }}" 
+                                                       {% if tur in selected_mualliflar or request.GET.ish_muallifi == tur %}checked{% endif %}>
+                                                <label for="ms_m_{{ forloop.counter }}" title="{{ tur }}">{{ tur }}</label>
+                                            </div>
+                                            {% endfor %}
+                                            <div class="ms-no-results text-muted text-center py-2 font-italic small" style="display:none;">
+                                                Hech narsa topilmadi
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-12 col-md-1">
-                                <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height:40px; font-weight:600;">
+                                <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height:38px; font-weight:600;">
                                     <i class="fas fa-filter"></i>
                                 </button>
                             </div>
@@ -149,4 +196,11 @@
     <!-- BEGIN: Footer-->
 
 <!-- END: Footer-->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'app/app-assets/js/scripts/footer.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'app/scripts/download.js' %}"></script>
 {% endblock %}

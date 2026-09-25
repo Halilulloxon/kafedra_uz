@@ -1,0 +1,818 @@
+{% extends "app/base_mudir.html" %}
+{% load static %}
+
+{% block title %}Kafedra Talablari Bajarilishi Monitoringi - Kafedralar.uz{% endblock %}
+
+{% block extra_head %}
+<style>
+    .stat-kpi-card {
+        border-radius: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: none;
+    }
+    .stat-kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+    .req-card {
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        transition: all 0.2s ease;
+    }
+    .req-card:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+    .progress-fat {
+        height: 12px;
+        border-radius: 6px;
+        background-color: #e2e8f0;
+        overflow: hidden;
+    }
+    .progress-slim {
+        height: 8px;
+        border-radius: 4px;
+        background-color: #edf2f7;
+    }
+    .teacher-avatar {
+        width: 44px;
+        height: 44px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #e2e8f0;
+    }
+    .badge-status-completed {
+        background-color: #dcfce7;
+        color: #15803d;
+        font-weight: 600;
+        border: 1px solid #bbf7d0;
+    }
+    .badge-status-partial {
+        background-color: #fef9c3;
+        color: #a16207;
+        font-weight: 600;
+        border: 1px solid #fef08a;
+    }
+    .badge-status-none {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        font-weight: 600;
+        border: 1px solid #fecaca;
+    }
+    /* Dark mode */
+    body.dark-mode .req-card {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+    }
+    body.dark-mode .progress-fat,
+    body.dark-mode .progress-slim {
+        background-color: #334155 !important;
+    }
+    body.dark-mode .badge-status-completed {
+        background-color: rgba(21, 128, 61, 0.2) !important;
+        color: #4ade80 !important;
+        border-color: #15803d !important;
+    }
+    body.dark-mode .badge-status-partial {
+        background-color: rgba(161, 98, 7, 0.2) !important;
+        color: #facc15 !important;
+        border-color: #a16207 !important;
+    }
+    body.dark-mode .badge-status-none {
+        background-color: rgba(185, 28, 28, 0.2) !important;
+        color: #f87171 !important;
+        border-color: #b91c1c !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="app-content content">
+    <div class="content-wrapper">
+
+        <!-- HEADER -->
+        <div class="content-header row">
+            <div class="content-header-left col-12 mb-2">
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div>
+                        <h3 class="content-header-title mb-0 text-bold-700">
+                            <i class="fas fa-chart-line text-primary mr-1"></i> Kafedra Talablari Bajarilishi Monitoringi
+                        </h3>
+                        <small class="text-muted">
+                            <i class="fas fa-sitemap mr-1"></i><strong>{{ kafedra.nomi }}</strong> kafedrasi o'qituvchilarining belgilangan talablarni bajarish tahlili
+                        </small>
+                    </div>
+                    <div class="mt-2 mt-md-0 d-flex flex-wrap align-items-center" style="gap: 8px;">
+                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm" id="exportExcelBtn" style="font-weight:600;">
+                            <i class="fas fa-file-excel mr-1"></i> Excelga yuklash
+                        </button>
+                        <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                            <i class="fas fa-tasks mr-1"></i> Talablarni boshqarish
+                        </a>
+                        <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                            <i class="fas fa-plus mr-1"></i> Yangi talab
+                        </a>
+                        <a href="{% url 'home2' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
+                            <i class="fas fa-arrow-left mr-1"></i> Mudir paneli
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-body">
+
+            <!-- 1. TOP STATS / KPI CARDS -->
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-info text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_teachers }}</h2>
+                                    <span class="font-small-3">Kafedra O'qituvchilari</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-users font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Barcha qabul qilingan xodimlar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-primary text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_active_reqs }}</h2>
+                                    <span class="font-small-3">Faol Me'yoriy Talablar</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-clipboard-check font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Mudir belgilagan rejaviy vazifalar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-success text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ overall_dept_pct }}%</h2>
+                                    <span class="font-small-3">Umumiy Bajarilish Foizi</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-chart-pie font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-2" style="height: 6px; background-color: rgba(255,255,255,0.3);">
+                                <div class="progress-bar bg-white" role="progressbar" style="width: {{ overall_dept_pct }}%;" aria-valuenow="{{ overall_dept_pct }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-warning text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ fully_completed_count }} <span class="font-medium-1 text-white-50">/ {{ total_teachers }}</span></h2>
+                                    <span class="font-small-3">To'liq Bajarganlar</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-user-check font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Qisman: <strong>{{ partial_count }}</strong> | Qarzdor: <strong>{{ not_started_count }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. REQUIREMENTS PROGRESS SUMMARY CARDS -->
+            <div class="card shadow-sm border-0 mb-3" style="border-radius: 14px;">
+                <div class="card-header bg-transparent border-bottom d-flex flex-wrap justify-content-between align-items-center p-3">
+                    <div>
+                        <h4 class="card-title text-bold-700 mb-0">
+                            <i class="fas fa-bullseye text-primary mr-1"></i> Reja va Talablar Bo'yicha Kafedra Ko'rsatkichlari
+                        </h4>
+                        <small class="text-muted">Har bir me'yoriy talabning kafedra miqyosida umumiy bajarilish darajasi</small>
+                    </div>
+                    <span class="badge badge-pill badge-light border px-3 py-1 font-small-3 mt-1 mt-md-0" style="background:#f8fafc; color:#334155; font-weight:600;">
+                        Jami: <strong>{{ req_stats|length }}</strong> ta faol talab
+                    </span>
+                </div>
+                <div class="card-body p-3">
+                    {% if req_stats %}
+                    <div class="row">
+                        {% for r in req_stats %}
+                        <div class="col-12 col-md-6 col-xl-4 mb-3">
+                            <div class="req-card p-3 h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="text-bold-700 text-dark mb-0">{{ r.talab.sarlavha }}</h5>
+                                        <span class="badge badge-pill badge-primary font-small-1">{{ r.talab.ish_turi }}</span>
+                                    </div>
+                                    {% if r.talab.tavsif %}
+                                    <p class="text-muted small mb-2 text-truncate" title="{{ r.talab.tavsif }}">{{ r.talab.tavsif }}</p>
+                                    {% endif %}
+                                    <div class="d-flex justify-content-between align-items-center mb-1 small text-muted">
+                                        <span>Bajarilishi: <strong>{{ r.completed_total }}</strong> / {{ r.planned_total }} ta</span>
+                                        <span class="font-weight-bold {% if r.pct >= 100 %}text-success{% elif r.pct >= 50 %}text-primary{% else %}text-warning{% endif %}">{{ r.pct }}%</span>
+                                    </div>
+                                    <div class="progress-fat mb-2">
+                                        <div class="progress-bar {% if r.pct >= 100 %}bg-success{% elif r.pct >= 50 %}bg-primary{% else %}bg-warning{% endif %}" 
+                                             role="progressbar" 
+                                             style="width: {{ r.pct }}%;" 
+                                             aria-valuenow="{{ r.pct }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-2 font-small-2 text-muted">
+                                    <span>
+                                        <i class="fas fa-check-circle text-success mr-1"></i>Bajardi: <strong>{{ r.fulfilled_teachers_count }}</strong>
+                                        <span class="mx-1">|</span>
+                                        <i class="fas fa-times-circle text-danger mr-1"></i>Bajarmadi: <strong>{{ r.unfulfilled_teachers_count }}</strong>
+                                    </span>
+                                    {% if r.talab.muddati %}
+                                    <span><i class="far fa-calendar-alt text-muted mr-1"></i>{{ r.talab.muddati|date:"d/m/Y" }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-clipboard-list fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                        <h5>Hozircha kafedrada faol talablar kiritilmagan</h5>
+                        <p class="small mb-3">O'qituvchilar uchun yangi talab va rejalarni belgilash uchun "Yangi talab" tugmasini bosing.</p>
+                        <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm font-weight-bold">
+                            <i class="fas fa-plus mr-1"></i> Yangi Talab Qo'shish
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 3. DETAILED TEACHER PROGRESS TABLE -->
+            <div class="card shadow-sm border-0 mb-3" style="border-radius: 14px; overflow:hidden;">
+                <div class="card-header bg-transparent border-bottom p-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="mb-2 mb-md-0">
+                            <h4 class="card-title text-bold-700 mb-0">
+                                <i class="fas fa-users-cog text-primary mr-1"></i> O'qituvchilar Bo'yicha Bajarilish Hisoboti
+                            </h4>
+                            <small class="text-muted">Har bir o'qituvchining faoliyati va me'yoriy talablar holati</small>
+                        </div>
+
+                        <!-- Status Filter Pills -->
+                        <div class="btn-group btn-group-sm rounded-pill shadow-sm p-1" style="background:#f1f5f9;">
+                            <a href="?status=all{% if query %}&q={{ query }}{% endif %}" class="btn btn-sm rounded-pill {% if status_filter == 'all' %}btn-primary shadow-sm font-weight-bold{% else %}btn-link text-muted{% endif %}">
+                                Barchasi ({{ all_teachers_data|length }})
+                            </a>
+                            <a href="?status=completed{% if query %}&q={{ query }}{% endif %}" class="btn btn-sm rounded-pill {% if status_filter == 'completed' %}btn-success shadow-sm font-weight-bold{% else %}btn-link text-muted{% endif %}">
+                                <i class="fas fa-check-circle mr-1"></i>To'liq ({{ fully_completed_count }})
+                            </a>
+                            <a href="?status=partial{% if query %}&q={{ query }}{% endif %}" class="btn btn-sm rounded-pill {% if status_filter == 'partial' %}btn-warning text-dark shadow-sm font-weight-bold{% else %}btn-link text-muted{% endif %}">
+                                <i class="fas fa-hourglass-half mr-1"></i>Qisman ({{ partial_count }})
+                            </a>
+                            <a href="?status=not_started{% if query %}&q={{ query }}{% endif %}" class="btn btn-sm rounded-pill {% if status_filter == 'not_started' %}btn-danger shadow-sm font-weight-bold{% else %}btn-link text-muted{% endif %}">
+                                <i class="fas fa-times-circle mr-1"></i>Qarzdor ({{ not_started_count }})
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Search Filter Form -->
+                    <form method="get" action="" class="mt-3 mb-0">
+                        <input type="hidden" name="status" value="{{ status_filter }}">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
+                                    </div>
+                                    <input type="text" name="q" class="form-control form-control-sm border-left-0" placeholder="O'qituvchi F.I.Sh. bo'yicha qidirish..." value="{{ query }}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Qidirish</button>
+                                        {% if query %}
+                                        <a href="?status={{ status_filter }}" class="btn btn-outline-secondary" title="Filtrni tozalash"><i class="fas fa-times"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right mt-2 mt-md-0 small text-muted">
+                                Ko'rsatilmoqda: <strong>{{ teachers_data|length }}</strong> nafar o'qituvchi
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="teachersReportTable">
+                        <thead class="bg-light">
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>O'qituvchi</th>
+                                <th style="text-align:center;">Jami Ishlar</th>
+                                {% for r in active_talablar %}
+                                <th style="text-align:center; min-width: 130px;" title="{{ r.sarlavha }} ({{ r.ish_turi }})">
+                                    <span class="d-block text-truncate" style="max-width: 140px;">{{ r.sarlavha }}</span>
+                                    <small class="text-muted font-weight-normal">Reja: {{ r.talab_miqdori }} ta</small>
+                                </th>
+                                {% endfor %}
+                                <th style="text-align:center; min-width: 140px;">Umumiy Bajarilish</th>
+                                <th style="text-align:center; min-width: 120px;">Holat</th>
+                                <th style="text-align:center; width: 100px;">Batafsil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in teachers_data %}
+                            <tr>
+                                <td class="text-bold-600 text-muted align-middle">{{ forloop.counter }}</td>
+                                <td class="align-middle">
+                                    <div class="media align-items-center">
+                                        <img src="{{ row.teacher.get_image_url }}" alt="Avatar" class="teacher-avatar mr-2 shadow-sm">
+                                        <div class="media-body">
+                                            <h6 class="text-bold-700 text-dark mb-0">{{ row.teacher.familiya }} {{ row.teacher.ism }} {{ row.teacher.sharifi }}</h6>
+                                            <small class="text-muted">
+                                                <i class="fas fa-user-graduate text-primary mr-1"></i>{{ row.teacher.ilmiy_daraja|default:"O'qituvchi" }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge badge-pill badge-light border font-small-2" style="background:#f8fafc;" title="Ilmiy: {{ row.ilmiy_count }} | O'quv: {{ row.oquv_count }}">
+                                        <strong>{{ row.jami_ishlar }}</strong> ta
+                                        <small class="text-muted">({{ row.ilmiy_count }}i / {{ row.oquv_count }}o')</small>
+                                    </span>
+                                </td>
+                                
+                                {% for req_item in row.requirements %}
+                                <td class="text-center align-middle">
+                                    <div class="d-inline-block text-center" style="min-width: 90px;">
+                                        <div class="d-flex justify-content-between align-items-center font-small-1 mb-1">
+                                            <span class="text-bold-600 {% if req_item.is_done %}text-success{% else %}text-muted{% endif %}">
+                                                {{ req_item.bajarilgan }} / {{ req_item.talab_miqdori }}
+                                            </span>
+                                            <span class="badge {% if req_item.is_done %}badge-success{% elif req_item.foiz > 0 %}badge-warning{% else %}badge-secondary{% endif %} font-small-1">
+                                                {{ req_item.foiz }}%
+                                            </span>
+                                        </div>
+                                        <div class="progress-slim">
+                                            <div class="progress-bar {% if req_item.is_done %}bg-success{% elif req_item.foiz > 0 %}bg-warning{% else %}bg-secondary{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ req_item.foiz }}%;" 
+                                                 aria-valuenow="{{ req_item.foiz }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                {% endfor %}
+
+                                <td class="text-center align-middle">
+                                    <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
+                                        <div class="progress-fat flex-grow-1" style="max-width: 80px;">
+                                            <div class="progress-bar {% if row.avg_percent >= 100 %}bg-success{% elif row.avg_percent >= 50 %}bg-primary{% else %}bg-danger{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ row.avg_percent }}%;" 
+                                                 aria-valuenow="{{ row.avg_percent }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <strong class="font-small-3 {% if row.avg_percent >= 100 %}text-success{% elif row.avg_percent >= 50 %}text-primary{% else %}text-danger{% endif %}">
+                                            {{ row.avg_percent }}%
+                                        </strong>
+                                    </div>
+                                </td>
+
+                                <td class="text-center align-middle">
+                                    {% if row.all_completed %}
+                                    <span class="badge badge-pill badge-status-completed px-2 py-1 font-small-2">
+                                        <i class="fas fa-check-circle mr-1"></i> Bajarildi
+                                    </span>
+                                    {% elif row.avg_percent > 0 %}
+                                    <span class="badge badge-pill badge-status-partial px-2 py-1 font-small-2">
+                                        <i class="fas fa-hourglass-half mr-1"></i> Qisman
+                                    </span>
+                                    {% else %}
+                                    <span class="badge badge-pill badge-status-none px-2 py-1 font-small-2">
+                                        <i class="fas fa-times-circle mr-1"></i> Bajarilmagan
+                                    </span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center align-middle">
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm view-teacher-btn" 
+                                            data-toggle="modal" 
+                                            data-target="#teacherDetailModal"
+                                            data-name="{{ row.teacher.familiya }} {{ row.teacher.ism }} {{ row.teacher.sharifi }}"
+                                            data-degree="{{ row.teacher.ilmiy_daraja|default:"O'qituvchi" }}"
+                                            data-avatar="{{ row.teacher.get_image_url }}"
+                                            data-ilmiy="{{ row.ilmiy_count }}"
+                                            data-oquv="{{ row.oquv_count }}"
+                                            data-percent="{{ row.avg_percent }}"
+                                            data-status="{{ row.status }}"
+                                            data-reqs='[
+                                                {% for req_item in row.requirements %}
+                                                {
+                                                    "sarlavha": "{{ req_item.obj.sarlavha|escapejs }}",
+                                                    "ish_turi": "{{ req_item.obj.ish_turi|escapejs }}",
+                                                    "bajarilgan": {{ req_item.bajarilgan }},
+                                                    "talab_miqdori": {{ req_item.talab_miqdori }},
+                                                    "foiz": {{ req_item.foiz }},
+                                                    "is_done": {% if req_item.is_done %}true{% else %}false{% endif %}
+                                                }{% if not forloop.last %},{% endif %}
+                                                {% endfor %}
+                                            ]'>
+                                        <i class="fas fa-eye mr-1"></i> Batafsil
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="{{ active_talablar|length|add:6 }}" class="text-center py-5 text-muted">
+                                    <i class="fas fa-search fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                                    <h5>Mos keluvchi o'qituvchilar topilmadi</h5>
+                                    <p class="small">Qidiruv yoki filtrlash shartlarini o'zgartirib ko'ring.</p>
+                                    <a href="{% url 'talablar_monitoring' user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        Filtrlarni tozalash
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 4. TEACHER DETAIL MODAL -->
+<div class="modal fade" id="teacherDetailModal" tabindex="-1" role="dialog" aria-labelledby="teacherDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 16px; border:none; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+            <div class="modal-header bg-light border-bottom p-3">
+                <div class="media align-items-center">
+                    <img src="" id="modalTeacherAvatar" alt="Avatar" class="teacher-avatar mr-3 shadow-sm" style="width: 56px; height: 56px;">
+                    <div>
+                        <h5 class="modal-title font-weight-bold text-dark mb-0" id="modalTeacherName">O'qituvchi F.I.Sh.</h5>
+                        <small class="text-muted" id="modalTeacherDegree">Ilmiy daraja</small>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Mini Stats -->
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block">Ilmiy Ishlar</small>
+                            <h4 class="mb-0 text-bold-700 text-primary" id="modalIlmiyCount">0</h4>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block">O'quv Ishlar</small>
+                            <h4 class="mb-0 text-bold-700 text-success" id="modalOquvCount">0</h4>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block">Umumiy Foiz</small>
+                            <h4 class="mb-0 text-bold-700 text-info" id="modalOverallPercent">0%</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="text-bold-700 text-dark mb-3"><i class="fas fa-tasks text-primary mr-1"></i> Me'yoriy Talablar Bajarilishi Tafsiloti</h6>
+                <div id="modalRequirementsList">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-top p-3 d-flex justify-content-between">
+                <span class="small text-muted"><i class="fas fa-info-circle mr-1"></i> Ma'lumotlar o'qituvchi yuklagan nashrlar asosida hisoblangan</span>
+                <button type="button" class="btn btn-secondary btn-sm rounded-pill px-4" data-dismiss="modal">Yopish</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Dynamic Teacher Detail Modal Population
+    var viewBtns = document.querySelectorAll('.view-teacher-btn');
+    viewBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var name = this.getAttribute('data-name');
+            var degree = this.getAttribute('data-degree');
+            var avatar = this.getAttribute('data-avatar');
+            var ilmiy = this.getAttribute('data-ilmiy');
+            var oquv = this.getAttribute('data-oquv');
+            var percent = this.getAttribute('data-percent');
+            var reqsRaw = this.getAttribute('data-reqs') || '[]';
+
+            document.getElementById('modalTeacherName').textContent = name;
+            document.getElementById('modalTeacherDegree').textContent = degree;
+            document.getElementById('modalTeacherAvatar').src = avatar;
+            document.getElementById('modalIlmiyCount').textContent = ilmiy;
+            document.getElementById('modalOquvCount').textContent = oquv;
+            document.getElementById('modalOverallPercent').textContent = percent + '%';
+
+            var container = document.getElementById('modalRequirementsList');
+            container.innerHTML = '';
+
+            try {
+                var reqs = JSON.parse(reqsRaw);
+                if (reqs.length === 0) {
+                    container.innerHTML = '<div class="alert alert-light text-center">Faol talablar mavjud emas.</div>';
+                } else {
+                    reqs.forEach(function (r) {
+                        var statusBadge = r.is_done 
+                            ? '<span class="badge badge-success font-small-1">Bajarildi (' + r.bajarilgan + '/' + r.talab_miqdori + ')</span>' 
+                            : '<span class="badge badge-warning font-small-1">Jarayonda (' + r.bajarilgan + '/' + r.talab_miqdori + ')</span>';
+                        
+                        var barColor = r.is_done ? 'bg-success' : (r.foiz > 0 ? 'bg-warning' : 'bg-secondary');
+
+                        var html = '<div class="mb-3 p-2 border rounded bg-white">' +
+                            '<div class="d-flex justify-content-between align-items-center mb-1">' +
+                                '<div>' +
+                                    '<strong class="text-dark font-small-3">' + r.sarlavha + '</strong> ' +
+                                    '<small class="badge badge-pill badge-light border text-muted ml-1">' + r.ish_turi + '</small>' +
+                                '</div>' +
+                                statusBadge +
+                            '</div>' +
+                            '<div class="progress" style="height: 10px; border-radius: 5px;">' +
+                                '<div class="progress-bar ' + barColor + '" role="progressbar" style="width: ' + r.foiz + '%;" aria-valuenow="' + r.foiz + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+                            '</div>' +
+                            '<div class="d-flex justify-content-between align-items-center mt-1 font-small-1 text-muted">' +
+                                '<span>Reja: ' + r.talab_miqdori + ' ta</span>' +
+                                '<span>Bajarilgan: <strong>' + r.bajarilgan + '</strong> ta (' + r.foiz + '%)</span>' +
+                            '</div>' +
+                        '</div>';
+
+                        container.insertAdjacentHTML('beforeend', html);
+                    });
+                }
+            } catch (e) {
+                container.innerHTML = '<div class="text-danger">Ma\'lumotlarni yuklashda xatolik yuz berdi.</div>';
+            }
+        });
+    });
+
+    // Structured Data for Excel Export
+    var excelActiveTalablar = [
+        {% for r in active_talablar %}
+        {
+            id: {{ r.id }},
+            sarlavha: "{{ r.sarlavha|escapejs }}",
+            ish_turi: "{{ r.ish_turi|escapejs }}",
+            talab_miqdori: {{ r.talab_miqdori }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var excelTeachersData = [
+        {% for row in teachers_data %}
+        {
+            tr: {{ forloop.counter }},
+            name: "{{ row.teacher.familiya }} {{ row.teacher.ism }} {{ row.teacher.sharifi }}",
+            degree: "{{ row.teacher.ilmiy_daraja|default:'O`qituvchi' }}",
+            ilmiy_count: {{ row.ilmiy_count }},
+            oquv_count: {{ row.oquv_count }},
+            jami_ishlar: {{ row.jami_ishlar }},
+            requirements: [
+                {% for req_item in row.requirements %}
+                {
+                    bajarilgan: {{ req_item.bajarilgan }},
+                    talab_miqdori: {{ req_item.talab_miqdori }},
+                    foiz: {{ req_item.foiz }},
+                    is_done: {% if req_item.is_done %}true{% else %}false{% endif %}
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            avg_percent: {{ row.avg_percent }},
+            status: "{{ row.status }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var excelReqStats = [
+        {% for rs in req_stats %}
+        {
+            tr: {{ forloop.counter }},
+            sarlavha: "{{ rs.talab.sarlavha|escapejs }}",
+            ish_turi: "{{ rs.talab.ish_turi|escapejs }}",
+            per_teacher: {{ rs.talab.talab_miqdori }},
+            planned_total: {{ rs.planned_total }},
+            completed_total: {{ rs.completed_total }},
+            pct: {{ rs.pct }},
+            fulfilled: {{ rs.fulfilled_teachers_count }},
+            unfulfilled: {{ rs.unfulfilled_teachers_count }},
+            muddati: "{% if rs.talab.muddati %}{{ rs.talab.muddati|date:'d/m/Y' }}{% else %}-{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // 2. Export Structured Data to Excel using SheetJS
+    var exportBtn = document.getElementById('exportExcelBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function () {
+            var wb = XLSX.utils.book_new();
+
+            // ==========================================
+            // 1-VARAK: O'qituvchilar Monitoringi
+            // ==========================================
+            var ws1Data = [];
+
+            // Header info rows
+            ws1Data.push(["KAFEDRA BO'YICHA TALABLAR VA REJALAR BAJARILISHI MONITORINGI HISOBOTI"]);
+            ws1Data.push([
+                "Kafedra: {{ kafedra.nomi|escapejs }}",
+                "",
+                "Kafedra mudiri: {{ foydalanuvchi.familiya|escapejs }} {{ foydalanuvchi.ism|escapejs }}",
+                "",
+                "Hisobot sanasi: " + new Date().toLocaleDateString('uz-UZ')
+            ]);
+            ws1Data.push([
+                "Jami o'qituvchilar: {{ total_teachers }} nafar",
+                "Umumiy bajarilish: {{ overall_dept_pct }}%",
+                "To'liq bajargan: {{ fully_completed_count }} nafar",
+                "Qisman: {{ partial_count }} nafar",
+                "Qarzdor: {{ not_started_count }} nafar"
+            ]);
+            ws1Data.push([]); // Bo'sh qator
+
+            // Asosiy jadval sarlavhasi
+            var tableHeader = [
+                "T/R",
+                "Professor-o'qituvchi F.I.SH",
+                "Ilmiy darajasi / Lavozimi",
+                "Jami Ilmiy Ishlar",
+                "Jami O'quv Ishlar",
+                "Jami Barcha Ishlar"
+            ];
+
+            // Har bir talab bo'yicha alohida ustun
+            excelActiveTalablar.forEach(function(t) {
+                tableHeader.push(t.sarlavha + " (Reja: " + t.talab_miqdori + " ta)");
+            });
+
+            tableHeader.push("Umumiy Bajarilish (%)");
+            tableHeader.push("Holati");
+
+            ws1Data.push(tableHeader);
+
+            // Ma'lumot qatorlari
+            var sumIlmiy = 0;
+            var sumOquv = 0;
+            var sumJami = 0;
+            var reqCompletedSums = new Array(excelActiveTalablar.length).fill(0);
+
+            excelTeachersData.forEach(function(t, idx) {
+                var row = [
+                    idx + 1,
+                    t.name,
+                    t.degree,
+                    t.ilmiy_count,
+                    t.oquv_count,
+                    t.jami_ishlar
+                ];
+
+                sumIlmiy += t.ilmiy_count;
+                sumOquv += t.oquv_count;
+                sumJami += t.jami_ishlar;
+
+                t.requirements.forEach(function(r, rIdx) {
+                    row.push(r.bajarilgan + " ta (" + r.foiz + "%)");
+                    reqCompletedSums[rIdx] += r.bajarilgan;
+                });
+
+                row.push(t.avg_percent + "%");
+                row.push(t.status);
+
+                ws1Data.push(row);
+            });
+
+            // Yakuniy qator (Total / Average row)
+            var totalRow = [
+                "",
+                "JAMI / KAFEDRA KO'RSATKICHI",
+                "",
+                sumIlmiy,
+                sumOquv,
+                sumJami
+            ];
+            reqCompletedSums.forEach(function(val) {
+                totalRow.push(val + " ta");
+            });
+            totalRow.push("{{ overall_dept_pct }}%");
+            totalRow.push("{% if overall_dept_pct >= 100 %}Bajarildi{% elif overall_dept_pct > 0 %}Qisman{% else %}Bajarilmadi{% endif %}");
+            ws1Data.push(totalRow);
+
+            var ws1 = XLSX.utils.aoa_to_sheet(ws1Data);
+
+            // Ustun kengliklari
+            var ws1Cols = [
+                { wch: 6 },   // T/R
+                { wch: 32 },  // F.I.SH
+                { wch: 22 },  // Ilmiy daraja
+                { wch: 18 },  // Jami ilmiy
+                { wch: 18 },  // Jami o'quv
+                { wch: 18 }   // Jami barcha
+            ];
+            excelActiveTalablar.forEach(function() {
+                ws1Cols.push({ wch: 26 }); // Har bir talab ustuni
+            });
+            ws1Cols.push({ wch: 22 }); // Umumiy foiz
+            ws1Cols.push({ wch: 16 }); // Holat
+
+            ws1['!cols'] = ws1Cols;
+
+            XLSX.utils.book_append_sheet(wb, ws1, "O'qituvchilar_Monitoringi");
+
+            // ==========================================
+            // 2-VARAK: Talablar va Rejalar Xulosasi
+            // ==========================================
+            var ws2Data = [];
+            ws2Data.push(["KAFEDRA BO'YICHA BELGILANGAN TALABLAR VA REJALAR TAHLILI"]);
+            ws2Data.push(["Kafedra: {{ kafedra.nomi|escapejs }}", "", "Sana: " + new Date().toLocaleDateString('uz-UZ')]);
+            ws2Data.push([]);
+
+            ws2Data.push([
+                "T/R",
+                "Talab / Reja Nomi",
+                "Ish Turi",
+                "1 O'qituvchiga Reja (ta)",
+                "Kafedra Jami Rejasi (ta)",
+                "Amalda Bajarilgan (ta)",
+                "Bajarilish Foizi (%)",
+                "To'liq Bajarganlar (nafar)",
+                "Qarzdorlar (nafar)",
+                "Muddati"
+            ]);
+
+            excelReqStats.forEach(function(rs) {
+                ws2Data.push([
+                    rs.tr,
+                    rs.sarlavha,
+                    rs.ish_turi,
+                    rs.per_teacher,
+                    rs.planned_total,
+                    rs.completed_total,
+                    rs.pct + "%",
+                    rs.fulfilled,
+                    rs.unfulfilled,
+                    rs.muddati
+                ]);
+            });
+
+            var ws2 = XLSX.utils.aoa_to_sheet(ws2Data);
+            ws2['!cols'] = [
+                { wch: 6 },
+                { wch: 32 },
+                { wch: 20 },
+                { wch: 22 },
+                { wch: 22 },
+                { wch: 22 },
+                { wch: 20 },
+                { wch: 24 },
+                { wch: 20 },
+                { wch: 16 }
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws2, "Kafedra_Rejasi");
+
+            // Fayl nomi
+            var fileName = "Kafedra_Talablari_Monitoringi_{{ kafedra.nomi|slugify }}_" + new Date().toISOString().slice(0, 10) + ".xlsx";
+            XLSX.writeFile(wb, fileName);
+        });
+    }
+});
+</script>
+{% endblock %}

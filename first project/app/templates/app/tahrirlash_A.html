@@ -1,7 +1,7 @@
 {% extends "app/base_oqituvchi.html" %}
 {% load static %}
 
-{% block title %}Ishni Tahrirlash — Kafedralar.uz{% endblock %}
+{% block title %}{% if t_id == 1 or t_id == '1' %}Ilmiy Ishni Tahrirlash{% else %}O‘quv Ishini Tahrirlash{% endif %} — Kafedralar.uz{% endblock %}
 
 {% block extra_head %}
 <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
@@ -45,7 +45,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Tahrirlash</h4>
+                                <h4 class="card-title">{% if t_id == 1 or t_id == '1' %}<i class="fas fa-graduation-cap text-primary mr-1"></i> Ilmiy Ishni Tahrirlash{% else %}<i class="fas fa-book-open text-success mr-1"></i> O‘quv Ishini Tahrirlash{% endif %}</h4>
                                 <a class="heading-elements-toggle"><i class="fas fa-ellipsis-h font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -99,10 +99,11 @@
                                                 </div>
                                             </div>
                                             {% if t_id == 1 %}
-                                            <div class="form-group row">
+                                            <div class="form-group row" id="kategoriya_row">
                                                 <label class="col-md-3 label-control">Kategoriya</label>
                                                 <div class="col-md-9">
                                                     {{ form.kategoriya }}
+                                                    <small id="kategoriya_hint" class="form-text text-muted mt-1"></small>
                                                 </div>
                                             </div>
                                             <div class="form-group row" id="dgu_raqami_row" style="display: none;">
@@ -206,6 +207,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var turiSelect = document.querySelector('select[name="turi"]') || document.querySelector('input[name="turi"]');
     var dguRow = document.getElementById('dgu_raqami_row');
     var linkRow = document.getElementById('maqola_link_row');
+    var katSelect = document.querySelector('select[name="kategoriya"]');
+    var katHint = document.getElementById('kategoriya_hint');
 
     function checkFields() {
         if (!turiSelect) return;
@@ -226,6 +229,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 linkRow.style.display = 'flex';
             } else {
                 linkRow.style.display = 'none';
+            }
+        }
+
+        // Kategoriya moslashuvchan boshqaruvi
+        if (katSelect) {
+            if (val.includes('scopus')) {
+                katSelect.value = 'Xalqaro';
+                if (katHint) katHint.innerHTML = '<span class="badge badge-primary"><i class="fas fa-globe mr-1"></i> Xalqaro</span> Scopus bazasidagi nashrlar xalqaro toifaga kiradi.';
+            } else if (val.includes('ehm') || val.includes('guvohnoma')) {
+                katSelect.value = 'Respublika';
+                if (katHint) katHint.innerHTML = '<span class="badge badge-info"><i class="fas fa-certificate mr-1"></i> Respublika (DGU)</span> Rasmiy milliy dasturiy guvohnoma.';
+            } else if (val.includes('patent')) {
+                if (katHint) katHint.innerHTML = 'Patent darajasi: <strong>Respublika</strong> yoki <strong>Xalqaro</strong>.';
+            } else if (val.includes('maqola') || val.includes('tezis')) {
+                if (katHint) katHint.innerHTML = 'Ilmiy nashr/anjuman darajasi: <strong>Xalqaro</strong> yoki <strong>Respublika</strong>.';
+            } else {
+                if (katHint) katHint.innerHTML = '';
             }
         }
     }

@@ -6,6 +6,15 @@
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.css">
     <style>
+        .modal-backdrop {
+            z-index: 1050 !important;
+        }
+        #prorektorTeacherModal {
+            z-index: 1060 !important;
+        }
+        #prorektorTeacherModal .modal-dialog {
+            z-index: 1061 !important;
+        }
         body.dark-mode {
             background-color: #121927 !important;
             color: #cbd5e1 !important;
@@ -210,41 +219,252 @@
                     </div>
                 </div>
 
-                <!-- FACULTIES DETAILED TABLE -->
+                <!-- MUALLIF BO'YICHA FILTERLASH VA QIDIRUV -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="card shadow-sm stat-card">
+                        <div class="card shadow-sm stat-card border-left-danger border-left-3 mb-4">
                             <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center">
-                                <h4 class="card-title text-bold-700" data-i18n="faculties_table_title">Fakultetlar va Dekanatlar Bo'yicha Tahliliy Jadval</h4>
+                                <div>
+                                    <h4 class="card-title text-bold-700 mb-0">
+                                        <i class="fas fa-search text-danger mr-2"></i>Professor-O'qituvchilar va Mualliflar Monitoringi
+                                    </h4>
+                                    <small class="text-muted">Universitetdagi barcha professor-o'qituvchilarni ism-sharifi bo'yicha qidirish va ularning ilmiy ko'rsatkichlarini ko'rish</small>
+                                </div>
+                                <span class="badge badge-pill badge-danger px-3 py-1 font-small-2">
+                                    Jami: {{ teachers_data|length }} nafar o'qituvchi
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-8 col-12 mb-2 mb-md-0">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-white border-right-0"><i class="fas fa-user-graduate text-muted"></i></span>
+                                            </div>
+                                            <input type="text" id="authorSearchGlobal" class="form-control border-left-0" 
+                                                   placeholder="Muallif ismi, familiyasi yoki kafedrasi bo'yicha qidiring..." 
+                                                   onkeyup="filterAuthorsList()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12 d-flex justify-content-md-end">
+                                        <a href="{% url 'teachers' %}" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm font-weight-bold">
+                                            <i class="fas fa-users mr-1"></i> Barcha O'qituvchilar Sahifasi
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- TOP AUTHORS CAROUSEL / GRID -->
+                                <div class="row" id="authorCardsContainer" style="max-height: 290px; overflow-y: auto;">
+                                    {% for t in teachers_data %}
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3 author-card-item" 
+                                         data-search="{{ t.obj.familiya|lower }} {{ t.obj.ism|lower }} {{ t.obj.sharifi|lower }} {{ t.obj.kafedra.nomi|default:''|lower }} {{ t.obj.fakulteti.nomi|default:''|lower }}">
+                                        <div class="border rounded p-3 h-100 bg-white shadow-sm d-flex flex-column justify-content-between position-relative" style="transition:0.2s;">
+                                            <div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <img src="{{ t.obj.get_image_url }}" alt="avatar" class="rounded-circle mr-2" style="width:42px; height:42px; object-fit:cover; border:2px solid #ef4444;">
+                                                    <div style="overflow:hidden;">
+                                                        <strong class="text-dark d-block text-truncate font-small-3" title="{{ t.obj.familiya }} {{ t.obj.ism }}">
+                                                            {{ t.obj.familiya }} {{ t.obj.ism }}
+                                                        </strong>
+                                                        <span class="badge badge-light-primary font-small-1 text-truncate d-inline-block" style="max-width:140px;">
+                                                            {{ t.obj.ilmiy_daraja|default:"O'qituvchi" }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="font-small-2 text-muted mb-2">
+                                                    <i class="fas fa-university text-danger mr-1"></i>{{ t.obj.fakulteti.nomi|default:"Fakultetsiz"|truncatechars:26 }}<br>
+                                                    <i class="fas fa-sitemap text-primary mr-1"></i>{{ t.obj.kafedra.nomi|default:"Kafedrasiz"|truncatechars:26 }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between text-center border-top pt-2 mb-2 font-small-2">
+                                                    <div>
+                                                        <span class="text-muted d-block font-small-1">Scopus</span>
+                                                        <strong class="text-warning">{{ t.scopus_count }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span class="text-muted d-block font-small-1">Maqola</span>
+                                                        <strong class="text-info">{{ t.ilmiy_count }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span class="text-muted d-block font-small-1">O'quv</span>
+                                                        <strong class="text-secondary">{{ t.oquv_count }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span class="text-muted d-block font-small-1">Jami</span>
+                                                        <strong class="text-danger font-medium-1">{{ t.jami_count }}</strong>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-outline-primary btn-sm btn-block rounded-pill font-small-2 py-1"
+                                                        onclick='openProrektorTeacherModal({{ forloop.counter0 }})'>
+                                                    <i class="fas fa-eye mr-1"></i> Ko'rish
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. JADVAL: FAKULTETLAR VA DEKANATLAR BO'YICHA TAHLILIY JADVAL -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm stat-card mb-4">
+                            <div class="card-header bg-transparent border-bottom d-flex flex-wrap justify-content-between align-items-center py-3">
+                                <div>
+                                    <h4 class="card-title text-bold-700 mb-0" data-i18n="faculties_table_title">
+                                        <i class="fas fa-university text-danger mr-2"></i>Fakultetlar va Dekanatlar Bo'yicha Tahliliy Jadval
+                                    </h4>
+                                    <small class="text-muted">Har bir fakultetning umumiy ko'rsatkichlari va chuqur tahliliy hisoboti</small>
+                                </div>
+                                <div class="mt-2 mt-md-0">
+                                    <button class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm font-weight-bold" onclick="exportTableToExcel('facultiesMainTable', 'Universitet_Fakultetlar_Tahlili')">
+                                        <i class="fas fa-file-excel mr-1"></i> Excel
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table table-hover mb-0">
+                                    <table class="table table-hover mb-0" id="facultiesMainTable">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>#</th>
+                                                <th style="width: 50px;">#</th>
                                                 <th data-i18n="faculty_name">Fakultet nomi</th>
                                                 <th data-i18n="dekan_name">Dekan</th>
-                                                <th data-i18n="teachers_count">O'qituvchilar</th>
-                                                <th data-i18n="articles_col">Ilmiy maqolalar</th>
-                                                <th data-i18n="books_col">O'quv ishlari</th>
-                                                <th data-i18n="total_col">Jami</th>
+                                                <th class="text-center">Kafedralar</th>
+                                                <th class="text-center" data-i18n="teachers_count">O'qituvchilar</th>
+                                                <th class="text-center">Scopus / WoS</th>
+                                                <th class="text-center" data-i18n="articles_col">Ilmiy maqolalar</th>
+                                                <th class="text-center" data-i18n="books_col">O'quv ishlari</th>
+                                                <th class="text-center" data-i18n="total_col">Jami</th>
+                                                <th class="text-center" style="width: 150px;">Hisobot</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for f in fakultetlar_stat %}
                                             <tr>
                                                 <td><strong>{{ forloop.counter }}</strong></td>
-                                                <td><span class="text-bold-600">{{ f.nomi }}</span></td>
-                                                <td>{{ f.dekan.ism|default:"-" }} {{ f.dekan.familiya|default:"" }}</td>
-                                                <td><span class="badge badge-pill badge-primary">{{ f.oqituvchilar }}</span></td>
-                                                <td><span class="badge badge-pill badge-info">{{ f.maqolalar }}</span></td>
-                                                <td><span class="badge badge-pill badge-success">{{ f.kitoblar }}</span></td>
-                                                <td><span class="badge badge-pill badge-warning font-medium-1">{{ f.jami }}</span></td>
+                                                <td><span class="text-bold-700 text-dark">{{ f.nomi }}</span></td>
+                                                <td>
+                                                    {% if f.dekan %}
+                                                    <span class="font-small-3"><i class="fas fa-user-tie text-muted mr-1"></i>{{ f.dekan.familiya|default:"" }} {{ f.dekan.ism|default:"-" }}</span>
+                                                    {% else %}
+                                                    <span class="text-muted font-small-3">-</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-pill badge-light border text-dark font-small-2">{{ f.kafedralar_count }}</span>
+                                                </td>
+                                                <td class="text-center"><span class="badge badge-pill badge-primary">{{ f.oqituvchilar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-warning font-small-2">{{ f.scopus }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-info">{{ f.maqolalar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-success">{{ f.kitoblar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-danger font-medium-1 font-weight-bold">{{ f.jami }}</span></td>
+                                                <td class="text-center">
+                                                    <a href="{% url 'fakultet_hisoboti4' fakultet_id=f.id %}" 
+                                                       class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm font-weight-bold" 
+                                                       title="Fakultet ichiga kirish va to'liq hisobotni ko'rish">
+                                                        <i class="fas fa-chart-pie mr-1"></i> Batafsil
+                                                    </a>
+                                                </td>
                                             </tr>
                                             {% empty %}
                                             <tr>
-                                                <td colspan="7" class="text-center py-3 text-muted" data-i18n="no_data">Ma'lumotlar mavjud emas</td>
+                                                <td colspan="10" class="text-center py-3 text-muted" data-i18n="no_data">Ma'lumotlar mavjud emas</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. JADVAL: KAFEDRALAR BO'YICHA TAHLILIY JADVAL (ALOHIDA JADVAL) -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm stat-card mb-4">
+                            <div class="card-header bg-transparent border-bottom py-3">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="card-title text-bold-700 mb-0">
+                                            <i class="fas fa-sitemap text-info mr-2"></i>Kafedralar Bo'yicha Tahliliy Jadval
+                                        </h4>
+                                        <small class="text-muted">Universitetning barcha kafedralari va ularning alohida faoliyat ko'rsatkichlari</small>
+                                    </div>
+                                    <div class="mt-2 mt-md-0 d-flex" style="gap:8px;">
+                                        <button class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm font-weight-bold" onclick="exportTableToExcel('departmentsMainTable', 'Universitet_Kafedralar_Tahlili')">
+                                            <i class="fas fa-file-excel mr-1"></i> Excel
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Fakultet bo'yicha filter tugmalari -->
+                                <div class="mt-3 d-flex flex-wrap align-items-center">
+                                    <span class="font-small-2 text-muted font-weight-bold mr-2"><i class="fas fa-filter mr-1"></i> Fakultet filtri:</span>
+                                    <button class="btn btn-sm btn-secondary rounded-pill px-3 mr-1 mb-1 kafedra-filter-btn active" onclick="filterKafedraByFaculty('all', this)">
+                                        Barchasi ({{ kafedralar_stat|length }})
+                                    </button>
+                                    {% for f in fakultetlar_stat %}
+                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 mr-1 mb-1 kafedra-filter-btn" onclick="filterKafedraByFaculty('{{ f.nomi|escapejs }}', this)">
+                                        {{ f.nomi }}
+                                    </button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0" id="departmentsMainTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="width: 50px;">#</th>
+                                                <th>Kafedra nomi</th>
+                                                <th>Fakultet</th>
+                                                <th>Kafedra mudiri</th>
+                                                <th class="text-center">O'qituvchilar</th>
+                                                <th class="text-center">Scopus / WoS</th>
+                                                <th class="text-center">Ilmiy maqolalar</th>
+                                                <th class="text-center">O'quv ishlari</th>
+                                                <th class="text-center">Jami</th>
+                                                <th class="text-center" style="width: 140px;">Amallar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for k in kafedralar_stat %}
+                                            <tr data-faculty="{{ k.fakultet.nomi|default:'' }}">
+                                                <td><strong>{{ forloop.counter }}</strong></td>
+                                                <td><span class="text-bold-600 text-dark">{{ k.nomi }}</span></td>
+                                                <td>
+                                                    <span class="badge badge-light border text-dark font-small-2">
+                                                        {{ k.fakultet.nomi|default:"Fakultetsiz" }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if k.mudir %}
+                                                    <span class="font-small-3"><i class="fas fa-user-tie text-muted mr-1"></i>{{ k.mudir.familiya }} {{ k.mudir.ism }}</span>
+                                                    {% else %}
+                                                    <span class="text-muted font-small-3">-</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center"><span class="badge badge-pill badge-primary">{{ k.oqituvchilar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-warning font-small-2">{{ k.scopus }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-info font-small-2">{{ k.maqolalar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-success font-small-2">{{ k.kitoblar }}</span></td>
+                                                <td class="text-center"><span class="badge badge-pill badge-danger font-medium-1 font-weight-bold">{{ k.jami }}</span></td>
+                                                <td class="text-center">
+                                                    <a href="{% url 'ilmiy_ishlari4' user_id=foydalanuvchi.id %}?kafedra={{ k.id }}" 
+                                                       class="btn btn-sm btn-outline-info rounded-pill px-2 shadow-sm font-small-1" 
+                                                       title="Kafedra ishlarini ko'rish">
+                                                        <i class="fas fa-eye mr-1"></i> Ishlari
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="10" class="text-center py-3 text-muted">Kafedralar mavjud emas</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -259,6 +479,77 @@
         </div>
     </div>
     <!-- END: Content-->
+
+    <!-- TEACHER DETAIL MODAL FOR PROREKTOR -->
+    <div class="modal fade" id="prorektorTeacherModal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1060;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width: 480px; margin: 1.5rem auto;">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:14px; overflow:hidden;">
+                <div class="modal-header bg-gradient-x-danger text-white py-2 px-3 d-flex align-items-center justify-content-between">
+                    <h5 class="modal-title font-weight-bold text-white mb-0" style="font-size: 15px;">
+                        <i class="fas fa-id-badge mr-2"></i>O'qituvchi / Muallif Profili
+                    </h5>
+                    <button type="button" class="close text-white p-2 m-0" data-dismiss="modal" aria-label="Close" style="opacity: 0.95; cursor: pointer; text-shadow: none; outline: none;">
+                        <span aria-hidden="true" style="font-size: 24px; line-height: 1;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-3 text-center" style="max-height: 75vh; overflow-y: auto;">
+                    <img id="prAvatar" src="" class="rounded-circle shadow-sm mb-2" style="width:80px; height:80px; object-fit:cover; border:3px solid #dc2626;">
+                    <h5 id="prFullName" class="font-weight-bold text-dark mb-1"></h5>
+                    <span id="prDegree" class="badge badge-pill badge-primary font-small-2 px-3 py-1 mb-2"></span>
+
+                    <div class="row text-center mb-2 no-gutters" style="gap: 6px;">
+                        <div class="col">
+                            <div class="border rounded p-1 bg-light">
+                                <span class="d-block font-small-1 text-muted">Scopus</span>
+                                <strong id="prScopus" class="text-warning font-medium-1">0</strong>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="border rounded p-1 bg-light">
+                                <span class="d-block font-small-1 text-muted">Ilmiy</span>
+                                <strong id="prIlmiy" class="text-info font-medium-1">0</strong>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="border rounded p-1 bg-light">
+                                <span class="d-block font-small-1 text-muted">O'quv</span>
+                                <strong id="prOquv" class="text-secondary font-medium-1">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush text-left font-small-2 mb-3 border rounded">
+                        <li class="list-group-item d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted"><i class="fas fa-university mr-2 text-danger"></i>Fakultet:</span>
+                            <strong id="prFakultet" class="text-dark text-right ml-2">-</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted"><i class="fas fa-sitemap mr-2 text-primary"></i>Kafedra:</span>
+                            <strong id="prKafedra" class="text-dark text-right ml-2">-</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted"><i class="fas fa-envelope mr-2 text-primary"></i>Email:</span>
+                            <strong id="prEmail" class="text-dark text-right ml-2">-</strong>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex justify-content-center" style="gap:8px;">
+                        <a id="prIlmiyLink" href="#" class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm font-weight-bold">
+                            <i class="fas fa-graduation-cap mr-1"></i> Ilmiy ishlari
+                        </a>
+                        <a id="prOquvLink" href="#" class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm font-weight-bold">
+                            <i class="fas fa-book mr-1"></i> O'quv ishlari
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light py-2 px-3 border-top d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-pill px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-1"></i> Yopish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- BEGIN: Vendor JS-->
 {% endblock %}
@@ -440,5 +731,98 @@
             // Diagrammalar joriy mavzuga moslansin
             if (window.applyChartTheme) window.applyChartTheme();
         });
+
+        // Prorektor teacher data
+        var prTeachersData = [
+            {% for t in teachers_data %}
+            {
+                fullName: "{{ t.obj.familiya|escapejs }} {{ t.obj.ism|escapejs }} {{ t.obj.sharifi|escapejs }}",
+                fakultet: "{{ t.obj.fakulteti.nomi|default:'Fakultetsiz'|escapejs }}",
+                kafedra: "{{ t.obj.kafedra.nomi|default:'Kafedrasiz'|escapejs }}",
+                degree: "{{ t.obj.ilmiy_daraja|default:'O`qituvchi'|escapejs }}",
+                email: "{{ t.obj.gmail|default:'-'|escapejs }}",
+                avatar: "{{ t.obj.get_image_url }}",
+                scopus: {{ t.scopus_count }},
+                ilmiy: {{ t.ilmiy_count }},
+                oquv: {{ t.oquv_count }},
+                id: {{ t.obj.id }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        function openProrektorTeacherModal(idx) {
+            var t = prTeachersData[idx];
+            if (!t) return;
+            document.getElementById('prAvatar').src = t.avatar;
+            document.getElementById('prFullName').textContent = t.fullName;
+            document.getElementById('prDegree').textContent = t.degree;
+            document.getElementById('prScopus').textContent = t.scopus;
+            document.getElementById('prIlmiy').textContent = t.ilmiy;
+            document.getElementById('prOquv').textContent = t.oquv;
+            document.getElementById('prFakultet').textContent = t.fakultet;
+            document.getElementById('prKafedra').textContent = t.kafedra;
+            document.getElementById('prEmail').textContent = t.email;
+            document.getElementById('prIlmiyLink').href = "{% url 'ilmiy_ishlari4' user_id=foydalanuvchi.id %}?ish_muallifi=" + encodeURIComponent(t.fullName);
+            document.getElementById('prOquvLink').href = "{% url 'oquv_ishlari4' user_id=foydalanuvchi.id %}?ish_muallifi=" + encodeURIComponent(t.fullName);
+
+            var $m = $('#prorektorTeacherModal');
+            if (!$m.parent().is('body')) {
+                $m.appendTo('body');
+            }
+            $m.modal('show');
+        }
+
+        $(document).on('click', '#prorektorTeacherModal [data-dismiss="modal"]', function (e) {
+            e.preventDefault();
+            $('#prorektorTeacherModal').modal('hide');
+        });
+
+        $('#prorektorTeacherModal').on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open').css('padding-right', '');
+        });
+
+        function filterAuthorsList() {
+            var q = document.getElementById('authorSearchGlobal').value.toLowerCase().trim();
+            var items = document.querySelectorAll('.author-card-item');
+            items.forEach(function(item) {
+                var s = item.getAttribute('data-search') || '';
+                if (!q || s.indexOf(q) > -1) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterKafedraByFaculty(facName, btn) {
+            document.querySelectorAll('.kafedra-filter-btn').forEach(function(b) {
+                b.classList.remove('active', 'btn-secondary');
+                b.classList.add('btn-outline-secondary');
+            });
+            btn.classList.add('active', 'btn-secondary');
+            btn.classList.remove('btn-outline-secondary');
+
+            var rows = document.querySelectorAll('#departmentsMainTable tbody tr');
+            rows.forEach(function(row) {
+                var f = row.getAttribute('data-faculty') || '';
+                if (facName === 'all' || f === facName) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function exportTableToExcel(tableId, filenamePrefix) {
+            var table = document.getElementById(tableId);
+            if (!table) return;
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, "Hisobot");
+            var fileName = filenamePrefix + "_" + new Date().toISOString().slice(0,10) + ".xlsx";
+            XLSX.writeFile(wb, fileName);
+        }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 {% endblock %}

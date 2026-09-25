@@ -31,6 +31,65 @@
         <div class="content-wrapper">
             <div class="content-body">
 
+                {% if foydalanuvchi.foydalanuvchi_rol != 'oqituvchi' %}
+                <div class="alert alert-primary shadow-sm border-0 d-flex flex-wrap align-items-center justify-content-between mb-3 p-3" style="border-radius: 14px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1e40af;">
+                    <div class="d-flex align-items-center mb-2 mb-md-0">
+                        <i class="fas fa-chalkboard-teacher fa-2x mr-2 text-primary"></i>
+                        <div>
+                            <h5 class="mb-0 text-bold-700 text-primary">Shaxsiy O'qituvchi Kabineti</h5>
+                            <small class="text-muted">Siz hozir shaxsiy o'qituvchilik faoliyatingiz rejimidasiz. Bu yerda siz barcha o'qituvchilar kabi shaxsiy maqolalaringiz, darsliklaringiz va video darslaringizni erkin yuklashingiz va boshqarishingiz mumkin.</small>
+                        </div>
+                    </div>
+                    <div>
+                        {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+                        <a href="{% url 'home2' %}" class="btn btn-info btn-sm rounded-pill px-3 shadow-sm text-white" style="font-weight:600;">
+                            <i class="fas fa-arrow-left mr-1"></i> Mudir Boshqaruviga Qaytish
+                        </a>
+                        {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+                        <a href="{% url 'home3' %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm text-white" style="font-weight:600;">
+                            <i class="fas fa-arrow-left mr-1"></i> Dekan Boshqaruviga Qaytish
+                        </a>
+                        {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+                        <a href="{% url 'home4' %}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm text-white" style="font-weight:600;">
+                            <i class="fas fa-arrow-left mr-1"></i> Prorektor Boshqaruviga Qaytish
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- QUICK ACTIONS / YANGI MA'LUMOT YUKLASH -->
+                <div class="card mb-3 shadow-sm border-0" style="border-radius: 14px;">
+                    <div class="card-body p-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between" style="gap: 12px;">
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-pill badge-primary p-2 mr-2"><i class="fas fa-cloud-upload-alt font-medium-2"></i></span>
+                                <div>
+                                    <h5 class="mb-0 text-bold-700 text-dark">Tezkor Yuklash va Boshqaruv</h5>
+                                    <small class="text-muted">Yangi maqola, darslik yoki video dars kiritish</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
+                                <a href="{% url 'qoshish_i' user_id=foydalanuvchi.id %}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                                    <i class="fas fa-plus-circle mr-1"></i> + Ilmiy Ish Qo'shish
+                                </a>
+                                <a href="{% url 'qoshish' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                                    <i class="fas fa-book-medical mr-1"></i> + O'quv Ishi Qo'shish
+                                </a>
+                                <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                                    <i class="fas fa-video mr-1"></i> + Video Dars Qo'shish
+                                </a>
+                                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#334155; font-weight:600;">
+                                    <i class="fas fa-list-alt mr-1"></i> Ilmiy Ishlarim
+                                </a>
+                                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#334155; font-weight:600;">
+                                    <i class="fas fa-book-open mr-1"></i> O'quv Ishlarim
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- TOP STATS -->
                 <div class="row">
                     <div class="col-xl-3 col-lg-6 col-12">
@@ -119,7 +178,7 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
                                         <span class="text-muted" data-i18n="birth_label"><i class="fas fa-calendar-alt text-primary mr-1"></i> Tug'ilgan sana:</span>
-                                        <strong>{{ foydalanuvchi.tugulgan_sana|date:"d.m.Y"|default:"-" }}</strong>
+                                        <strong>{{ foydalanuvchi.tugulgan_sana|date:"d/m/Y"|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
                                         <span class="text-muted" data-i18n="email_label"><i class="fas fa-envelope text-primary mr-1"></i> Email:</span>
@@ -156,7 +215,7 @@
                                             <div class="progress-bar {% if t.foiz >= 100 %}bg-success{% else %}bg-info progress-bar-striped progress-bar-animated{% endif %}" role="progressbar" style="width: {{ t.foiz }}%;" aria-valuenow="{{ t.foiz }}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         {% if t.obj.muddati %}
-                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i> Muddat: {{ t.obj.muddati|date:"d.m.Y" }}</small>
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i> Muddat: {{ t.obj.muddati|date:"d/m/Y" }}</small>
                                         {% endif %}
                                     </div>
                                     {% endfor %}

@@ -35,12 +35,15 @@
                 </div>
             </div>
 
-            <div class="card mb-3 shadow-sm border-0" style="border-radius: 14px;">
+            <div class="card mb-3 shadow-sm border-0 filter-card" style="border-radius: 14px; position: relative; z-index: 1020; overflow: visible;">
                 <div class="card-body p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-2 mb-3 border-bottom" style="gap: 10px;">
                         <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
                             <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" id="downloadZipBtn" style="font-weight:600;">
                                 <i class="fas fa-file-archive mr-1"></i> ZIP yuklab olish
+                            </button>
+                            <button class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm" id="downloadExcelBtn" style="font-weight:600;">
+                                <i class="fas fa-file-excel mr-1"></i> Excel yuklab olish
                             </button>
                             <a href="{% url 'qoshish_i' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
                                 <i class="fas fa-plus mr-1"></i> Yangi qo'shish
@@ -147,7 +150,7 @@
                             </thead>
                             <tbody>
                                 {% for item in maqola %}
-                                <tr class="clickable-row" data-id="{{ item.id }}" data-href="{% url 'tahrirlash_ilmiy' i_id=item.id t_id=1 user_id=foydalanuvchi.id %}">
+                                <tr class="clickable-row" data-id="{{ item.id }}" data-dgu="{{ item.dgu_raqami|default:'' }}" data-link="{{ item.maqola_link|default:'' }}" data-turi="{{ item.turi|default:'' }}" data-nomi="{{ item.nomi|default:'' }}" data-file="{{ item.get_fayl_url|default:'' }}" data-href="{% url 'tahrirlash_ilmiy' i_id=item.id t_id=1 user_id=foydalanuvchi.id %}">
                                     <td class="text-bold-600 text-muted">{{ forloop.counter }}</td>
                                     <td>
                                         <span class="badge badge-pill badge-primary font-small-2 px-2 py-1" style="font-weight:600;">{{ item.turi }}</span>

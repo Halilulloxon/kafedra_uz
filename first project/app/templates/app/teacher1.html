@@ -160,7 +160,7 @@
                     <div class="tp-body">
                         <h3 class="tp-card-title">{{ vid.nomi }}</h3>
                         {% if vid.haqida %}<p class="tp-text">{{ vid.haqida }}</p>{% endif %}
-                        <div class="tp-meta"><span><i class="far fa-calendar"></i> {{ vid.sana|date:"d.m.Y" }}</span></div>
+                        <div class="tp-meta"><span><i class="far fa-calendar"></i> {{ vid.sana|date:"d/m/Y" }}</span></div>
                     </div>
                 </article>
                 {% empty %}
@@ -189,7 +189,7 @@
                         <div class="tp-meta">
                             <span class="tp-tag">{{ maqola.turi }}</span>
                             {% if maqola.kategoriya %}<span>{{ maqola.kategoriya }}</span>{% endif %}
-                            <span>{{ maqola.sana|date:"d.m.Y" }}</span>
+                            <span>{{ maqola.sana|date:"d/m/Y" }}</span>
                         </div>
                         {% if maqola.haqida %}<p class="tp-text">{{ maqola.haqida }}</p>{% endif %}
                     </div>

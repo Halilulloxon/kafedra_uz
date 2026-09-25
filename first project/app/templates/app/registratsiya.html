@@ -94,7 +94,7 @@
                     <div class="pp-grid-3">
                         <div class="pp-field">
                             <label for="tugulgan_sana">Tug'ilgan sana</label>
-                            <input type="date" id="tugulgan_sana" name="tugulgan_sana" value="{{ qiymatlar.tugulgan_sana }}">
+                            <input type="text" id="tugulgan_sana" name="tugulgan_sana" value="{{ qiymatlar.tugulgan_sana|default:'' }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="pp-field">
                             <label for="ilmiy_daraja">Ilmiy daraja</label>

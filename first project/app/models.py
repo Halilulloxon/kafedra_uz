@@ -135,6 +135,7 @@ class ilmiy_ishlari(models.Model):
         max_length=250,
         choices=[('Xalqaro', 'Xalqaro'), ('Respublika', 'Respublika')],
         null=True,
+        blank=True,
         verbose_name="Kategoriya"
     )
     fayl = models.FileField("Fayl", upload_to='ilmiy_ishlari/')

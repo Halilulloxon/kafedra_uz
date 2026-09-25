@@ -67,8 +67,9 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control">Tug`ulgan sana:</label>
                                                 <div class="col-md-9">
-                                                    <input type="date" name="tugulgan_sana" class="form-control"
-                                                           value="{{ foydalanuvchi.tugulgan_sana|date:'Y-m-d'|default:'' }}">
+                                                    <input type="text" name="tugulgan_sana" class="form-control"
+                                                           value="{{ foydalanuvchi.tugulgan_sana|date:'d/m/Y'|default:'' }}"
+                                                           placeholder="dd/mm/yyyy" autocomplete="off">
                                                 </div>
                                             </div>
 

@@ -21,8 +21,11 @@
                             <h3 class="content-header-title mb-0 text-bold-700"><i class="fas fa-tasks text-primary mr-1"></i> Kafedra Talablari va Vazifalar Rejasi</h3>
                             <small class="text-muted">{{ foydalanuvchi.kafedra.nomi }} kafedrasi o'qituvchilari uchun belgilangan me'yoriy talablar</small>
                         </div>
-                        <div class="mt-1 mt-sm-0">
-                            <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm mr-1" style="font-weight:600;">
+                        <div class="mt-1 mt-sm-0 d-flex flex-wrap align-items-center" style="gap: 8px;">
+                            <a href="{% url 'talablar_monitoring' user_id=foydalanuvchi.id %}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                                <i class="fas fa-chart-line mr-1"></i> Bajarilish Monitoringi
+                            </a>
+                            <a href="{% url 'qoshish_talab' user_id=foydalanuvchi.id %}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
                                 <i class="fas fa-plus mr-1"></i> Yangi Talab Qo'shish
                             </a>
                             <a href="{% url 'profile2' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
@@ -66,54 +69,57 @@
                                     <th>Har bir o'qituvchiga soni</th>
                                     <th>Muddati</th>
                                     <th>Holati</th>
-                                    <th style="text-align:center; width:120px;">Amallar</th>
+                                    <th style="text-align:center; width:100px;">Tahrirlash</th>
+                                    <th style="text-align:center; width:100px;">O'chirish</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for t in talablar %}
                                 <tr>
-                                    <td class="text-bold-600 text-muted">{{ forloop.counter }}</td>
-                                    <td>
+                                    <td class="text-bold-600 text-muted align-middle">{{ forloop.counter }}</td>
+                                    <td class="align-middle">
                                         <span class="text-bold-700 font-medium-1 d-block">{{ t.sarlavha }}</span>
                                         {% if t.tavsif %}
                                         <small class="text-muted">{{ t.tavsif }}</small>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td class="align-middle">
                                         <span class="badge badge-pill badge-primary font-small-2 px-2 py-1" style="font-weight:600;">{{ t.ish_turi }}</span>
                                     </td>
-                                    <td>
+                                    <td class="align-middle">
                                         <span class="badge badge-pill badge-info font-small-2 px-2 py-1 font-weight-bold">{{ t.talab_miqdori }} ta</span>
                                     </td>
-                                    <td>
+                                    <td class="align-middle">
                                         {% if t.muddati %}
-                                        <span class="badge badge-light border text-dark font-small-2"><i class="fas fa-calendar-alt mr-1 text-muted"></i> {{ t.muddati|date:"d.m.Y" }}</span>
+                                        <span class="badge badge-light border text-dark font-small-2"><i class="fas fa-calendar-alt mr-1 text-muted"></i> {{ t.muddati|date:"d/m/Y" }}</span>
                                         {% else %}
                                         <span class="text-muted">-</span>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td class="align-middle">
                                         {% if t.faol %}
                                         <span class="badge badge-pill badge-success font-small-2 px-2 py-1"><i class="fas fa-check-circle mr-1"></i> Faol</span>
                                         {% else %}
                                         <span class="badge badge-pill badge-secondary font-small-2 px-2 py-1"><i class="fas fa-pause-circle mr-1"></i> Nofaol</span>
                                         {% endif %}
                                     </td>
-                                    <td style="text-align:center;">
-                                        <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-2 mr-1" title="Tahrirlash">
-                                            <i class="fas fa-edit"></i>
+                                    <td class="text-center align-middle" style="width:100px;">
+                                        <a href="{% url 'tahrirlash_talab' t_id=t.id user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-3 shadow-sm font-small-2" title="Tahrirlash" style="font-weight:600;">
+                                            <i class="fas fa-edit mr-1"></i> Tahrir
                                         </a>
-                                        <form method="post" action="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" style="display:inline;" onsubmit="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');">
+                                    </td>
+                                    <td class="text-center align-middle" style="width:100px;">
+                                        <form method="post" action="{% url 'ochir_talab' t_id=t.id user_id=foydalanuvchi.id %}" style="display:inline; margin:0;" onsubmit="return confirm('Haqiqatan ham ushbu talabni o\'chirmoqchimisiz?');">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2" title="O'chirish">
-                                                <i class="fas fa-trash"></i>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm font-small-2" title="O'chirish" style="font-weight:600;">
+                                                <i class="fas fa-trash mr-1"></i> O'chirish
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-muted">
+                                    <td colspan="8" class="text-center py-4 text-muted">
                                         <i class="fas fa-inbox fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
                                         <span class="font-medium-1">Hozircha hech qanday talab yoki reja kiritilmagan</span>
                                     </td>

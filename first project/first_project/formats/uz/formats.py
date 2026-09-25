@@ -6,17 +6,17 @@ Shu sababli ISO ko'rinishi birinchi o'ringa qo'yilgan — aks holda ilmiy
 ish yoki kitob qo'shishda "sana noto'g'ri" xatosi chiqadi.
 """
 
-DATE_FORMAT = 'd.m.Y'
-DATETIME_FORMAT = 'd.m.Y H:i'
-SHORT_DATE_FORMAT = 'd.m.Y'
-SHORT_DATETIME_FORMAT = 'd.m.Y H:i'
+DATE_FORMAT = 'd/m/Y'
+DATETIME_FORMAT = 'd/m/Y H:i'
+SHORT_DATE_FORMAT = 'd/m/Y'
+SHORT_DATETIME_FORMAT = 'd/m/Y H:i'
 TIME_FORMAT = 'H:i'
 FIRST_DAY_OF_WEEK = 1  # Dushanba
 
 DATE_INPUT_FORMATS = [
-    '%d.%m.%Y',   # 24.09.2026 (DD.MM.YYYY — admin paneli va foydalanuvchi ko'rinishi)
-    '%Y-%m-%d',   # 2026-09-24 (brauzerning <input type="date"> maydoni)
     '%d/%m/%Y',
+    '%d.%m.%Y',
+    '%Y-%m-%d',
 ]
 
 DATETIME_INPUT_FORMATS = [

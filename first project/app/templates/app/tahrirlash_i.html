@@ -1,7 +1,7 @@
 {% extends "app/base_oqituvchi.html" %}
 {% load static %}
 
-{% block title %}Ilmiy Ishni Tahrirlash — Kafedralar.uz{% endblock %}
+{% block title %}Yangi Ilmiy Ish Qo‘shish — Kafedralar.uz{% endblock %}
 
 {% block extra_head %}
 <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
@@ -39,7 +39,7 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4 class="card-title">Tahrirlash</h4>
+                                            <h4 class="card-title"><i class="fas fa-plus-circle text-primary mr-1"></i> Yangi Ilmiy Ish Qo‘shish</h4>
                                             <a class="heading-elements-toggle"><i class="fas fa-ellipsis-h font-medium-3"></i></a>
                                             <div class="heading-elements">
                                                 <ul class="list-inline mb-0">
@@ -92,7 +92,11 @@
                                                         <div class="form-group row">
                                                             <label class="col-md-3 label-control">Nomi</label>
                                                             <div class="col-md-9">
-                                                                <input type="text" name="nomi" class="form-control" placeholder="Nomi" required>
+                                                                <input type="text" name="nomi" id="id_ish_nomi" class="form-control" placeholder="Nomi" required>
+                                                                <div id="duplicate_warning" class="alert alert-warning mt-2 mb-0 shadow-sm" style="display: none; border-radius: 8px;" role="alert">
+                                                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                                                    <strong>Diqqat:</strong> Ushbu nomdagi ilmiy ish kafedrada allaqachon mavjud! Agar hammuallif bo'lsangiz, uni qayta kiritishingiz shart emas — asosiy muallif sizni hammualliflar ro'yxatiga kiritgan bo'lsa, u avtomatik tarzda profilingizda ko'rinadi.
+                                                                </div>
                                                             </div>
                                                         </div>
 
@@ -100,8 +104,7 @@
                                                             <label class="col-md-3 label-control">Muallif</label>
                                                             <div class="col-md-9">
                                                                 <select name="muallif" class="form-control" required>
-                                                                    <option value="">Tanlang...</option>
-                                                                    <option value="{{foydalanuvchi.id}}">{{foydalanuvchi}}</option>
+                                                                    <option value="{{foydalanuvchi.id}}" selected>{{foydalanuvchi}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -125,14 +128,14 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group row">
-                                                            <label class="col-md-3 label-control">Kategoriya</label>
+                                                        <div class="form-group row" id="kategoriya_row">
+                                                            <label class="col-md-3 label-control" id="kategoriya_label">Kategoriya</label>
                                                             <div class="col-md-9">
-                                                                <select name="kategoriya" class="form-control" required>
-                                                                    <option value="">Tanlang...</option>
+                                                                <select name="kategoriya" id="id_kategoriya_select" class="form-control">
                                                                     <option value="Xalqaro">Xalqaro</option>
-                                                                    <option value="Respublika">Respublika</option>
+                                                                    <option value="Respublika" selected>Respublika</option>
                                                                 </select>
+                                                                <small id="kategoriya_hint" class="form-text text-muted mt-1"></small>
                                                             </div>
                                                         </div>
 
@@ -205,6 +208,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var turiSelect = document.getElementById('id_turi_select') || document.querySelector('select[name="turi"]');
     var dguRow = document.getElementById('dgu_raqami_row');
     var linkRow = document.getElementById('maqola_link_row');
+    var katSelect = document.getElementById('id_kategoriya_select');
+    var katHint = document.getElementById('kategoriya_hint');
 
     function checkFields() {
         if (!turiSelect) return;
@@ -227,11 +232,59 @@ document.addEventListener('DOMContentLoaded', function () {
                 linkRow.style.display = 'none';
             }
         }
+
+        // Kategoriya moslashuvchan boshqaruvi
+        if (katSelect) {
+            if (val.includes('scopus')) {
+                katSelect.value = 'Xalqaro';
+                if (katHint) katHint.innerHTML = '<span class="badge badge-primary"><i class="fas fa-globe mr-1"></i> Xalqaro</span> Scopus xalqaro bazasidagi maqolalar avtomatik ravishda Xalqaro toifasiga kiritiladi.';
+            } else if (val.includes('ehm') || val.includes('guvohnoma')) {
+                katSelect.value = 'Respublika';
+                if (katHint) katHint.innerHTML = '<span class="badge badge-info"><i class="fas fa-certificate mr-1"></i> Respublika (DGU)</span> Adliya vazirligi tomonidan berilgan rasmiy milliy guvohnoma.';
+            } else if (val.includes('patent')) {
+                if (katHint) katHint.innerHTML = 'Patent darajasini tanlang: <strong>Respublika</strong> (milliy patent) yoki <strong>Xalqaro</strong> (xalqaro patent).';
+            } else if (val.includes('maqola') || val.includes('tezis')) {
+                if (katHint) katHint.innerHTML = 'Chop etilgan ilmiy jurnal yoki anjuman darajasini tanlang: <strong>Xalqaro</strong> yoki <strong>Respublika</strong>.';
+            } else {
+                if (katHint) katHint.innerHTML = '';
+            }
+        }
     }
 
     if (turiSelect) {
         turiSelect.addEventListener('change', checkFields);
         checkFields();
+    }
+});
+</script>
+<script id="existing_titles_data" type="application/json">
+    {{ existing_titles_json|default:"[]"|safe }}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var rawTitles = [];
+    try {
+        var el = document.getElementById('existing_titles_data');
+        if (el) rawTitles = JSON.parse(el.textContent || '[]');
+    } catch(e) {}
+
+    var nameInput = document.getElementById('id_ish_nomi');
+    var warnBox = document.getElementById('duplicate_warning');
+    if (nameInput && warnBox && rawTitles.length > 0) {
+        function checkDuplicate() {
+            var v = (nameInput.value || '').trim().toLowerCase().replace(/[\s\-_.,/\\()"'`]+/g, '');
+            if (v.length >= 4) {
+                var found = rawTitles.some(function(t) {
+                    var norm = (t || '').toLowerCase().replace(/[\s\-_.,/\\()"'`]+/g, '');
+                    return norm === v || (norm.length > 8 && v.length > 8 && (norm.indexOf(v) !== -1 || v.indexOf(norm) !== -1));
+                });
+                warnBox.style.display = found ? 'block' : 'none';
+            } else {
+                warnBox.style.display = 'none';
+            }
+        }
+        nameInput.addEventListener('input', checkDuplicate);
+        nameInput.addEventListener('change', checkDuplicate);
     }
 });
 </script>

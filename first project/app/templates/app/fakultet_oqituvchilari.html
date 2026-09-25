@@ -1,0 +1,483 @@
+{% extends "app/base_dekan.html" %}
+{% load static %}
+
+{% block title %}Fakultet O'qituvchilari - Kafedralar.uz{% endblock %}
+
+{% block extra_head %}
+<style>
+    .stat-kpi-card {
+        border-radius: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: none;
+    }
+    .stat-kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+    .teacher-avatar-md {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #e2e8f0;
+    }
+    .teacher-avatar-lg {
+        width: 72px;
+        height: 72px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #e2e8f0;
+    }
+    .kafedra-pill-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .kafedra-pill-btn {
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 14px;
+        transition: all 0.2s ease;
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        color: #475569;
+        text-decoration: none;
+    }
+    .kafedra-pill-btn:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+        text-decoration: none;
+    }
+    .kafedra-pill-btn.active {
+        background: #2563eb !important;
+        border-color: #2563eb !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    /* Dark mode */
+    body.dark-mode .teacher-avatar-md,
+    body.dark-mode .teacher-avatar-lg {
+        border-color: #334155 !important;
+    }
+    body.dark-mode .kafedra-pill-btn {
+        background: #1e293b;
+        border-color: #334155;
+        color: #cbd5e1;
+    }
+    body.dark-mode .kafedra-pill-btn:hover {
+        background: #334155;
+        color: #f8fafc;
+    }
+    body.dark-mode .kafedra-pill-btn.active {
+        background: #2563eb !important;
+        color: #ffffff !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="app-content content">
+    <div class="content-wrapper">
+
+        <!-- HEADER -->
+        <div class="content-header row">
+            <div class="content-header-left col-12 mb-2">
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div>
+                        <h3 class="content-header-title mb-0 text-bold-700">
+                            <i class="fas fa-university text-primary mr-1"></i> Fakultet O'qituvchilari Tarkibi
+                        </h3>
+                        <small class="text-muted">
+                            <i class="fas fa-layer-group mr-1"></i><strong>{{ fakultet.nomi }}</strong> fakultetining barcha kafedralar bo'yicha professor-o'qituvchilari
+                        </small>
+                    </div>
+                    <div class="mt-2 mt-md-0 d-flex flex-wrap align-items-center" style="gap: 8px;">
+                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm" id="exportExcelBtn" style="font-weight:600;">
+                            <i class="fas fa-file-excel mr-1"></i> Excelga yuklash
+                        </button>
+                        <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" style="font-weight:600;">
+                            <i class="fas fa-graduation-cap mr-1"></i> Fakultet ilmiy ishlari
+                        </a>
+                        <a href="{% url 'home3' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" style="background:#fff; border-color:#cbd5e1; color:#475569; font-weight:600;">
+                            <i class="fas fa-arrow-left mr-1"></i> Dekan paneli
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-body">
+
+            <!-- 1. TOP STATS / KPI CARDS -->
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-info text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_teachers }}</h2>
+                                    <span class="font-small-3">Fakultet O'qituvchilari</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-users font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Fakultet bo'yicha jami professor-o'qituvchilar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-warning text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_kafedralar }}</h2>
+                                    <span class="font-small-3">Kafedralar Soni</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-sitemap font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Fakultet tarkibidagi kafedralar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-primary text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_ilmiy }}</h2>
+                                    <span class="font-small-3">Ilmiy Ishlar</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-newspaper font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Scopus: <strong>{{ total_scopus }}</strong> ta maqola
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card stat-kpi-card bg-gradient-x-success text-white shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-left">
+                                    <h2 class="text-white text-bold-700 mb-0">{{ total_oquv }}</h2>
+                                    <span class="font-small-3">O'quv Ishlari</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-book-open font-large-2 text-white opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-white-50">
+                                Darslik, qo'llanma, monografiyalar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. KAFEDRALAR BO'YICHA FILTRLASH TABLARI VA QIDIRUV -->
+            <div class="card shadow-sm border-0 mb-3" style="border-radius: 14px;">
+                <div class="card-body p-3">
+                    <!-- Kafedra Pills -->
+                    <div class="mb-2">
+                        <small class="text-muted font-weight-bold d-block mb-1"><i class="fas fa-filter text-primary mr-1"></i> Kafedralar bo'yicha saralash:</small>
+                        <div class="kafedra-pill-nav">
+                            <a href="?kafedra={% if selected_daraja %}&daraja={{ selected_daraja }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+                               class="kafedra-pill-btn {% if not selected_kafedra %}active{% endif %}">
+                                Barcha kafedralar ({{ all_teachers|length }})
+                            </a>
+                            {% for kt in kafedra_tabs %}
+                            <a href="?kafedra={{ kt.id }}{% if selected_daraja %}&daraja={{ selected_daraja }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+                               class="kafedra-pill-btn {% if selected_kafedra == kt.id|stringformat:'i' %}active{% endif %}">
+                                {{ kt.nomi }} ({{ kt.count }})
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Search Form -->
+                    <form method="get" action="" class="m-0 pt-2 border-top">
+                        <input type="hidden" name="kafedra" value="{{ selected_kafedra }}">
+                        <div class="form-row align-items-end">
+                            <div class="col-12 col-md-5 mb-2 mb-md-0">
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-search text-muted mr-1"></i> F.I.Sh. yoki Email bo'yicha qidirish</label>
+                                <input type="text" name="q" class="form-control form-control-sm rounded" placeholder="Masalan: Karimov Anvar..." value="{{ query }}">
+                            </div>
+
+                            <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                <label class="small text-muted font-weight-bold mb-1"><i class="fas fa-user-graduate text-muted mr-1"></i> Ilmiy daraja</label>
+                                <select name="daraja" class="form-control form-control-sm rounded custom-select">
+                                    <option value="">Barcha darajalar</option>
+                                    {% for d in darajalar %}
+                                    <option value="{{ d }}" {% if selected_daraja == d %}selected{% endif %}>{{ d }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-3 d-flex" style="gap: 6px;">
+                                <button type="submit" class="btn btn-primary btn-sm btn-block rounded shadow-sm" style="height: 38px; font-weight:600;">
+                                    <i class="fas fa-filter mr-1"></i> Qidirish
+                                </button>
+                                {% if query or selected_daraja or selected_kafedra %}
+                                <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}" class="btn btn-outline-secondary btn-sm rounded shadow-sm d-flex align-items-center justify-content-center" style="height: 38px;" title="Filtrlarni tozalash">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3. TEACHERS TABLE -->
+            <div class="card shadow-sm border-0 mb-3" style="border-radius: 14px; overflow:hidden;">
+                <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center p-3">
+                    <h4 class="card-title text-bold-700 mb-0">
+                        <i class="fas fa-id-badge text-primary mr-1"></i> O'qituvchilar Ro'yxati
+                    </h4>
+                    <span class="badge badge-pill badge-light border px-3 py-1 font-small-3" style="background:#f8fafc; color:#334155; font-weight:600;">
+                        Ko'rsatilmoqda: <strong class="text-primary">{{ teachers|length }}</strong> nafar o'qituvchi
+                    </span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="fakultetTeachersTable">
+                        <thead class="bg-light">
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>O'qituvchi</th>
+                                <th>Kafedrasi</th>
+                                <th>Ilmiy Darajasi</th>
+                                <th>Aloqa / Email</th>
+                                <th style="text-align:center;">Ilmiy Ishlari</th>
+                                <th style="text-align:center;">O'quv Ishlari</th>
+                                <th style="text-align:center;">Video Darslar</th>
+                                <th style="text-align:center;">Holati</th>
+                                <th style="text-align:center; width: 100px;">Batafsil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for t in teachers %}
+                            <tr>
+                                <td class="text-bold-600 text-muted align-middle">{{ forloop.counter }}</td>
+                                <td class="align-middle">
+                                    <div class="media align-items-center">
+                                        <img src="{{ t.obj.get_image_url }}" alt="Avatar" class="teacher-avatar-md mr-2 shadow-sm">
+                                        <div class="media-body">
+                                            <h6 class="text-bold-700 text-dark mb-0">{{ t.obj.familiya }} {{ t.obj.ism }} {{ t.obj.sharifi }}</h6>
+                                            <small class="text-muted"><i class="fas fa-user mr-1"></i>{{ t.obj.login_f }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge badge-pill badge-light border text-primary font-small-2 px-2 py-1" style="background:#f1f5f9;">
+                                        <i class="fas fa-sitemap mr-1"></i>{{ t.obj.kafedra.nomi|default:"Kafedra biriktirilmagan" }}
+                                    </span>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge badge-pill badge-light border text-dark font-small-2 px-2 py-1">
+                                        <i class="fas fa-graduation-cap text-primary mr-1"></i>{{ t.obj.ilmiy_daraja|default:"O'qituvchi" }}
+                                    </span>
+                                </td>
+                                <td class="align-middle font-small-3">
+                                    {% if t.obj.gmail %}
+                                    <a href="mailto:{{ t.obj.gmail }}" class="text-primary font-weight-bold">
+                                        <i class="fas fa-envelope mr-1"></i>{{ t.obj.gmail }}
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge badge-pill badge-primary font-small-2 px-2 py-1" title="Scopus: {{ t.scopus_count }} | Maqola: {{ t.maqola_count }} | Tezis: {{ t.tezis_count }}">
+                                        {{ t.ilmiy_count }} ta
+                                    </span>
+                                    {% if t.scopus_count > 0 %}
+                                    <span class="badge badge-pill badge-warning text-dark font-small-1 ml-1" title="Scopus nashrlar">{{ t.scopus_count }} Scopus</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge badge-pill badge-success font-small-2 px-2 py-1">
+                                        {{ t.oquv_count }} ta
+                                    </span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge badge-pill badge-info font-small-2 px-2 py-1">
+                                        {{ t.video_count }} ta
+                                    </span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    {% if t.obj.accepted %}
+                                    <span class="badge badge-pill badge-success font-small-1 px-2 py-1"><i class="fas fa-check-circle mr-1"></i>Faol</span>
+                                    {% else %}
+                                    <span class="badge badge-pill badge-secondary font-small-1 px-2 py-1"><i class="fas fa-clock mr-1"></i>Kutilmoqda</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm view-teacher-btn" 
+                                            data-toggle="modal" 
+                                            data-target="#teacherModal"
+                                            data-name="{{ t.obj.familiya }} {{ t.obj.ism }} {{ t.obj.sharifi }}"
+                                            data-kafedra="{{ t.obj.kafedra.nomi|default:"-" }}"
+                                            data-degree="{{ t.obj.ilmiy_daraja|default:"O'qituvchi" }}"
+                                            data-email="{{ t.obj.gmail|default:"Mavjud emas" }}"
+                                            data-dob="{{ t.obj.tugulgan_sana|date:"d/m/Y"|default:"-" }}"
+                                            data-avatar="{{ t.obj.get_image_url }}"
+                                            data-bio="{{ t.obj.haqida|default:"Qisqacha ma'lumot kiritilmagan." }}"
+                                            data-ilmiy="{{ t.ilmiy_count }}"
+                                            data-scopus="{{ t.scopus_count }}"
+                                            data-oquv="{{ t.oquv_count }}"
+                                            data-video="{{ t.video_count }}">
+                                        <i class="fas fa-eye mr-1"></i> Ko'rish
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="10" class="text-center py-5 text-muted">
+                                    <i class="fas fa-user-slash fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                                    <h5>Mos keluvchi o'qituvchi topilmadi</h5>
+                                    <p class="small">Kafedra yoki qidiruv filtrini o'zgartirib ko'ring.</p>
+                                    <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        Barchasini ko'rsatish
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- TEACHER DETAIL MODAL -->
+<div class="modal fade" id="teacherModal" tabindex="-1" role="dialog" aria-labelledby="teacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 16px; border:none; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+            <div class="modal-header bg-light border-bottom p-3">
+                <div class="media align-items-center">
+                    <img src="" id="mAvatar" alt="Avatar" class="teacher-avatar-lg mr-3 shadow-sm">
+                    <div>
+                        <h5 class="modal-title font-weight-bold text-dark mb-0" id="mName">O'qituvchi F.I.Sh.</h5>
+                        <p class="text-muted mb-0 font-small-3" id="mDegree">Ilmiy daraja</p>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-2">
+                        <small class="text-muted d-block"><i class="fas fa-sitemap text-primary mr-1"></i> Kafedra:</small>
+                        <strong class="text-dark" id="mKafedra">-</strong>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <small class="text-muted d-block"><i class="fas fa-envelope text-primary mr-1"></i> Email:</small>
+                        <strong class="text-dark" id="mEmail">-</strong>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <small class="text-muted d-block"><i class="fas fa-calendar-alt text-primary mr-1"></i> Tug'ilgan sana:</small>
+                        <strong class="text-dark" id="mDob">-</strong>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block font-small-1">Ilmiy Ishlar</small>
+                            <h4 class="mb-0 text-bold-700 text-primary" id="mIlmiy">0</h4>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block font-small-1">Scopus</small>
+                            <h4 class="mb-0 text-bold-700 text-warning" id="mScopus">0</h4>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block font-small-1">O'quv Ishlar</small>
+                            <h4 class="mb-0 text-bold-700 text-success" id="mOquv">0</h4>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="p-2 border rounded text-center bg-light">
+                            <small class="text-muted d-block font-small-1">Videolar</small>
+                            <h4 class="mb-0 text-bold-700 text-info" id="mVideo">0</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="text-bold-700 text-dark mb-2"><i class="fas fa-info-circle text-primary mr-1"></i> Qisqacha Ma'lumot / Bio:</h6>
+                <div class="p-3 bg-light rounded text-muted font-small-3" id="mBio" style="min-height: 80px; max-height: 180px; overflow-y:auto; line-height: 1.6;">
+                    -
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-top p-3 d-flex justify-content-between">
+                <span class="small text-muted"><i class="fas fa-university mr-1"></i> {{ fakultet.nomi }}</span>
+                <button type="button" class="btn btn-secondary btn-sm rounded-pill px-4" data-dismiss="modal">Yopish</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var viewBtns = document.querySelectorAll('.view-teacher-btn');
+    viewBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.getElementById('mName').textContent = this.getAttribute('data-name');
+            document.getElementById('mKafedra').textContent = this.getAttribute('data-kafedra');
+            document.getElementById('mDegree').textContent = this.getAttribute('data-degree');
+            document.getElementById('mEmail').textContent = this.getAttribute('data-email');
+            document.getElementById('mDob').textContent = this.getAttribute('data-dob');
+            document.getElementById('mAvatar').src = this.getAttribute('data-avatar');
+            document.getElementById('mBio').textContent = this.getAttribute('data-bio');
+            document.getElementById('mIlmiy').textContent = this.getAttribute('data-ilmiy');
+            document.getElementById('mScopus').textContent = this.getAttribute('data-scopus');
+            document.getElementById('mOquv').textContent = this.getAttribute('data-oquv');
+            document.getElementById('mVideo').textContent = this.getAttribute('data-video');
+        });
+    });
+
+    var exportBtn = document.getElementById('exportExcelBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function () {
+            var table = document.getElementById('fakultetTeachersTable');
+            if (!table) return;
+
+            var clone = table.cloneNode(true);
+            var ths = clone.querySelectorAll('tr th:last-child');
+            ths.forEach(function (th) { th.remove(); });
+            var tds = clone.querySelectorAll('tr td:last-child');
+            tds.forEach(function (td) { td.remove(); });
+
+            var wb = XLSX.utils.table_to_book(clone, { sheet: "Fakultet O'qituvchilari" });
+            var fileName = "Fakultet_Oqituvchilari_" + new Date().toISOString().slice(0, 10) + ".xlsx";
+            XLSX.writeFile(wb, fileName);
+        });
+    }
+});
+</script>
+{% endblock %}

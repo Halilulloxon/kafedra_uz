@@ -1,10 +1,12 @@
-<!-- Kabinet yon menyusi. Bandlar foydalanuvchi roliga qarab, faol band esa
-     joriy sahifa manzilidan avtomatik aniqlanadi. O'zgartirish faqat shu yerda. -->
+<!-- Kabinet yon menyusi. Bandlar joriy panel (panel=mudir|dekan|prorektor|oqituvchi)
+     va sahifa nomiga qarab moslashuvchan chiqadi. -->
 {% with u=request.resolver_match.url_name %}
 <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation">
-            {% if foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+            
+            {# 1. PROREKTOR BOSHQARUV MENYUSI #}
+            {% if panel == 'prorektor' %}
             <li class="nav-item {% if u == 'home4' or u == 'profile4' %}active{% endif %}">
                 <a href="{% url 'home4' %}"><i class="fas fa-tachometer-alt"></i><span class="menu-title" data-i18n="prorektor_dashboard">Universitet Dashboard</span></a>
             </li>
@@ -17,29 +19,62 @@
             <li class="nav-item {% if u == 'teachers' or u == 'teacher1' %}active{% endif %}">
                 <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
             </li>
+            
+            <li class="navigation-header"><span>SHAXSIY FAOLIYAT</span></li>
+            <li class="nav-item {% if u == 'profile' or u == 'home1' %}active{% endif %}">
+                <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user-circle"></i><span class="menu-title">O'qituvchi Kabinetim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'ilmiy_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 1 or u == 'tahrirlash_ilmiy' and t_id == '1' or u == 'ochir' and j_id != 1 and j_id != '1' %}active{% endif %}">
+                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-file-alt"></i><span class="menu-title">Mening Ilmiy Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'oquv_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 0 or u == 'tahrirlash_ilmiy' and t_id == '0' or u == 'ochir' and j_id == 1 or u == 'ochir' and j_id == '1' %}active{% endif %}">
+                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book"></i><span class="menu-title">Mening O'quv Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'video_darslar' or u == 'tahrirlash_video' %}active{% endif %}">
+                <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title">Mening Video Darslarim</span></a>
+            </li>
+
+            <li class="navigation-header"><span>UMUMIY</span></li>
             <li class="nav-item {% if u == 'article' %}active{% endif %}">
                 <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
             </li>
             <li class="nav-item {% if u == 'book' %}active{% endif %}">
                 <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
             </li>
-            <li class="nav-item {% if u == 'video' or u == 'video_darslar' %}active{% endif %}">
+            <li class="nav-item {% if u == 'video' %}active{% endif %}">
                 <a href="{% url 'video' %}"><i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons">Video Darslar</span></a>
             </li>
 
-            {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+            {# 2. DEKAN BOSHQARUV MENYUSI #}
+            {% elif panel == 'dekan' %}
             <li class="nav-item {% if u == 'home3' or u == 'profile3' %}active{% endif %}">
                 <a href="{% url 'home3' %}"><i class="fas fa-university"></i><span class="menu-title" data-i18n="dekan_dashboard">Dekan Paneli</span></a>
             </li>
             <li class="nav-item {% if u == 'ilmiy_ishlari3' or u == 'filtrlash_ilmiy3' %}active{% endif %}">
-                <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Fakultet Ilmiy Ishlari</span></a>
+                <a href="{% url 'ilmiy_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="fac_sci_works">Fakultet Ilmiy Ishlari</span></a>
             </li>
             <li class="nav-item {% if u == 'oquv_ishlari3' or u == 'filtrlash_oquv3' %}active{% endif %}">
-                <a href="{% url 'oquv_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Fakultet O'quv Ishlari</span></a>
+                <a href="{% url 'oquv_ishlari3' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="fac_edu_works">Fakultet O'quv Ishlari</span></a>
             </li>
-            <li class="nav-item {% if u == 'teachers' or u == 'teacher1' %}active{% endif %}">
-                <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
+            <li class="nav-item {% if u == 'fakultet_oqituvchilari' %}active{% endif %}">
+                <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="fac_teachers">Fakultet O'qituvchilari</span></a>
             </li>
+
+            <li class="navigation-header"><span>SHAXSIY FAOLIYAT</span></li>
+            <li class="nav-item {% if u == 'profile' or u == 'home1' %}active{% endif %}">
+                <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user-circle"></i><span class="menu-title">O'qituvchi Kabinetim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'ilmiy_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 1 or u == 'tahrirlash_ilmiy' and t_id == '1' or u == 'ochir' and j_id != 1 and j_id != '1' %}active{% endif %}">
+                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-file-alt"></i><span class="menu-title">Mening Ilmiy Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'oquv_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 0 or u == 'tahrirlash_ilmiy' and t_id == '0' or u == 'ochir' and j_id == 1 or u == 'ochir' and j_id == '1' %}active{% endif %}">
+                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book"></i><span class="menu-title">Mening O'quv Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'video_darslar' or u == 'tahrirlash_video' %}active{% endif %}">
+                <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title">Mening Video Darslarim</span></a>
+            </li>
+
+            <li class="navigation-header"><span>UMUMIY</span></li>
             <li class="nav-item {% if u == 'book' %}active{% endif %}">
                 <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
             </li>
@@ -47,12 +82,16 @@
                 <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
             </li>
 
-            {% elif foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+            {# 3. KAFEDRA MUDIRI BOSHQARUV MENYUSI #}
+            {% elif panel == 'mudir' %}
             <li class="nav-item {% if u == 'home2' or u == 'profile2' %}active{% endif %}">
                 <a href="{% url 'home2' %}"><i class="fas fa-home"></i><span class="menu-title" data-i18n="mudir_dashboard">Mudir Paneli</span></a>
             </li>
             <li class="nav-item {% if u == 'kafedra_talablari' or u == 'qoshish_talab' or u == 'tahrirlash_talab' %}active{% endif %}">
                 <a href="{% url 'kafedra_talablari' user_id=foydalanuvchi.id %}"><i class="fas fa-tasks"></i><span class="menu-title" data-i18n="dept_requirements">Kafedra Talablari &amp; Rejasi</span></a>
+            </li>
+            <li class="nav-item {% if u == 'talablar_monitoring' %}active{% endif %}">
+                <a href="{% url 'talablar_monitoring' user_id=foydalanuvchi.id %}"><i class="fas fa-chart-line"></i><span class="menu-title" data-i18n="dept_monitoring">Talablar Bajarilishi</span></a>
             </li>
             <li class="nav-item {% if u == 'ilmiy_ishlari2' or u == 'filtrlash_ilmiy2' %}active{% endif %}">
                 <a href="{% url 'ilmiy_ishlari2' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="dept_sci_works">Kafedra Ilmiy Ishlari</span></a>
@@ -60,6 +99,80 @@
             <li class="nav-item {% if u == 'oquv_ishlari2' or u == 'filtrlash_oquv2' %}active{% endif %}">
                 <a href="{% url 'oquv_ishlari2' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="dept_edu_works">Kafedra O'quv Ishlari</span></a>
             </li>
+            <li class="nav-item {% if u == 'kafedra_oqituvchilari' %}active{% endif %}">
+                <a href="{% url 'kafedra_oqituvchilari' user_id=foydalanuvchi.id %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="dept_teachers">Kafedra O'qituvchilari</span></a>
+            </li>
+
+            <li class="navigation-header"><span>SHAXSIY FAOLIYAT</span></li>
+            <li class="nav-item {% if u == 'profile' or u == 'home1' %}active{% endif %}">
+                <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user-circle"></i><span class="menu-title">O'qituvchi Kabinetim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'ilmiy_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 1 or u == 'tahrirlash_ilmiy' and t_id == '1' or u == 'ochir' and j_id != 1 and j_id != '1' %}active{% endif %}">
+                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-file-alt"></i><span class="menu-title">Mening Ilmiy Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'oquv_ishlari' or u == 'tahrirlash_ilmiy' and t_id == 0 or u == 'tahrirlash_ilmiy' and t_id == '0' or u == 'ochir' and j_id == 1 or u == 'ochir' and j_id == '1' %}active{% endif %}">
+                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book"></i><span class="menu-title">Mening O'quv Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'video_darslar' or u == 'tahrirlash_video' %}active{% endif %}">
+                <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title">Mening Video Darslarim</span></a>
+            </li>
+
+            <li class="navigation-header"><span>UMUMIY</span></li>
+            <li class="nav-item {% if u == 'book' %}active{% endif %}">
+                <a href="{% url 'book' %}"><i class="fas fa-book-reader"></i><span class="menu-title" data-i18n="public_books">Kutubxona</span></a>
+            </li>
+            <li class="nav-item {% if u == 'article' %}active{% endif %}">
+                <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
+            </li>
+
+            {# 4. O'QITUVCHI KABINETI MENYUSI (Ham oddiy o'qituvchi, ham o'qituvchi rejimiga o'tgan Mudir/Dekan uchun) #}
+            {% else %}
+            
+            {% if foydalanuvchi.foydalanuvchi_rol == 'kafedra mudiri' %}
+            <li class="nav-item my-2 px-2">
+                <a href="{% url 'home2' %}" class="btn btn-info btn-sm text-white w-100 shadow-sm text-truncate" style="font-weight:600; border-radius:8px;">
+                    <i class="fas fa-arrow-left mr-1"></i> Mudir Paneliga Qaytish
+                </a>
+            </li>
+            {% elif foydalanuvchi.foydalanuvchi_rol == 'dekan' %}
+            <li class="nav-item my-2 px-2">
+                <a href="{% url 'home3' %}" class="btn btn-success btn-sm text-white w-100 shadow-sm text-truncate" style="font-weight:600; border-radius:8px;">
+                    <i class="fas fa-arrow-left mr-1"></i> Dekan Paneliga Qaytish
+                </a>
+            </li>
+            {% elif foydalanuvchi.foydalanuvchi_rol == 'prorektor' %}
+            <li class="nav-item my-2 px-2">
+                <a href="{% url 'home4' %}" class="btn btn-danger btn-sm text-white w-100 shadow-sm text-truncate" style="font-weight:600; border-radius:8px;">
+                    <i class="fas fa-arrow-left mr-1"></i> Prorektor Paneliga Qaytish
+                </a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item {% if u == 'profile' or u == 'home1' or u == 'profil_tahrirlash' or u == 'profillarni_tahrirlash' %}active{% endif %}">
+                <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user-circle"></i><span class="menu-title" data-i18n="profile_menu">Profilim (Dashboard)</span></a>
+            </li>
+            <li class="nav-item {% if u == 'ilmiy_ishlari' or u == 'filtrlash_ilmiy' or u == 'tahrirlash_ilmiy' and t_id == 1 or u == 'tahrirlash_ilmiy' and t_id == '1' or u == 'ochir' and j_id != 1 and j_id != '1' %}active{% endif %}">
+                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Mening Ilmiy Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'oquv_ishlari' or u == 'filtrlash_oquv' or u == 'tahrirlash_ilmiy' and t_id == 0 or u == 'tahrirlash_ilmiy' and t_id == '0' or u == 'ochir' and j_id == 1 or u == 'ochir' and j_id == '1' %}active{% endif %}">
+                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">Mening O'quv Ishlarim</span></a>
+            </li>
+            <li class="nav-item {% if u == 'video_darslar' or u == 'tahrirlash_video' or u == 'ochir_video' or u == 'ochirish_video' or u == 'video_filtrlash' %}active{% endif %}">
+                <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Mening Video Darslarim</span></a>
+            </li>
+
+            <li class="navigation-header"><span>YANGI MA'LUMOT YUKLASH</span></li>
+            <li class="nav-item {% if u == 'qoshish_i' or u == 'qoshish_ilmiy' %}active{% endif %}">
+                <a href="{% url 'qoshish_i' user_id=foydalanuvchi.id %}"><i class="fas fa-plus-circle text-primary"></i><span class="menu-title">+ Ilmiy Ish Qo'shish</span></a>
+            </li>
+            <li class="nav-item {% if u == 'qoshish' or u == 'qoshish_oquv' %}active{% endif %}">
+                <a href="{% url 'qoshish' user_id=foydalanuvchi.id %}"><i class="fas fa-plus-circle text-success"></i><span class="menu-title">+ O'quv Ishi Qo'shish</span></a>
+            </li>
+            <li class="nav-item {% if u == 'qoshish_video' %}active{% endif %}">
+                <a href="{% url 'qoshish_video' user_id=foydalanuvchi.id %}"><i class="fas fa-plus-circle text-danger"></i><span class="menu-title">+ Video Dars Qo'shish</span></a>
+            </li>
+
+            <li class="navigation-header"><span>UMUMIY</span></li>
             <li class="nav-item {% if u == 'teachers' or u == 'teacher1' %}active{% endif %}">
                 <a href="{% url 'teachers' %}"><i class="fas fa-users"></i><span class="menu-title" data-i18n="professors_list">O'qituvchilar</span></a>
             </li>
@@ -69,21 +182,8 @@
             <li class="nav-item {% if u == 'article' %}active{% endif %}">
                 <a href="{% url 'article' %}"><i class="fas fa-newspaper"></i><span class="menu-title" data-i18n="public_articles">Ommaviy Maqolalar</span></a>
             </li>
-
-            {% else %}
-            <li class="nav-item {% if u == 'profile' or u == 'home1' or u == 'profil_tahrirlash' or u == 'profillarni_tahrirlash' %}active{% endif %}">
-                <a href="{% url 'profile' user_id=foydalanuvchi.id %}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="profile_menu">Profil</span></a>
-            </li>
-            <li class="nav-item {% if u == 'oquv_ishlari' or u == 'filtrlash_oquv' or u == 'qoshish_oquv' %}active{% endif %}">
-                <a href="{% url 'oquv_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-book-open"></i><span class="menu-title" data-i18n="edu_works_menu">O'quv ishlari</span></a>
-            </li>
-            <li class="nav-item {% if u == 'ilmiy_ishlari' or u == 'filtrlash_ilmiy' or u == 'qoshish_ilmiy' or u == 'tahrirlash_ilmiy' %}active{% endif %}">
-                <a href="{% url 'ilmiy_ishlari' user_id=foydalanuvchi.id %}"><i class="fas fa-graduation-cap"></i><span class="menu-title" data-i18n="sci_works_menu">Ilmiy ishlar</span></a>
-            </li>
-            <li class="nav-item {% if u == 'video_darslar' or u == 'qoshish_video' or u == 'tahrirlash_video' or u == 'ochir_video' or u == 'ochirish_video' or u == 'video_filtrlash' %}active{% endif %}">
-                <a href="{% url 'video_darslar' user_id=foydalanuvchi.id %}"><i class="fas fa-video"></i><span class="menu-title" data-i18n="video_lessons_menu">Video darslar</span></a>
-            </li>
             {% endif %}
+
         </ul>
     </div>
 </div>

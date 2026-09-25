@@ -20,9 +20,24 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Maxfiy sozlamalar "first project/.env" faylidan o'qiladi (namuna: .env.example)
+env_file = os.path.join(BASE_DIR, '.env')
+if os.path.exists(env_file):
+    try:
+        with open(env_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    k = k.strip()
+                    v = v.strip().strip('"').strip("'")
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+    except Exception:
+        pass
+
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(BASE_DIR, '.env'))
+    load_dotenv(env_file)
 except ImportError:
     pass
 
@@ -38,8 +53,6 @@ def env_list(name, default=''):
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Kalit faqat .env dan olinadi. Kodda zaxira kalit turmaydi — u ochiq
-# repozitoriyda yotgani uchun sessiyalarni soxtalashtirishga yo'l ochardi.
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
 if not SECRET_KEY:
     if not DEBUG:
@@ -48,9 +61,8 @@ if not SECRET_KEY:
             "Yangi kalit yaratish: "
             "python -c \"import secrets; print(secrets.token_urlsafe(50))\""
         )
-    # Lokal ish uchun vaqtinchalik kalit (server qayta ishga tushganda
-    # yangilanadi, ya'ni sessiyalar uziladi — .env ga o'z kalitingizni yozing).
-    SECRET_KEY = secrets.token_urlsafe(50)
+    # Lokal ishlab chiqish uchun barqaror kalit (sessiyalar uzilib ketmasligi uchun)
+    SECRET_KEY = 'django-insecure-kafedralar-uz-local-dev-persistent-key-2026'
 
 # Faqat .env da sanab o'tilgan manzillar. Ilgari ro'yxatga '*' qo'shilardi,
 # ya'ni har qanday Host sarlavhasi qabul qilinardi.
@@ -167,12 +179,12 @@ LANGUAGE_CODE = 'uz'
 # "locale/uz" dan olinadi (yangilash: scripts/tarjima.py)
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
-# Sana formatlari: dd.mm.yyyy (masalan: 17.08.1983)
-DATE_FORMAT = 'd.m.Y'
+# Sana formatlari: dd/mm/yyyy (masalan: 17/08/1983)
+DATE_FORMAT = 'd/m/Y'
 DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',
     '%d.%m.%Y',
     '%Y-%m-%d',
-    '%d/%m/%Y',
 ]
 FORMAT_MODULE_PATH = ['first_project.formats']
 TIME_ZONE = 'Asia/Tashkent'
@@ -208,6 +220,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.ngrok.io',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'http://localhost:8001',
+    'http://127.0.0.1:8001',
 ] + env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
 
 # Serverda SSL (https) o'rnatilgandan keyin .env da DJANGO_HTTPS=True qiling

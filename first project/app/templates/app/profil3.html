@@ -87,9 +87,10 @@
                     </div>
                 </div>
 
-                <!-- DEKAN DETAILS CARD -->
-                <div class="row">
-                    <div class="col-xl-8 col-12">
+                <!-- DEKAN DETAILS & KAFEDRALAR STATS -->
+                <div class="row match-height">
+                    <!-- Dekan Ma'lumotlari -->
+                    <div class="col-xl-6 col-12">
                         <div class="card shadow-sm stat-card">
                             <div class="card-header bg-transparent border-bottom">
                                 <h4 class="card-title text-bold-700" data-i18n="faculty_details_title">Fakultet Dekani Ma'lumotlari</h4>
@@ -106,18 +107,65 @@
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="fas fa-university text-primary mr-1"></i> Boshqarayotgan Fakulteti:</span>
+                                        <span class="text-muted"><i class="fas fa-university text-primary mr-1"></i> Fakultet:</span>
                                         <strong>{{ foydalanuvchi.fakulteti.nomi|default:"-" }}</strong>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                        <span class="text-muted"><i class="fas fa-calendar-alt text-primary mr-1"></i> Tug'ilgan sana:</span>
-                                        <strong>{{ foydalanuvchi.tugulgan_sana|date:"d.m.Y"|default:"-" }}</strong>
+                                        <span class="text-muted"><i class="fas fa-users text-primary mr-1"></i> Fakultet o'qituvchilari:</span>
+                                        <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}" class="badge badge-pill badge-primary font-medium-1 shadow-sm text-white" style="text-decoration:none;" title="O'qituvchilar ro'yxatini ko'rish">
+                                            {{ oqituvchilar_soni }} nafar <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                        <span class="text-muted"><i class="fas fa-sitemap text-primary mr-1"></i> Kafedralar soni:</span>
+                                        <span class="badge badge-pill badge-info font-medium-1">{{ kafedralar_soni }} ta</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
                                         <span class="text-muted"><i class="fas fa-envelope text-primary mr-1"></i> Email:</span>
                                         <strong>{{ foydalanuvchi.gmail|default:"-" }}</strong>
                                     </li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fakultet Kafedralari & O'qituvchilar Tarkibi -->
+                    <div class="col-xl-6 col-12">
+                        <div class="card shadow-sm stat-card border-left-primary border-left-3">
+                            <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center">
+                                <h4 class="card-title text-bold-700 mb-0">
+                                    <i class="fas fa-sitemap text-primary mr-1"></i> Kafedralar va O'qituvchilar
+                                </h4>
+                                <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm font-weight-bold">
+                                    <i class="fas fa-users mr-1"></i> Barchasini ko'rish
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small mb-3">
+                                    Fakultetingiz tarkibidagi barcha kafedralar va ularga biriktirilgan professor-o'qituvchilar soni:
+                                </p>
+                                {% if kafedra_stats %}
+                                <div class="list-group list-group-flush">
+                                    {% for ks in kafedra_stats %}
+                                    <a href="{% url 'fakultet_oqituvchilari' user_id=foydalanuvchi.id %}?kafedra={{ ks.kafedra.id }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-2 py-2 border rounded mb-2 bg-light">
+                                        <div>
+                                            <strong class="text-dark">{{ ks.kafedra.nomi }}</strong>
+                                            {% if ks.kafedra.mudir %}
+                                            <small class="text-muted d-block"><i class="fas fa-user-tie mr-1 text-primary"></i>Mudir: {{ ks.kafedra.mudir.familiya }} {{ ks.kafedra.mudir.ism }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <span class="badge badge-pill badge-primary font-small-2 px-3 py-1">
+                                            {{ ks.teachers_count }} nafar o'qituvchi <i class="fas fa-chevron-right ml-1"></i>
+                                        </span>
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-sitemap fa-3x d-block mb-2 text-muted" style="opacity:0.4;"></i>
+                                    <p class="small">Ushbu fakultetga hali kafedralar biriktirilmagan.</p>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -139,9 +187,12 @@
                 edit_profile: "Tahrirlash",
                 logout: "Chiqish",
                 my_teacher_profile: "O'qituvchi Profilim",
-                dekan_dashboard: "Fakultet Boshqaruvi",
-                edu_works_menu: "Fakultet O'quv ishlari",
-                sci_works_menu: "Fakultet Ilmiy ishlari",
+                dekan_dashboard: "Dekan Paneli",
+                edu_works_menu: "Fakultet O'quv Ishlari",
+                sci_works_menu: "Fakultet Ilmiy Ishlari",
+                fac_sci_works: "Fakultet Ilmiy Ishlari",
+                fac_edu_works: "Fakultet O'quv Ishlari",
+                fac_teachers: "Fakultet O'qituvchilari",
                 all_teachers_menu: "Barcha O'qituvchilar",
                 stat_faculty_articles: "Fakultet Maqolalari",
                 stat_faculty_scopus: "Scopus / WoS",
@@ -156,9 +207,12 @@
                 edit_profile: "Редактировать",
                 logout: "Выход",
                 my_teacher_profile: "Мой профиль",
-                dekan_dashboard: "Управление факультетом",
+                dekan_dashboard: "Панель декана",
                 edu_works_menu: "Учебные работы факультета",
                 sci_works_menu: "Научные работы факультета",
+                fac_sci_works: "Научные работы факультета",
+                fac_edu_works: "Учебные работы факультета",
+                fac_teachers: "Преподаватели факультета",
                 all_teachers_menu: "Все преподаватели",
                 stat_faculty_articles: "Статьи факультета",
                 stat_faculty_scopus: "Scopus / WoS",
@@ -173,9 +227,12 @@
                 edit_profile: "Edit Profile",
                 logout: "Logout",
                 my_teacher_profile: "My Instructor Profile",
-                dekan_dashboard: "Faculty Dashboard",
+                dekan_dashboard: "Dean Dashboard",
                 edu_works_menu: "Faculty Academic Works",
                 sci_works_menu: "Faculty Research Works",
+                fac_sci_works: "Faculty Scientific Works",
+                fac_edu_works: "Faculty Educational Works",
+                fac_teachers: "Faculty Teachers",
                 all_teachers_menu: "All Faculty Members",
                 stat_faculty_articles: "Faculty Articles",
                 stat_faculty_scopus: "Scopus / WoS",

@@ -59,7 +59,7 @@
                             <span class="pp-badge pp-badge-green"><i class="fas fa-check"></i> {{ maqola.turi }}</span>
                             {% if maqola.dgu_raqami %}<span class="pp-badge" style="background:#e0f2fe; color:#0369a1; font-weight:600;"><i class="fas fa-certificate"></i> {{ maqola.dgu_raqami }}</span>{% endif %}
                             {% if maqola.kategoriya %}<span class="pp-badge pp-badge-amber">{{ maqola.kategoriya }}</span>{% endif %}
-                            <span><i class="far fa-calendar"></i> {{ maqola.sana|date:"d.m.Y" }}</span>
+                            <span><i class="far fa-calendar"></i> {{ maqola.sana|date:"d/m/Y" }}</span>
                             {% if maqola.muallif.kafedra %}<span><i class="fas fa-landmark"></i> {{ maqola.muallif.kafedra }}</span>{% endif %}
                         </div>
 

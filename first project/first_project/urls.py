@@ -36,6 +36,10 @@ urlpatterns = [
     path('qoshish_talab/<int:user_id>/', views.qoshish_talab, name='qoshish_talab'),
     path('tahrirlash_talab/<int:t_id>/<int:user_id>/', views.tahrirlash_talab, name='tahrirlash_talab'),
     path('ochir_talab/<int:t_id>/<int:user_id>/', views.ochir_talab, name='ochir_talab'),
+    path('talablar_monitoring/<int:user_id>/', views.talablar_monitoring, name='talablar_monitoring'),
+    path('kafedra_oqituvchilari/<int:user_id>/', views.kafedra_oqituvchilari, name='kafedra_oqituvchilari'),
+    path('fakultet_oqituvchilari/<int:user_id>/', views.fakultet_oqituvchilari, name='fakultet_oqituvchilari'),
+    path('fakultet_hisoboti/<int:fakultet_id>/', views.fakultet_hisoboti4, name='fakultet_hisoboti4'),
 
     path('admin/', admin.site.urls),
     path('oquv_ishlari/<int:user_id>/', views.oquv_ishlari, name='oquv_ishlari'),

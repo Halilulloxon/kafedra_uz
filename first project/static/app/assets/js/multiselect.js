@@ -64,14 +64,23 @@ function initMultiSelects() {
             }
         });
 
+        function normStr(str) {
+            if (!str) return '';
+            return str.toLowerCase()
+                .replace(/o['`’‘]/g, 'o')
+                .replace(/g['`’‘]/g, 'g')
+                .replace(/sh/g, 's')
+                .replace(/ch/g, 'c');
+        }
+
         // Search filtering inside dropdown
         if (searchInput) {
             searchInput.addEventListener('input', function () {
-                var query = this.value.trim().toLowerCase();
+                var query = normStr(this.value.trim());
                 var visibleCount = 0;
 
                 optionItems.forEach(function (item) {
-                    var text = (item.getAttribute('data-text') || item.textContent || '').toLowerCase();
+                    var text = normStr(item.getAttribute('data-text') || item.textContent || '');
                     if (!query || text.indexOf(query) !== -1) {
                         item.style.display = 'flex';
                         visibleCount++;
@@ -93,6 +102,19 @@ function initMultiSelects() {
                 }
             });
         }
+
+        // Allow clicking anywhere on the option item row to toggle checkbox
+        optionItems.forEach(function (item) {
+            item.addEventListener('click', function (e) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
+                    var cb = item.querySelector('input[type="checkbox"]');
+                    if (cb) {
+                        cb.checked = !cb.checked;
+                        updateState();
+                    }
+                }
+            });
+        });
 
         // Select all visible
         if (selectAllBtn) {
@@ -126,6 +148,56 @@ function initMultiSelects() {
         if (menu) {
             menu.addEventListener('click', function (e) {
                 e.stopPropagation();
+            });
+        }
+
+        // Elevate z-index of card and auto-focus search
+        function elevateCard() {
+            var card = container.closest('.filter-card') || container.closest('.card');
+            if (card) {
+                card.classList.add('is-open');
+                card.style.setProperty('z-index', '1060', 'important');
+                card.style.setProperty('position', 'relative', 'important');
+            }
+            setTimeout(function () {
+                if (searchInput) searchInput.focus();
+            }, 100);
+        }
+
+        function restoreCard() {
+            var card = container.closest('.filter-card') || container.closest('.card');
+            if (card) {
+                card.classList.remove('is-open');
+                card.style.setProperty('z-index', '1020', 'important');
+            }
+        }
+
+        // Vanilla listener on button click
+        button.addEventListener('click', function () {
+            setTimeout(function () {
+                if (container.classList.contains('show') || (menu && menu.classList.contains('show'))) {
+                    elevateCard();
+                } else {
+                    restoreCard();
+                }
+            }, 50);
+        });
+
+        // Click outside listener
+        document.addEventListener('click', function (e) {
+            if (!container.contains(e.target)) {
+                restoreCard();
+            }
+        });
+
+        // Bootstrap dropdown events: Elevate z-index of card and auto-focus search
+        if (typeof jQuery !== 'undefined') {
+            $(container).on('show.bs.dropdown', function () {
+                elevateCard();
+            });
+
+            $(container).on('hide.bs.dropdown', function () {
+                restoreCard();
             });
         }
     });

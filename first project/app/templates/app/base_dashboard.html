@@ -24,8 +24,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/assets/css/theme-dark-lang.css' %}?v=20260924o">
 
     <link rel="stylesheet" href="{% static 'app/assets/css/pdf-modal.css' %}?v=20260923x">
-    <link rel="stylesheet" href="{% static 'app/assets/css/multiselect.css' %}?v=20260925">
+    <link rel="stylesheet" href="{% static 'app/assets/css/multiselect.css' %}?v=20260925f">
     <link rel="stylesheet" href="{% static 'app/assets/css/tag-input.css' %}?v=20260925">
+    <link rel="stylesheet" href="{% static 'app/assets/css/flatpickr.min.css' %}">
 
     {% block extra_head %}{% endblock %}
 </head>
@@ -34,7 +35,7 @@
 
     {% block navbar %}{% include "app/partials/navbar_dashboard.html" with panel="oqituvchi" %}{% endblock %}
 
-    {% block sidebar %}{% include "app/partials/sidebar_dashboard.html" %}{% endblock %}
+    {% block sidebar %}{% include "app/partials/sidebar_dashboard.html" with panel="oqituvchi" %}{% endblock %}
 
     {% block xabarlar %}{% include "app/partials/xabarlar.html" %}{% endblock %}
 
@@ -46,8 +47,10 @@
     <script src="{% static 'app/app-assets/js/core/app-menu.min.js' %}?v=20260923"></script>
     <script src="{% static 'app/app-assets/js/core/app.min.js' %}?v=20260923"></script>
     <script src="{% static 'app/assets/js/pdf-modal.js' %}?v=20260923x"></script>
-    <script src="{% static 'app/assets/js/multiselect.js' %}?v=20260925"></script>
+    <script src="{% static 'app/assets/js/multiselect.js' %}?v=20260925e"></script>
     <script src="{% static 'app/assets/js/tag-input.js' %}?v=20260925"></script>
+    <script src="{% static 'app/assets/js/flatpickr.min.js' %}"></script>
+    <script src="{% static 'app/assets/js/date-init.js' %}?v=20260925"></script>
     {% block extra_js %}{% endblock %}
     <script src="{% static 'app/assets/js/theme-dark-lang.js' %}?v=20260924a"></script>
 </body>
